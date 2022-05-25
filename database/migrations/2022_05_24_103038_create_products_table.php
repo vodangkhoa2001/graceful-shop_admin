@@ -14,7 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->string('productId')->primary();
+            $table->string('id')->primary();
             $table->string('productName');
             $table->integer('stock');
             $table->integer('importPrice');
@@ -26,6 +26,7 @@ class CreateProductsTable extends Migration
             $table->string('brandId');
             $table->integer('numLike');
             $table->integer('numRate');
+            $table->text('description');
             $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();

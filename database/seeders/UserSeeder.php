@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     {
         for($i=0;$i<10;$i++){
             DB::table('users')->insert([
-                'userId'=>Str::random(10),
+                'id'=>Str::random(10),
                 'fullName'=>Str::random(20),
                 'email'=>Str::random(10).'@gmail.com',
                 'phoneNumber'=> '0987'.random_int(100000,999999),

@@ -17,7 +17,7 @@ class ProductSeeder extends Seeder
     {
         for ($i=0; $i < 10; $i++) {
             DB::table('products')->insert([
-                'productId'=>Str::random(10),
+                'id'=>Str::random(10),
                 'productName'=>Str::random(50),
                 'stock'=>random_int(5,10)*10,
                 'importPrice'=>random_int(1,9)*100000-50000,
@@ -29,6 +29,7 @@ class ProductSeeder extends Seeder
                 'brandId'=>random_int(1,10),
                 'numLike'=>random_int(0,100),
                 'numRate'=>random_int(0,100),
+                'description'=>Str::random(20),
                 'status'=>1
             ]);
         }

@@ -19,13 +19,12 @@ class UserSeeder extends Seeder
     {
         for($i=0;$i<10;$i++){
             DB::table('users')->insert([
-                'id'=>Str::random(10),
-                'fullName'=>Str::random(20),
+                'fullName'=>Str::random(10),
                 'email'=>Str::random(10).'@gmail.com',
                 'phoneNumber'=> '0987'.random_int(100000,999999),
                 'password'=>Hash::make('password'),
                 'address'=> Str::random(10).', '.Str::random(10),
-                'avatar'=>'new_user.png',
+                'avatar'=>'/img/users/default_avatar.png',
                 'role'=>random_int(0,2),
                 'status'=>1,
             ]);

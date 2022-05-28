@@ -14,8 +14,8 @@ class CreateInvoicesTable extends Migration
     public function up()
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->string('id');
-            $table->string('userId');
+            $table->id();
+            $table->unsignedBigInteger('userId');
             $table->string('voucherId');
             $table->integer('quantity');
             $table->integer('shipPrice');

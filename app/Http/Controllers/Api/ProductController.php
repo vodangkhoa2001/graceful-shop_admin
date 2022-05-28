@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Http\Request as HttpRequest;
@@ -14,10 +15,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(HttpRequest $request)
     {
-        $products = Product::all();
-        return response()->json(['data'=>$products],200);
+        $num = (int) $request->num;
+        $products = Product::with(['pictures'])->where('products.status', '=', 1)->orderBy('products.created_at', 'DESC')->paginate($num);
+        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
     }
 
     /**
@@ -50,8 +52,8 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = new Product();
-        $product = Product::find($id);
-        return response()->json(['data'=>$product],200);
+        $product = Product::with(['pictures'])->where('products.status', '=', 1)->find($id);
+        return response()->json(['status'=>0, 'data'=>$product, 'error'=>'']);
     }
 
     /**

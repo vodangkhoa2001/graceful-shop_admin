@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Models\Size;
-use App\Http\Requests\StoreSizeRequest;
-use App\Http\Requests\UpdateSizeRequest;
+use App\Models\ProductType;
+use App\Http\Requests\StoreProductTypeRequest;
+use App\Http\Requests\UpdateProductTypeRequest;
 
-class SizeController extends Controller
+class ProductTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class SizeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSizeRequest  $request
+     * @param  \App\Http\Requests\StoreProductTypeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSizeRequest $request)
+    public function store(StoreProductTypeRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class SizeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Size  $size
+     * @param  \App\Models\ProductType  $productType
      * @return \Illuminate\Http\Response
      */
-    public function show(Size $size)
+    public function show(ProductType $productType)
     {
         //
     }
@@ -53,10 +53,10 @@ class SizeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Size  $size
+     * @param  \App\Models\ProductType  $productType
      * @return \Illuminate\Http\Response
      */
-    public function edit(Size $size)
+    public function edit(ProductType $productType)
     {
         //
     }
@@ -64,11 +64,11 @@ class SizeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSizeRequest  $request
-     * @param  \App\Models\Size  $size
+     * @param  \App\Http\Requests\UpdateProductTypeRequest  $request
+     * @param  \App\Models\ProductType  $productType
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSizeRequest $request, Size $size)
+    public function update(UpdateProductTypeRequest $request, ProductType $productType)
     {
         //
     }
@@ -76,10 +76,10 @@ class SizeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Size  $size
+     * @param  \App\Models\ProductType  $productType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Size $size)
+    public function destroy(ProductType $productType)
     {
         //
     }

@@ -15,7 +15,7 @@ class CreateTransportsTable extends Migration
     {
         Schema::create('transports', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('invoiceId');
+            $table->string('invoiceId');
             $table->tinyInteger('status');
             $table->timestamps();
         });

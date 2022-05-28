@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Models\Transport;
-use App\Http\Requests\StoreTransportRequest;
-use App\Http\Requests\UpdateTransportRequest;
+use App\Models\Color;
+use App\Http\Requests\StoreColorRequest;
+use App\Http\Requests\UpdateColorRequest;
 
-class TransportController extends Controller
+class ColorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class TransportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTransportRequest  $request
+     * @param  \App\Http\Requests\StoreColorRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTransportRequest $request)
+    public function store(StoreColorRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class TransportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Models\Color  $color
      * @return \Illuminate\Http\Response
      */
-    public function show(Transport $transport)
+    public function show(Color $color)
     {
         //
     }
@@ -53,10 +53,10 @@ class TransportController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Models\Color  $color
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transport $transport)
+    public function edit(Color $color)
     {
         //
     }
@@ -64,11 +64,11 @@ class TransportController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTransportRequest  $request
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Http\Requests\UpdateColorRequest  $request
+     * @param  \App\Models\Color  $color
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTransportRequest $request, Transport $transport)
+    public function update(UpdateColorRequest $request, Color $color)
     {
         //
     }
@@ -76,10 +76,10 @@ class TransportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Models\Color  $color
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transport $transport)
+    public function destroy(Color $color)
     {
         //
     }

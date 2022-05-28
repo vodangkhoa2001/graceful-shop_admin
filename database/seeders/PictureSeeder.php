@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PictureSeeder extends Seeder
 {
@@ -14,14 +13,6 @@ class PictureSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=1; $i < 6; $i++) {
-            for ($j=1; $j < 4; $j++) { 
-                DB::table('pictures')->insert([
-                    'productId'=>$i,
-                    'pictureValue'=>'/img/products/'.$j.'.jpg',
-                    'status'=>1
-                ]);
-            }
-        }
+        //
     }
 }

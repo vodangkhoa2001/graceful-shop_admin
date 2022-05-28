@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Models\InvoiceDetail;
-use App\Http\Requests\StoreInvoiceDetailRequest;
-use App\Http\Requests\UpdateInvoiceDetailRequest;
+use App\Models\Role;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 
-class InvoiceDetailController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class InvoiceDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreInvoiceDetailRequest  $request
+     * @param  \App\Http\Requests\StoreRoleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreInvoiceDetailRequest $request)
+    public function store(StoreRoleRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class InvoiceDetailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\InvoiceDetail  $invoiceDetail
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(InvoiceDetail $invoiceDetail)
+    public function show(Role $role)
     {
         //
     }
@@ -53,10 +53,10 @@ class InvoiceDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\InvoiceDetail  $invoiceDetail
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(InvoiceDetail $invoiceDetail)
+    public function edit(Role $role)
     {
         //
     }
@@ -64,11 +64,11 @@ class InvoiceDetailController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateInvoiceDetailRequest  $request
-     * @param  \App\Models\InvoiceDetail  $invoiceDetail
+     * @param  \App\Http\Requests\UpdateRoleRequest  $request
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateInvoiceDetailRequest $request, InvoiceDetail $invoiceDetail)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
         //
     }
@@ -76,10 +76,10 @@ class InvoiceDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\InvoiceDetail  $invoiceDetail
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(InvoiceDetail $invoiceDetail)
+    public function destroy(Role $role)
     {
         //
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Models\Color;
-use App\Http\Requests\StoreColorRequest;
-use App\Http\Requests\UpdateColorRequest;
+use App\Models\Brand;
+use App\Http\Requests\StoreBrandRequest;
+use App\Http\Requests\UpdateBrandRequest;
 
-class ColorController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class ColorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreColorRequest  $request
+     * @param  \App\Http\Requests\StoreBrandRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreColorRequest $request)
+    public function store(StoreBrandRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class ColorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function show(Color $color)
+    public function show(Brand $brand)
     {
         //
     }
@@ -53,10 +53,10 @@ class ColorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function edit(Color $color)
+    public function edit(Brand $brand)
     {
         //
     }
@@ -64,11 +64,11 @@ class ColorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateColorRequest  $request
-     * @param  \App\Models\Color  $color
+     * @param  \App\Http\Requests\UpdateBrandRequest  $request
+     * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateColorRequest $request, Color $color)
+    public function update(UpdateBrandRequest $request, Brand $brand)
     {
         //
     }
@@ -76,10 +76,10 @@ class ColorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Color $color)
+    public function destroy(Brand $brand)
     {
         //
     }

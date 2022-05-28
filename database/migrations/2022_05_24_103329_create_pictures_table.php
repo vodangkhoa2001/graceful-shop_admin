@@ -14,8 +14,8 @@ class CreatePicturesTable extends Migration
     public function up()
     {
         Schema::create('pictures', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('productId');
+            $table->id('id');
+            $table->string('productId');
             $table->text('pictureValue');
             $table->tinyInteger('status');
             $table->timestamps();

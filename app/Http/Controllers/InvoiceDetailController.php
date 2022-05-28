@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Models\Address;
-use App\Http\Requests\StoreAddressRequest;
-use App\Http\Requests\UpdateAddressRequest;
+use App\Models\InvoiceDetail;
+use App\Http\Requests\StoreInvoiceDetailRequest;
+use App\Http\Requests\UpdateInvoiceDetailRequest;
 
-class AddressController extends Controller
+class InvoiceDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAddressRequest  $request
+     * @param  \App\Http\Requests\StoreInvoiceDetailRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAddressRequest $request)
+    public function store(StoreInvoiceDetailRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class AddressController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\InvoiceDetail  $invoiceDetail
      * @return \Illuminate\Http\Response
      */
-    public function show(Address $address)
+    public function show(InvoiceDetail $invoiceDetail)
     {
         //
     }
@@ -53,10 +53,10 @@ class AddressController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\InvoiceDetail  $invoiceDetail
      * @return \Illuminate\Http\Response
      */
-    public function edit(Address $address)
+    public function edit(InvoiceDetail $invoiceDetail)
     {
         //
     }
@@ -64,11 +64,11 @@ class AddressController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAddressRequest  $request
-     * @param  \App\Models\Address  $address
+     * @param  \App\Http\Requests\UpdateInvoiceDetailRequest  $request
+     * @param  \App\Models\InvoiceDetail  $invoiceDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAddressRequest $request, Address $address)
+    public function update(UpdateInvoiceDetailRequest $request, InvoiceDetail $invoiceDetail)
     {
         //
     }
@@ -76,10 +76,10 @@ class AddressController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\InvoiceDetail  $invoiceDetail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $address)
+    public function destroy(InvoiceDetail $invoiceDetail)
     {
         //
     }

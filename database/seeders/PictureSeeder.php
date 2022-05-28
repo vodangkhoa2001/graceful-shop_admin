@@ -14,7 +14,7 @@ class PictureSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=1; $i < 6; $i++) {
+        for ($i=1; $i < 11; $i++) {
             for ($j=1; $j < 4; $j++) { 
                 DB::table('pictures')->insert([
                     'productId'=>$i,

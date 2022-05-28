@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Transport;
-use App\Http\Requests\StoreTransportRequest;
-use App\Http\Requests\UpdateTransportRequest;
+use App\Models\Picture;
+use App\Http\Requests\StorePictureRequest;
+use App\Http\Requests\UpdatePictureRequest;
 
-class TransportController extends Controller
+class PictureController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class TransportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTransportRequest  $request
+     * @param  \App\Http\Requests\StorePictureRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTransportRequest $request)
+    public function store(StorePictureRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class TransportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Models\Picture  $picture
      * @return \Illuminate\Http\Response
      */
-    public function show(Transport $transport)
+    public function show(Picture $picture)
     {
         //
     }
@@ -53,10 +53,10 @@ class TransportController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Models\Picture  $picture
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transport $transport)
+    public function edit(Picture $picture)
     {
         //
     }
@@ -64,11 +64,11 @@ class TransportController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTransportRequest  $request
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Http\Requests\UpdatePictureRequest  $request
+     * @param  \App\Models\Picture  $picture
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTransportRequest $request, Transport $transport)
+    public function update(UpdatePictureRequest $request, Picture $picture)
     {
         //
     }
@@ -76,10 +76,10 @@ class TransportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transport  $transport
+     * @param  \App\Models\Picture  $picture
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transport $transport)
+    public function destroy(Picture $picture)
     {
         //
     }

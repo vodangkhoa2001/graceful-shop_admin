@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/home', function () {
     return view('home');
 })->name('home');
+
+
 Route::get('/users', function () {
     return view('component.users');
 })->name('users');
-Route::get('/products', function () {
-    return view('component.products');
-})->name('products');
+
+Route::prefix('products')->group(function(){
+    Route::get('/',[ProductController::class, 'index'])->name('products');
+});
+

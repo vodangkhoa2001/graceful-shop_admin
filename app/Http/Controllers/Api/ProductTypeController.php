@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Models\ProductType;
 use App\Http\Requests\StoreProductTypeRequest;

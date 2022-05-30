@@ -22,12 +22,16 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('address');
             $table->string('avatar');
-            $table->tinyInteger('role');//0.user, 1.admin, 2.staff
+            $table->unsignedBigInteger('role-id')->unsigned();//0.user, 1.admin, 2.staff
             $table->tinyInteger('status');//0.inactive, 1.active
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+
         });
+        // Schema::table('users', function($table) {
+        //     $table->foreign('role-id')->references('id')->on('roles');
+        // });
     }
 
     /**

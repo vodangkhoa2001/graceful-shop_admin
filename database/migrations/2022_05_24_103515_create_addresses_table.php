@@ -15,11 +15,13 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('userId');
+            $table->unsignedBigInteger('user-id');
             $table->string('address');
             $table->string('phoneNumber');
             $table->tinyInteger('isDefault');
             $table->timestamps();
+
+            // $table->foreign('user-id')->references('id')->on('users');
         });
     }
 

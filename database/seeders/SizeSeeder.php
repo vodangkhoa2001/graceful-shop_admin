@@ -17,20 +17,20 @@ class SizeSeeder extends Seeder
 
 
 
-            DB::tahle('sizes')->insert([
+            DB::table('sizes')->insert([
                 array(
                     'sizeName'=> "S",
-                    'productId'=>1,
+                    'product-id'=>1,
                     'status'=>1,
                 ),
                 array(
                     'sizeName'=> "M",
-                    'productId'=>1,
+                    'product-id'=>1,
                     'status'=>1,
                 ),
                 array(
                     'sizeName'=> "L",
-                    'productId'=>1,
+                    'product-id'=>1,
                     'status'=>1,
                 ),
 

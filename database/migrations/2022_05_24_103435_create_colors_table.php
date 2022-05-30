@@ -17,9 +17,11 @@ class CreateColorsTable extends Migration
             $table->id();
             $table->string('colorName');
             $table->string('colorCode');
-            $table->unsignedBigInteger('productId');
+            $table->unsignedBigInteger('product-id');
             $table->tinyInteger('status');
             $table->timestamps();
+
+            // $table->foreign('product-id')->references('id')->on('products');
         });
     }
 

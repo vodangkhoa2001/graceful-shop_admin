@@ -15,10 +15,12 @@ class CreatePicturesTable extends Migration
     {
         Schema::create('pictures', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('productId');
+            $table->unsignedBigInteger('product-id');
             $table->text('pictureValue');
             $table->tinyInteger('status');
             $table->timestamps();
+
+            // $table->foreign('product-id')->references('id')->on('products');
         });
     }
 

@@ -15,10 +15,10 @@ class PictureSeeder extends Seeder
     public function run()
     {
         for ($i=1; $i < 11; $i++) {
-            for ($j=1; $j < 4; $j++) { 
+            for ($j=1; $j < 4; $j++) {
                 DB::table('pictures')->insert([
                     'productId'=>$i,
-                    'pictureValue'=>'/img/products/'.$j.'.jpg',
+                    'pictureValue'=>'hinh-sp-'.$j.'.jpg',
                     'status'=>1
                 ]);
             }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
     @section('head')
+    <head>
 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,9 +19,9 @@
 
         <!-- Custom styles for this template-->
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
-        
-    @show
+
     </head>
+    @show
 
     <body id="page-top">
 
@@ -68,6 +68,7 @@
                             <a class="collapse-item" href="buttons.html">Buttons</a>
                             <a class="collapse-item" href="cards.html">Cards</a>
                             <a class="collapse-item" href="{{ route('users') }}">Users</a>
+                            <a class="collapse-item" href="{{ route('products') }}">Products</a>
                         </div>
                     </div>
                 </li>
@@ -396,6 +397,9 @@
             </div>
         </div>
     </div>
-    @yield('script')
+
+
     </body>
+
 </html>
+@yield('script')

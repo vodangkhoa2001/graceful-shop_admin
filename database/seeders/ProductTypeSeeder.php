@@ -14,12 +14,32 @@ class ProductTypeSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 5; $i++) {
-            DB::table('products')->insert([
-                'productTypeName'=>Str::random(20),
-                'categoryId'=>random_int(1,5),
+        DB::table('product_types')->insert([
+            array(
+                'productTypeName'=>'Áo thun',
+                'categorie-id'=>1,
                 'status'=>1
-            ]);
-        }
+            ),
+            array(
+                'productTypeName'=>'Áo khoác',
+                'categorie-id'=>1,
+                'status'=>1
+            ),
+            array(
+                'productTypeName'=>'Quần tây',
+                'categorie-id'=>2,
+                'status'=>1
+            ),
+            array(
+                'productTypeName'=>'Quần thun',
+                'categorie-id'=>2,
+                'status'=>1
+            ),
+            array(
+                'productTypeName'=>'Quần short',
+                'categorie-id'=>2,
+                'status'=>1
+            ),
+        ]);
     }
 }

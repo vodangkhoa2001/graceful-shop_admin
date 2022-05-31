@@ -19,19 +19,19 @@ class ColorSeeder extends Seeder
             array(
                 'colorName'=>"Đỏ",
                 'colorCode'=>"ff0000",
-                'productId'=>1,
+                'product-id'=>1,
                 'status'=>1
             ),
             array(
                 'colorName'=>"Trắng",
                 'colorCode'=>"ffffff",
-                'productId'=>1,
+                'product-id'=>1,
                 'status'=>1
             ),
             array(
                 'colorName'=>"Đen",
                 'colorCode'=>"000000",
-                'productId'=>1,
+                'product-id'=>1,
                 'status'=>1
             ),
         ]);

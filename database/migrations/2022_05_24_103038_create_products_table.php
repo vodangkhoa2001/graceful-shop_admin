@@ -21,9 +21,9 @@ class CreateProductsTable extends Migration
             $table->integer('price');
             $table->double('vat');
             $table->integer('discountPrice');
-            $table->unsignedBigInteger('productTypeId');
-            $table->string('productQRCode');
-            $table->unsignedBigInteger('brandId');
+            $table->unsignedBigInteger('productType-id');
+            $table->string('productBarCode');
+            $table->unsignedBigInteger('brand-id');
             $table->tinyInteger('popular');
             $table->integer('numLike');
             $table->integer('numRate');
@@ -31,6 +31,9 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
+
+            // $table->foreign('brand-id')->references('id')->on('brands');
+            // $table->foreign('productType-id')->references('id')->on('product_types');
         });
     }
 

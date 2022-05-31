@@ -14,27 +14,27 @@ class ColorSeeder extends Seeder
      */
     public function run()
     {
-
-        DB::table('colors')->insert([
+        for ($i=1; $i < 11; $i++) {
+            DB::table('colors')->insert([
             array(
-                'colorName'=>"Đỏ",
-                'colorCode'=>"ff0000",
-                'product-id'=>1,
+                'color_name'=>'Đỏ',
+                'picture'=> '1.jpg',
+                'product_id'=>$i,
                 'status'=>1
             ),
             array(
-                'colorName'=>"Trắng",
-                'colorCode'=>"ffffff",
-                'product-id'=>1,
+                'color_name'=>'Trắng',
+                'picture'=>'2.jpg',
+                'product_id'=>$i,
                 'status'=>1
             ),
-            array(
-                'colorName'=>"Đen",
-                'colorCode'=>"000000",
-                'product-id'=>1,
-                'status'=>1
-            ),
-        ]);
-
+            // array(
+            //     'color_name'=>'Đen',
+            //     'picture'=>'3.jpg',
+            //     'product_id'=>1,
+            //     'status'=>1
+            // ),
+            ]);
+        }       
     }
 }

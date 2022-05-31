@@ -1,86 +1,42 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Slide;
+use App\Models\SlideDetail;
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreSlideRequest;
 use App\Http\Requests\UpdateSlideRequest;
 
 class SlideController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    //DS slideshow
+    public function getAllSlideShow()
     {
-        //
+        $slides = Slide::select(['*', DB::raw('CONCAT("img/slideshows/",picture) AS picture')])
+        ->where('status', '=', 1)
+        ->orderBy('id')
+        ->get();
+
+        return response()->json(['status'=>0, 'data'=>$slides, 'error'=>'']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    //Slideshow chi tiết
+    public function getAllSlideShowDetail($id)
     {
-        //
-    }
+        $products = Product::with(['pictures'  => function($query) {
+            $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
+        }])
+        ->join('slide_details', 'slide_details.product_id', '=', 'products.id')
+        ->join('slides', 'slides.id', '=', 'slide_details.slide_id')
+        ->select('products.*')
+        ->where('slides.id', '=', $id)
+        ->where('products.status', '=', 1)
+        ->where('slides.status', '=', 1)
+        ->orderBy('products.id', 'DESC')
+        ->get();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreSlideRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreSlideRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Slide $slide)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Slide $slide)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateSlideRequest  $request
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateSlideRequest $request, Slide $slide)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Slide $slide)
-    {
-        //
+        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
     }
 }

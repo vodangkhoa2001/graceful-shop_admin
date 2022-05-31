@@ -14,7 +14,7 @@ class AddForeginKeyToSizesTable extends Migration
     public function up()
     {
         Schema::table('sizes', function (Blueprint $table) {
-            $table->foreign('product-id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

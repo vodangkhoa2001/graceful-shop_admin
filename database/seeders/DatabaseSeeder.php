@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             VoucherSeeder::class,
             UserSeeder::class,
             ProductSeeder::class,
+            SlideDetailSeeder::class,
             ColorSeeder::class,
             SizeSeeder::class,
             PictureSeeder::class,

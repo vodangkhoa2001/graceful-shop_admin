@@ -17,23 +17,28 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert([
             array(
-                'categoryName'=>"Áo",
-                'icon'=>"ao.sgv",
+                'category_name'=>'Áo',
+                'icon'=>'shirt.svg',
                 'status'=>1
             ),
             array(
-                'categoryName'=>"Quần",
-                'icon'=>"quan.sgv",
+                'category_name'=>'Quần',
+                'icon'=>'trousers.sgv',
                 'status'=>1
             ),
             array(
-                'categoryName'=>"Váy",
-                'icon'=>"vay.sgv",
+                'category_name'=>'Đầm',
+                'icon'=>'dress.sgv',
                 'status'=>1
             ),
             array(
-                'categoryName'=>"Giày",
-                'icon'=>"giay.sgv",
+                'category_name'=>'Váy',
+                'icon'=>'big_skirt.sgv',
+                'status'=>1
+            ),
+            array(
+                'category_name'=>'Giày',
+                'icon'=>'shoes.sgv',
                 'status'=>1
             ),
         ]);

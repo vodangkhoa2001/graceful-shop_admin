@@ -15,13 +15,13 @@ class CreateBrandsTable extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->string('brandName');
+            $table->string('brand_name');
             $table->string('company');
-            $table->string('companyCode');
-            $table->string('bankNum');
-            $table->string('bankName');
-            $table->string('bankAccountName');
-            $table->string('phoneNumber');
+            $table->string('company_code');
+            $table->string('bank_num');
+            $table->string('bank_name');
+            $table->string('bank_account_name');
+            $table->string('phone_number');
             $table->string('email');
             $table->tinyInteger('status');
             $table->timestamps();

@@ -16,9 +16,9 @@ class VoucherSeeder extends Seeder
     {
         DB::table('vouchers')->insert([
             array(
-                'voucherCode'=>'CHAOTHANG6',
+                'voucher_code'=>'CHAOTHANG6',
                 'description'=>'Áp dụng cho đơn hàng có giá trị từ 50.000 trở lên',
-                'discountPrice'=>20000,
+                'discount_price'=>20000,
                 'end_date'=>'14/06/2022',
                 'status'=>1,
             ),

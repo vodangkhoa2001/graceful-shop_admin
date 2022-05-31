@@ -14,8 +14,8 @@ class AddForeginKeyToSlideDetailsTable extends Migration
     public function up()
     {
         Schema::table('slide_details', function (Blueprint $table) {
-            $table->foreign('product-id')->references('id')->on('products');
-            $table->foreign('slide-id')->references('id')->on('slides');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('slide_id')->references('id')->on('slides');
         });
     }
 

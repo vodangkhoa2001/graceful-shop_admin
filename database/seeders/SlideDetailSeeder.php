@@ -14,25 +14,17 @@ class SlideDetailSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('slide_details')->insert([
-            array(
-                'slide-id'=>1,
-                'product-id'=>1,
-
-            ),
-            array(
-                'slide-id'=>1,
-                'product-id'=>2,
-
-            ),array(
-                'slide-id'=>1,
-                'product-id'=>3,
-
-            ),array(
-                'slide-id'=>2,
-                'product-id'=>1,
-
-            ),
-        ]);
+        for ($i=1; $i < 3; $i++) { 
+            for ($j=1; $j < 11 ; $j++) { 
+                DB::table('slide_details')->insert([
+                    array(
+                        'slide_id'=>$i,
+                        'product_id'=>$j,
+                    ),
+                ]);
+            }
+           
+        }
+        
     }
 }

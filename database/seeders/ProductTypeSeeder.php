@@ -16,28 +16,48 @@ class ProductTypeSeeder extends Seeder
     {
         DB::table('product_types')->insert([
             array(
-                'productTypeName'=>'Áo thun',
-                'categorie-id'=>1,
+                'product_type_name'=>'Áo thun',
+                'categorie_id'=>1,
                 'status'=>1
             ),
             array(
-                'productTypeName'=>'Áo khoác',
-                'categorie-id'=>1,
+                'product_type_name'=>'Áo khoác',
+                'categorie_id'=>1,
                 'status'=>1
             ),
             array(
-                'productTypeName'=>'Quần tây',
-                'categorie-id'=>2,
+                'product_type_name'=>'T-Shirt',
+                'categorie_id'=>1,
                 'status'=>1
             ),
             array(
-                'productTypeName'=>'Quần thun',
-                'categorie-id'=>2,
+                'product_type_name'=>'Quần tây',
+                'categorie_id'=>2,
                 'status'=>1
             ),
             array(
-                'productTypeName'=>'Quần short',
-                'categorie-id'=>2,
+                'product_type_name'=>'Quần thun',
+                'categorie_id'=>2,
+                'status'=>1
+            ),
+            array(
+                'product_type_name'=>'Quần short',
+                'categorie_id'=>2,
+                'status'=>1
+            ),
+            array(
+                'product_type_name'=>'Đầm tây',
+                'categorie_id'=>3,
+                'status'=>1
+            ),
+            array(
+                'product_type_name'=>'Đầm thun',
+                'categorie_id'=>3,
+                'status'=>1
+            ),
+            array(
+                'product_type_name'=>'Đầm short',
+                'categorie_id'=>3,
                 'status'=>1
             ),
         ]);

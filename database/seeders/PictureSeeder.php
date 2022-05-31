@@ -14,11 +14,11 @@ class PictureSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=1; $i < 7; $i++) {
+        for ($i=1; $i < 11; $i++) {
             for ($j=1; $j < 4; $j++) {
                 DB::table('pictures')->insert([
-                    'product-id'=>$i,
-                    'pictureValue'=>'hinh-sp-'.$j.'.jpg',
+                    'product_id'=>$i,
+                    'picture_value'=>random_int(1,3).'.jpg',
                     'status'=>1
                 ]);
             }

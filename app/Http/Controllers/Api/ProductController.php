@@ -1,92 +1,99 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
+use App\Models\Color;
+use App\Models\Size;
+use App\Models\ProductDetail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Http\Request as HttpRequest;
 
 class ProductController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(HttpRequest $request)
+{   
+    //DS sản phẩm mới
+    public function getAllNewProduct(HttpRequest $request)
     {
         $num = (int) $request->num;
-        $products = Product::with(['pictures'])->where('products.status', '=', 1)->orderBy('products.created_at', 'DESC')->paginate($num);
+
+        $products = Product::with(['pictures'  => function($query) {
+            $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
+        }])
+        ->where('products.status', '=', 1)
+        ->orderBy('products.id', 'DESC')
+        ->paginate($num);
+
         return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    //DS sản phẩm nổi bật
+    public function getAllPopularProduct(HttpRequest $request)
     {
-        //
+        $num = (int) $request->num;
+
+        $products = Product::with(['pictures'  => function($query) {
+            $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
+        }])
+        ->where('products.popular', '=', 1)
+        ->where('products.status', '=', 1)
+        ->orderBy('products.id', 'DESC')
+        ->paginate($num);
+        
+        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request)
+    //Chi tiết sản phẩm
+    public function getProductDetailById($id)
     {
-        //
+        $color = Color::select(['*', DB::raw('CONCAT("img/products/",picture) AS picture')])
+        ->where('status', '=', 1)->where('product_id', '=', $id)->get();
+
+        $size = Size::where('status', '=', 1)->where('product_id', '=', $id)->get();
+
+        $quantityOfType = ProductDetail::where('product_id', '=', $id)->get();
+
+        $productDetail = array('colors' => $color, 'sizes' => $size, 'quantityOfType' => $quantityOfType);
+
+        return response()->json(['status'=>0, 'data'=>$productDetail, 'error'=>'']);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    //DS sản phẩm theo loại
+    public function getProductByProductType(HttpRequest $request, $id)
     {
-        $product = new Product();
-        $product = Product::with(['pictures'])->where('products.status', '=', 1)->find($id);
-        return response()->json(['status'=>0, 'data'=>$product, 'error'=>'']);
+        $num = (int) $request->num;
+
+        $products = Product::with(['pictures'  => function($query) {
+            $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
+        }])
+        ->join('product_types', 'product_types.id', '=', 'products.product_type_id')
+        ->select('products.*')
+        ->where('product_types.id', '=', $id)
+        ->where('products.status', '=', 1)
+        ->where('product_types.status', '=', 1)
+        ->orderBy('products.id', 'DESC')
+        ->paginate($num);
+
+        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
+    //Tìm kiếm sản phẩm
+    public function searchProduct(HttpRequest $request, $key_search)
     {
-        //
-    }
+        $num = (int) $request->num;
+        
+        $products = Product::with(['pictures'  => function($query) {
+            $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
+        }])
+        ->join('product_types', 'product_types.id', '=', 'products.product_type_id')
+        ->join('categories', 'categories.id', '=', 'product_types.categorie_id')
+        ->select('products.*')
+        ->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
+        ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
+        ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%')    
+        ->where('products.status', '=', 1)
+        ->where('product_types.status', '=', 1)
+        ->where('categories.status', '=', 1)
+        ->orderBy('products.id', 'DESC')
+        ->paginate($num);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProductRequest $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-        //
+        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
     }
 }

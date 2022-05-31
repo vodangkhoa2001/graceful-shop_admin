@@ -17,23 +17,23 @@ class RoleSeeder extends Seeder
     {
         DB::table('roles')->insert([
             array(
-                'roleValue'=>0,
-                'roleName'=>'User',
+                'role_value'=>0,
+                'role_name'=>'User',
                 'status'=>1
             ),
             array(
-                'roleValue'=>1,
-                'roleName'=>'Admin',
+                'role_value'=>1,
+                'role_name'=>'Admin',
                 'status'=>1
             ),
             array(
-                'roleValue'=>2,
-                'roleName'=>'Quản lý kho',
+                'role_value'=>2,
+                'role_name'=>'Quản lý kho',
                 'status'=>1
             ),
             array(
-                'roleValue'=>3,
-                'roleName'=>'CSKH',
+                'role_value'=>3,
+                'role_name'=>'CSKH',
                 'status'=>1
             ),
         ]);

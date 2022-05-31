@@ -10,7 +10,6 @@ class Product extends Model
     use HasFactory;
     public function pictures()
     {
-        return $this->hasMany(Picture::class, 'productId', 'id')->where('pictures.status', '=', 1);;
+        return $this->hasMany(Picture::class, 'product_id', 'id')->where('pictures.status', '=', 1);
     }
-
 }

@@ -14,27 +14,25 @@ class SizeSeeder extends Seeder
      */
     public function run()
     {
-
-
-
+        for ($i=1; $i < 11; $i++) {
             DB::table('sizes')->insert([
                 array(
-                    'sizeName'=> "S",
-                    'product-id'=>1,
+                    'size_name'=> "S",
+                    'product_id'=>$i,
                     'status'=>1,
                 ),
                 array(
-                    'sizeName'=> "M",
-                    'product-id'=>1,
+                    'size_name'=> "M",
+                    'product_id'=>$i,
                     'status'=>1,
                 ),
                 array(
-                    'sizeName'=> "L",
-                    'product-id'=>1,
+                    'size_name'=> "L",
+                    'product_id'=>$i,
                     'status'=>1,
                 ),
 
             ]);
-
+        }          
     }
 }

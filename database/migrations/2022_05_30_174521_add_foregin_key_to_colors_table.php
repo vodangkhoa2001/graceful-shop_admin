@@ -14,7 +14,7 @@ class AddForeginKeyToColorsTable extends Migration
     public function up()
     {
         Schema::table('colors', function (Blueprint $table) {
-            $table->foreign('product-id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

@@ -14,9 +14,9 @@ class AddForeginKeyToProductDetailsTable extends Migration
     public function up()
     {
         Schema::table('product_details', function (Blueprint $table) {
-            $table->foreign('product-id')->references('id')->on('products');
-            $table->foreign('color-id')->references('id')->on('colors');
-            $table->foreign('size-id')->references('id')->on('sizes');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('color_id')->references('id')->on('colors');
+            $table->foreign('size_id')->references('id')->on('sizes');
         });
     }
 

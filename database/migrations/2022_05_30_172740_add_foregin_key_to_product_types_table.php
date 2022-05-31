@@ -14,7 +14,7 @@ class AddForeginKeyToProductTypesTable extends Migration
     public function up()
     {
         Schema::table('product_types', function (Blueprint $table) {
-         $table->foreign('categorie-id')->references('id')->on('categories');
+         $table->foreign('categorie_id')->references('id')->on('categories');
 
         });
     }

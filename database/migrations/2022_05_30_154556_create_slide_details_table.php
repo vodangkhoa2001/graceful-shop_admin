@@ -15,8 +15,8 @@ class CreateSlideDetailsTable extends Migration
     {
         Schema::create('slide_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('slide-id');
-            $table->unsignedBigInteger('product-id');
+            $table->unsignedBigInteger('slide_id');
+            $table->unsignedBigInteger('product_id');
             $table->timestamps();
 
             // $table->foreign('product-id')->references('id')->on('products');

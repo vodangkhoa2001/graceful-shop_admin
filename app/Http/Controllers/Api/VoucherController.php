@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Brand;
-use App\Http\Requests\StoreBrandRequest;
-use App\Http\Requests\UpdateBrandRequest;
+use App\Models\Voucher;
+use App\Http\Requests\StoreVoucherRequest;
+use App\Http\Requests\UpdateVoucherRequest;
 
-class BrandController extends Controller
+class VoucherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBrandRequest  $request
+     * @param  \App\Http\Requests\StoreVoucherRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBrandRequest $request)
+    public function store(StoreVoucherRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Brand  $brand
+     * @param  \App\Models\Voucher  $voucher
      * @return \Illuminate\Http\Response
      */
-    public function show(Brand $brand)
+    public function show(Voucher $voucher)
     {
         //
     }
@@ -53,10 +53,10 @@ class BrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Brand  $brand
+     * @param  \App\Models\Voucher  $voucher
      * @return \Illuminate\Http\Response
      */
-    public function edit(Brand $brand)
+    public function edit(Voucher $voucher)
     {
         //
     }
@@ -64,11 +64,11 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBrandRequest  $request
-     * @param  \App\Models\Brand  $brand
+     * @param  \App\Http\Requests\UpdateVoucherRequest  $request
+     * @param  \App\Models\Voucher  $voucher
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBrandRequest $request, Brand $brand)
+    public function update(UpdateVoucherRequest $request, Voucher $voucher)
     {
         //
     }
@@ -76,10 +76,10 @@ class BrandController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Brand  $brand
+     * @param  \App\Models\Voucher  $voucher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Brand $brand)
+    public function destroy(Voucher $voucher)
     {
         //
     }

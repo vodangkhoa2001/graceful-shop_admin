@@ -16,22 +16,22 @@ class AddressSeeder extends Seeder
     {
         DB::table('addresses')->insert([
             array(
-                'user-id'=>1,
+                'user_id'=>1,
                 'address'=>'Ho Chi Minh city',
-                'phoneNumber'=>'0'.random_int(100,999).random_int(100,999).random_int(100,999),
-                'isDefault'=>1
+                'phone_number'=>'0'.random_int(100,999).random_int(100,999).random_int(100,999),
+                'is_default'=>1
             ),
             array(
-                'user-id'=>1,
+                'user_id'=>1,
                 'address'=>'Ben Tre',
-                'phoneNumber'=>'0'.random_int(100,999).random_int(100,999).random_int(100,999),
-                'isDefault'=>0
+                'phone_number'=>'0'.random_int(100,999).random_int(100,999).random_int(100,999),
+                'is_default'=>0
             ),
             array(
-                'user-id'=>1,
+                'user_id'=>1,
                 'address'=>'Dong Nai',
-                'phoneNumber'=>'0'.random_int(100,999).random_int(100,999).random_int(100,999),
-                'isDefault'=>0
+                'phone_umber'=>'0'.random_int(100,999).random_int(100,999).random_int(100,999),
+                'is_default'=>0
             ),
         ]);
     }

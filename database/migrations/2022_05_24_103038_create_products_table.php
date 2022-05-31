@@ -15,25 +15,25 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('productName');
+            $table->string('product_name');
             $table->integer('stock');
-            $table->integer('importPrice');
+            $table->integer('import_price');
             $table->integer('price');
             $table->double('vat');
-            $table->integer('discountPrice');
-            $table->unsignedBigInteger('productType-id');
-            $table->string('productBarCode');
-            $table->unsignedBigInteger('brand-id');
+            $table->integer('discount_price');
+            $table->unsignedBigInteger('product_type_id');
+            $table->string('product_barcode');
+            $table->unsignedBigInteger('brand_id');
             $table->tinyInteger('popular');
-            $table->integer('numLike');
-            $table->integer('numRate');
+            $table->integer('num_like');
+            $table->integer('num_rate');
             $table->text('description', 64);
             $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
 
-            // $table->foreign('brand-id')->references('id')->on('brands');
-            // $table->foreign('productType-id')->references('id')->on('product_types');
+            // $table->foreign('brand_id')->references('id')->on('brands');
+            // $table->foreign('productType_id')->references('id')->on('product_types');
         });
     }
 

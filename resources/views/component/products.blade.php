@@ -8,9 +8,6 @@
 @endsection
 @section('content')
     <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
-                    {{-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p> --}}
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -39,10 +36,10 @@
                                         @foreach ($products as $key=>$item)
                                         <tr>
                                             <td>{{ $key+1 }}</td>
-                                            <td>{{ $item->productName }}</td>
-                                            <td>{{ $item->importPrice }}</td>
+                                            <td>{{ $item->product_name }}</td>
+                                            <td>{{ $item->import_price }}</td>
                                             <td>{{ $item->price }}</td>
-                                            <td>{{ $item->discountPrice }}</td>
+                                            <td>{{ $item->discount_price }}</td>
                                             <td>{{ $item->stock }}</td>
                                             <td>{{ $item->vat }}</td>
                                             <td><a href="#">Xem chi tiết</a> <br> <a href="#">Xóa</a></td>

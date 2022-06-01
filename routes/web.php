@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,15 +14,21 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::middleware('auth:api')->get('/user', function(Request $request) {
+    return $request->user();
+});
+Route::get('/login', function () {
+    return view('component.login');
+})->name('login');
 Route::get('/home', function () {
     return view('home');
 })->name('home');
 
+Route::post('/register', [UserController::class, 'register']);
 
-Route::get('/users', function () {
-    return view('component.users');
-})->name('users');
+Route::prefix('user')->group(function(){
+    Route::get('/', 'App\Http\Controllers\Admin\UserController@getUser')->name('list-user');
+});
 
 Route::prefix('products')->group(function(){
     Route::get('/',[ProductController::class, 'index'])->name('products');

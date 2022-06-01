@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api\ProductController;
@@ -19,7 +20,9 @@ use \App\Http\Controllers\Api\SlideController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+// Route::middleware('auth:api')->get('/user', function(Request $request) {
+//     return $request->user();
+// });
 //Product
 Route::post('/product-new-view', [ProductController::class, 'getAllNewProduct']);
 Route::post('/product-popular-view', [ProductController::class, 'getAllPopularProduct']);

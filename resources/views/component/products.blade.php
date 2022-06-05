@@ -13,7 +13,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
-                            <a href="#" target="_blank" rel="noopener noreferrer" style="float:right">Thêm mới</a>
+                            <a href="{{ route('get-AddProduct') }}" target="_blank" rel="noopener noreferrer" style="float:right">Thêm mới</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\LoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -14,23 +15,24 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('auth:api')->get('/user', function(Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function(Request $request) {
+//     return $request->user();
+// });
+Route::get('/login',[UserController::class,'getLogin'])->name('login');
+Route::post('/login',[UserController::class,'postLogin'])->name('postLogin');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/home', function() {
+        return view('home');
+    })->name('home');
+    Route::prefix('user')->group(function(){
+        Route::get('/', 'App\Http\Controllers\Admin\UserController@getUser')->name('list-user');
+    });
+
+    Route::prefix('products')->group(function(){
+        Route::get('/',[ProductController::class, 'index'])->name('products');
+    });
+    Route::get('/create-product',[ProductController::class, 'getCreate'])->name('get-AddProduct');
+    Route::post('/create-product',[ProductController::class, 'postAddProduct'])->name('post-AddProduct');
 });
-Route::get('/login', function () {
-    return view('component.login');
-})->name('login');
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
-
-Route::post('/register', [UserController::class, 'register']);
-
-Route::prefix('user')->group(function(){
-    Route::get('/', 'App\Http\Controllers\Admin\UserController@getUser')->name('list-user');
-});
-
-Route::prefix('products')->group(function(){
-    Route::get('/',[ProductController::class, 'index'])->name('products');
-});
-

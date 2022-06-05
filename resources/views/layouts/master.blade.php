@@ -9,17 +9,19 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
+
         <title>Graceful - @yield('title')</title>
 
         <!-- Custom fonts for this template-->
-        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+        <link rel="shortcut icon" href="../img/logo-web.png" type="image/x-icon">
     </head>
     @show
 
@@ -30,9 +32,9 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
+                        <img src="../img/logo-web.svg" alt="" width="60">
                     </div>
                     <div class="sidebar-brand-text mx-3">Graceful Admin </div>
                 </a>
@@ -56,6 +58,34 @@
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
+                        aria-expanded="true" aria-controls="product">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Sản phẩm</span>
+                    </a>
+                    <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Custom Components:</h6>
+                            <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
+                            <a class="collapse-item" href="{{ route('get-AddProduct') }}">Thêm sản phẩm mới</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#user"
+                        aria-expanded="true" aria-controls="user">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Người dùng</span>
+                    </a>
+                    <div id="user" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Custom Components:</h6>
+                            <a class="collapse-item" href="{{ route('list-user') }}">Danh sách người dùng</a>
+                        </div>
+                    </div>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
@@ -266,7 +296,7 @@
                                     </h6>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                            <img class="rounded-circle" src="../img/undraw_profile_1.svg"
                                                 alt="...">
                                             <div class="status-indicator bg-success"></div>
                                         </div>
@@ -278,7 +308,7 @@
                                     </a>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                            <img class="rounded-circle" src="../img/undraw_profile_2.svg"
                                                 alt="...">
                                             <div class="status-indicator"></div>
                                         </div>
@@ -290,7 +320,7 @@
                                     </a>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                            <img class="rounded-circle" src="../img/undraw_profile_3.svg"
                                                 alt="...">
                                             <div class="status-indicator bg-warning"></div>
                                         </div>
@@ -322,9 +352,9 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::User()->full_name }}</span>
                                     <img class="img-profile rounded-circle"
-                                        src="img/undraw_profile.svg">
+                                        src="../img/users/{{ Auth::User()->avatar }}">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

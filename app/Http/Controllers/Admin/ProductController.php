@@ -28,7 +28,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+    public function getCreate()
+    {
+        $title = 'Thêm sản phẩm mới';
+
+        return view('component.add-product', compact('title'));
+    }
+    public function postCreate()
     {
         //
     }

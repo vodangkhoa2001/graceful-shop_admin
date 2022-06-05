@@ -41,15 +41,18 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user">
+
+                                    <form class="user" action="{{ route('postLogin') }}" method="post">
+                                        @csrf
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="exampleInputEmail" aria-describedby="emailHelp" name="phone"
+                                                placeholder="Enter Phone number..." required>
+
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                            <input type="password" class="form-control form-control-user" name="password"
+                                                id="exampleInputPassword" placeholder="Password" required>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -58,9 +61,16 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <a href="{{route('home')}}" class="btn btn-primary btn-user btn-block">
+                                        @if (session('error'))
+                                                    <div class="alert alert-danger" role="alert">
+                                                            {{ session('error') }}
+                                                    </div>
+
+                                                @endif
+                                        <button class="btn btn-primary btn-user btn-block">
                                             Login
-                                        </a>
+                                        </button>
+
                                         <hr>
                                         <a href="{{route('home')}}" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google

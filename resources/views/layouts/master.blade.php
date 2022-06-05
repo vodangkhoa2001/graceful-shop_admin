@@ -2,7 +2,7 @@
 <html lang="en">
     @section('head')
     <head>
-
+        {{-- {!! Assets::renderHeader() !!} --}}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,14 +14,14 @@
 
         <!-- Custom fonts for this template-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-        <link rel="shortcut icon" href="../img/logo-web.png" type="image/x-icon">
+        <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+        <link rel="shortcut icon" href="{{ asset('assets/img/logo-web.png') }}" type="image/x-icon">
     </head>
     @show
 
@@ -34,7 +34,7 @@
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <img src="../img/logo-web.svg" alt="" width="60">
+                        <img src="{{ asset('assets/img/logo-web.svg') }}" alt="" width="60">
                     </div>
                     <div class="sidebar-brand-text mx-3">Graceful Admin </div>
                 </a>
@@ -296,7 +296,7 @@
                                     </h6>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="../img/undraw_profile_1.svg"
+                                            <img class="rounded-circle" src="{{ asset('assets/img/undraw_profile_1.svg') }}"
                                                 alt="...">
                                             <div class="status-indicator bg-success"></div>
                                         </div>
@@ -308,7 +308,7 @@
                                     </a>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="../img/undraw_profile_2.svg"
+                                            <img class="rounded-circle" src="{{ asset('assets/img/undraw_profile_2.svg') }}"
                                                 alt="...">
                                             <div class="status-indicator"></div>
                                         </div>
@@ -320,7 +320,7 @@
                                     </a>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="../img/undraw_profile_3.svg"
+                                            <img class="rounded-circle" src="{{ asset('assets/img/undraw_profile_3.svg') }}"
                                                 alt="...">
                                             <div class="status-indicator bg-warning"></div>
                                         </div>
@@ -354,7 +354,7 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::User()->full_name }}</span>
                                     <img class="img-profile rounded-circle"
-                                        src="../img/users/{{ Auth::User()->avatar }}">
+                                        src="{{ asset('assets/img/users') }}/{{ Auth::User()->avatar }}">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -392,6 +392,7 @@
 
                 <!-- Footer -->
                 <footer class="sticky-footer bg-white">
+                    {{-- {!! Assets::renderFooter() !!} --}}
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
                             <span>Copyright &copy; Your Website 2021</span>
@@ -432,4 +433,20 @@
     </body>
 
 </html>
-@yield('script')
+@section('script')
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+
+<!-- Page level plugins -->
+<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
+<script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+@show

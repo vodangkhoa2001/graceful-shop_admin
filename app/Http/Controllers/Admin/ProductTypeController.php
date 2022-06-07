@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+
 use App\Models\ProductType;
 use App\Http\Requests\StoreProductTypeRequest;
 use App\Http\Requests\UpdateProductTypeRequest;

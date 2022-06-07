@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('address')->nullable();;
             $table->string('avatar');
-            $table->unsignedBigInteger('role_id')->unsigned();//0.user, 1.admin, 2.staff
+            $table->unsignedBigInteger('role')->unsigned();//0.user, 1.admin, 2.staff
             $table->tinyInteger('status');//0.inactive, 1.active
             $table->rememberToken();
             $table->timestamps();

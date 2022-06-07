@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+
 use App\Models\Picture;
 use App\Http\Requests\StorePictureRequest;
 use App\Http\Requests\UpdatePictureRequest;

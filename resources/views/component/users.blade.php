@@ -38,7 +38,7 @@
                                                 <td>{{ $item->email }}</td>
                                                 <td>{{ $item->phone }}</td>
                                                 <td>{{ $item->address }}</td>
-                                                <td>{{ $item->role_id }}</td>
+                                                <td>{{ $item->role }}</td>
                                                 <td><a href="#">Xem chi tiết</a> <br> <a href="#">Xóa</a></td>
                                             </tr>
                                         @endforeach

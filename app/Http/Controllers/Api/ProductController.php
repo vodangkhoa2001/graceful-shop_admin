@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Color;
 use App\Models\Size;
@@ -25,7 +26,7 @@ class ProductController extends Controller
         ->orderBy('products.id', 'DESC')
         ->paginate($num);
 
-        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
     //DS sản phẩm nổi bật
     public function getAllPopularProduct(HttpRequest $request)
@@ -40,7 +41,7 @@ class ProductController extends Controller
         ->orderBy('products.id', 'DESC')
         ->paginate($num);
         
-        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
     //Chi tiết sản phẩm
     public function getProductDetailById($id)
@@ -54,7 +55,7 @@ class ProductController extends Controller
 
         $productDetail = array('colors' => $color, 'sizes' => $size, 'quantityOfType' => $quantityOfType);
 
-        return response()->json(['status'=>0, 'data'=>$productDetail, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$productDetail, 'message'=>'']);
     }
     //DS sản phẩm theo loại
     public function getProductByProductType(HttpRequest $request, $id)
@@ -72,7 +73,7 @@ class ProductController extends Controller
         ->orderBy('products.id', 'DESC')
         ->paginate($num);
 
-        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
     //Tìm kiếm sản phẩm
     public function searchProduct(HttpRequest $request, $key_search)
@@ -94,6 +95,6 @@ class ProductController extends Controller
         ->orderBy('products.id', 'DESC')
         ->paginate($num);
 
-        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
 }

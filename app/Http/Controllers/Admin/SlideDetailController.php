@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+
 use App\Models\SlideDetail;
 use App\Http\Requests\StoreSlideDetailRequest;
 use App\Http\Requests\UpdateSlideDetailRequest;

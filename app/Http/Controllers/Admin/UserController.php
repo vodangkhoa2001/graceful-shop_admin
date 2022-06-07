@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\Admin\Controller;
+use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -41,7 +41,7 @@ class UserController extends Controller
                 $taikhoan=Auth::User();
 
 
-                if(Auth::User()->role_id != 0)
+                if(Auth::User()->role != 0)
                 {
                     Session::flash('success', 'Đăng Nhập thành công');
                     return redirect()->route('home');
@@ -67,7 +67,7 @@ class UserController extends Controller
     //     $user->avatar = 'avatar_default.png';
     //     $user->full_name = $request->full_name;
     //     $user->api_token = Str::random(60);
-    //     $user->role_id=0;
+    //     $user->role=0;
     //     $user->status = 1;
     //     return response()->json(['mess','created user']);
     // }

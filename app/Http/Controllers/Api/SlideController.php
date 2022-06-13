@@ -29,6 +29,7 @@ class SlideController extends Controller
         $products = Product::with(['pictures'  => function($query) {
             $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
         }])
+        ->with(['likes'])
         ->join('slide_details', 'slide_details.product_id', '=', 'products.id')
         ->join('slides', 'slides.id', '=', 'slide_details.slide_id')
         ->select('products.*')

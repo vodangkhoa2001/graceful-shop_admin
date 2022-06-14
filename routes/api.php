@@ -29,6 +29,9 @@ Route::post('product-category-byid/{id}', [ProductController::class, 'getProduct
 Route::post('product-type-byid/{id}', [ProductController::class, 'getProductByProductType']);
 Route::post('product-search/{key_search}', [ProductController::class, 'searchProduct']);
 
+//Rate
+Route::post('rate-of-product', [ProductController::class, 'getAllRateOfProduct']);
+
 //Category
 Route::get('category', [CategoryController::class, 'getAllCategory']);
 
@@ -49,4 +52,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('product-like', [ProductController::class, 'getAllProductLike']);
     Route::post('change-info', [UserController::class, 'changeInfo']);
     Route::post('change-avatar', [UserController::class, 'changeAvatar']);
+    Route::post('rate-product', [ProductController::class, 'rateProduct']);
 });

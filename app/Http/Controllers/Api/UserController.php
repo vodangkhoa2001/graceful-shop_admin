@@ -136,29 +136,56 @@ class UserController extends Controller
     //Thay đổi thông tin người dùng 
     public function changeInfo(HttpRequest $request) 
     { 
+        DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [ 
                 'full_name' => 'required', 
                 'date_of_birth' => 'nullable|date',
                 'sex' => 'nullable|int',
                 'email' => 'nullable|email',
-                'address' => 'nullable|string'
+                'address' => 'nullable|string',
+                'avatar' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240'
             ]);            
             if ($validator->fails()) { 
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
             }      
 
             $user = Auth::user();
-            $user->update([
-                'full_name' => $request->full_name,
-                'date_of_birth' => $request->date_of_birth,
-                'sex' => $request->sex,
-                'email' => $request->email,
-                'address' => $request->address
-            ]);
-            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Cập nhật thông tin thành công!']); 
+            
+            if($request->hasFile('avatar')){
+                if($user->avatar != 'default_avatar.png'){
+                    //Xoá ảnh cũ
+                    unlink(public_path('/img/users/'.$user->avatar));
+                }               
+                $image= $request->file('avatar');
+                $namewithextension = $image->getClientOriginalName();
+                $fileName = explode('.', $namewithextension)[0];
+                $extension = $image->getClientOriginalExtension();
+                $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                $destinationPath = public_path('/img/users/');
+                $image->move($destinationPath,$fileNew);
+                $user->update([
+                    'full_name' => $request->full_name,
+                    'date_of_birth' => $request->date_of_birth,
+                    'sex' => $request->sex,
+                    'email' => $request->email,
+                    'address' => $request->address,
+                    'avatar' => $fileNew,
+                ]);
+            }else{
+                $user->update([
+                    'full_name' => $request->full_name,
+                    'date_of_birth' => $request->date_of_birth,
+                    'sex' => $request->sex,
+                    'email' => $request->email,
+                    'address' => $request->address,
+                ]);    
+            }
+            DB::commit();
+            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Cập nhật thông tin thành công!']);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     } 
@@ -178,6 +205,7 @@ class UserController extends Controller
             $user = Auth::user();
             if($request->hasFile('avatar')){
                 if($user->avatar != 'default_avatar.png'){
+                    //Xoá ảnh cũ
                     unlink(public_path('/img/users/'.$user->avatar));
                 }               
                 $image= $request->file('avatar');
@@ -195,6 +223,7 @@ class UserController extends Controller
             else{
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không tìm thấy ảnh']);
             }
+
         } catch (\Exception $e) {
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }

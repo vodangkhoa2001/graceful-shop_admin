@@ -24,9 +24,9 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('product_type_id');
             $table->string('product_barcode');
             $table->unsignedBigInteger('brand_id');
-            $table->tinyInteger('popular');
+            $table->integer('popular');
             $table->integer('num_like');
-            $table->integer('num_rate');
+            $table->double('num_rate');
             $table->text('description', 64);
             $table->tinyInteger('status');
             $table->timestamps();

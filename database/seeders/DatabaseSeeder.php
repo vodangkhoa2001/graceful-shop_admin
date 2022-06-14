@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             PictureSeeder::class,
             ProductDetailSeeder::class,
             LikeSeeder::class,
+            RateSeeder::class,
+            PictureRateSeeder::class,
         ]);
     }
 }

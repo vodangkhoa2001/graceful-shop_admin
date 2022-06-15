@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Slide;
 use App\Models\SlideDetail;
 use App\Models\Product;
@@ -19,7 +20,7 @@ class SlideController extends Controller
         ->orderBy('id')
         ->get();
 
-        return response()->json(['status'=>0, 'data'=>$slides, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$slides, 'message'=>'']);
     }
 
     //Slideshow chi tiết
@@ -28,6 +29,7 @@ class SlideController extends Controller
         $products = Product::with(['pictures'  => function($query) {
             $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
         }])
+        ->with(['likes'])
         ->join('slide_details', 'slide_details.product_id', '=', 'products.id')
         ->join('slides', 'slides.id', '=', 'slide_details.slide_id')
         ->select('products.*')
@@ -37,6 +39,6 @@ class SlideController extends Controller
         ->orderBy('products.id', 'DESC')
         ->get();
 
-        return response()->json(['status'=>0, 'data'=>$products, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
 }

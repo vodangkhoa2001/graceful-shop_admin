@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+
 use App\Models\Transport;
 use App\Http\Requests\StoreTransportRequest;
 use App\Http\Requests\UpdateTransportRequest;

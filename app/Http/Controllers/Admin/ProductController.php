@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;

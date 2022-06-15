@@ -23,22 +23,22 @@ class CategorySeeder extends Seeder
             ),
             array(
                 'category_name'=>'Quần',
-                'icon'=>'trousers.sgv',
+                'icon'=>'trousers.svg',
                 'status'=>1
             ),
             array(
                 'category_name'=>'Đầm',
-                'icon'=>'dress.sgv',
+                'icon'=>'dress.svg',
                 'status'=>1
             ),
             array(
                 'category_name'=>'Váy',
-                'icon'=>'big_skirt.sgv',
+                'icon'=>'big_skirt.svg',
                 'status'=>1
             ),
             array(
                 'category_name'=>'Giày',
-                'icon'=>'shoes.sgv',
+                'icon'=>'shoes.svg',
                 'status'=>1
             ),
         ]);

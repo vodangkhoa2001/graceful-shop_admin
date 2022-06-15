@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreCategoryRequest;
@@ -18,6 +19,6 @@ class CategoryController extends Controller
         ->orderBy('category_name')
         ->get();
         
-        return response()->json(['status'=>0, 'data'=>$categories, 'error'=>'']);
+        return response()->json(['status'=>0, 'data'=>$categories, 'message'=>'']);
     }
 }

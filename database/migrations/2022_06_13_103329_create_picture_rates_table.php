@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRoleIdToUsersTable extends Migration
+class CreatePictureRatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class AddRoleIdToUsersTable extends Migration
      */
     public function up()
     {
-        // Schema::table('users', function (Blueprint $table) {
-        //     $table->foreign('role')->references('id')->on('roles');
-        // });
+        Schema::create('picture_rates', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('rate_id');
+            $table->text('picture_value');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -25,8 +28,6 @@ class AddRoleIdToUsersTable extends Migration
      */
     public function down()
     {
-        // Schema::table('users', function (Blueprint $table) {
-        //     $table->dropForeign('users_role_foreign');
-        // });
+        Schema::dropIfExists('pictures');
     }
 }

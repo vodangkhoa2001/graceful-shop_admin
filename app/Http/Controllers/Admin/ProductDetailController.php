@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+
 use App\Models\ProductDetail;
 use App\Http\Requests\StoreProductDetailRequest;
 use App\Http\Requests\UpdateProductDetailRequest;

@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
                 'password'=>Hash::make('password'),
                 'address'=> Str::random(10).', '.Str::random(10),
                 'avatar'=>'default_avatar.png',
-                'role_id'=>random_int(1,4),
+                'role'=>random_int(0,3),
                 'status'=>1,
             ]);
         }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class VoucherSeeder extends Seeder
 {
@@ -16,10 +17,19 @@ class VoucherSeeder extends Seeder
     {
         DB::table('vouchers')->insert([
             array(
-                'voucher_code'=>'CHAOTHANG6',
-                'description'=>'Áp dụng cho đơn hàng có giá trị từ 50.000 trở lên',
+                'voucher_code'=>'02DATT2022',
+                'description'=>'Giảm 20000 cho đơn hàng có giá trị từ 150.000 trở lên',
+                'min_total_price'=> 150000,
                 'discount_price'=>20000,
-                'end_date'=>'14/06/2022',
+                'end_date'=>Carbon::create(2022, 06, 31, 0, 0, 0),
+                'status'=>1,
+            ),
+            array(
+                'voucher_code'=>'02DATT2022',
+                'description'=>'Giảm 49000 cho đơn hàng có giá trị từ 399.000 trở lên',
+                'min_total_price'=> 399000,
+                'discount_price'=>49000,
+                'end_date'=>Carbon::create(2022, 06, 31, 0, 0, 0),
                 'status'=>1,
             ),
         ]);

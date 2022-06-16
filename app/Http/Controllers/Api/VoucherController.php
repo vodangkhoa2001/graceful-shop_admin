@@ -4,84 +4,37 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Voucher;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreVoucherRequest;
 use App\Http\Requests\UpdateVoucherRequest;
+use Illuminate\Http\Request as HttpRequest;
+use Carbon\Carbon;
 
 class VoucherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    //Danh sách hoá đơn
+    public function getAllVoucher()
     {
-        //
-    }
+        try {        
+            $user = Auth::user();
+            
+            $vouchers = Voucher::select('*')
+            ->leftJoin('invoices', function($leftJoin)
+            {
+                $leftJoin->on('invoices.voucher_id', '=', 'vouchers.id')
+                         ->where('invoices.user_id', '=', $user->id);    
+            })
+           
+            ->where('invoices.id', '=', null)
+            // ->whereDate('vouchers.end_date', '=>', Carbon::create(2022, 06, 16, 0, 0, 0))
+            ->orderBy('vouchers.id', 'DESC')
+            ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreVoucherRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreVoucherRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Voucher $voucher)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Voucher $voucher)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateVoucherRequest  $request
-     * @param  \App\Models\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateVoucherRequest $request, Voucher $voucher)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Voucher $voucher)
-    {
-        //
+            return response()->json(['status'=>0, 'data'=>$vouchers, 'message'=>'']);
+        } catch (\Throwable $e) {
+            return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+        }
+        
     }
 }

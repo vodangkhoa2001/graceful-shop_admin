@@ -11,6 +11,8 @@ use App\Http\Requests\UpdateCartRequest;
 use Illuminate\Http\Request as HttpRequest;
 use Carbon\Carbon;
 use Validator;
+use File;
+use Hash;
 
 class CartController extends Controller
 {
@@ -22,7 +24,7 @@ class CartController extends Controller
 
             $products = Cart::with(['product'])
             ->with(['color' => function($query) {
-                $query->select(['*', DB::raw('CONCAT("img/products/",picture) AS picture')]);
+                $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture) AS picture')]);
             }])
             ->with(['size'])
             ->where('carts.user_id', '=', $user->id)
@@ -36,7 +38,7 @@ class CartController extends Controller
         
     }
 
-    //Cập nhật giỏ hàng
+    //Thêm sản phẩm vào giỏ hàng
     public function addCart(HttpRequest $request)
     {
         DB::beginTransaction();
@@ -67,6 +69,7 @@ class CartController extends Controller
                     'size_id'=> $request->size_id,
                     'user_id'=> $user->id,
                     'quantity'=> $request->quantity,
+                    'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now(),
                 ]);                
             }else{
@@ -126,6 +129,38 @@ class CartController extends Controller
                     $cart->delete();
                 }
             }
+            DB::commit();
+            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Cập nhật giỏ hàng thành công!']);
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+        }
+        
+    }
+
+    //Xoá giỏ hàng
+    public function deleteCart(HttpRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [ 
+                'cart_id' => 'required', 
+            ]);
+            if ($validator->fails()) { 
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
+            }
+        
+            $user = Auth::user();
+
+            foreach ($request->cart_id as $id){
+                $cart = Cart::where('id', '=', $id)
+                ->where('user_id', '=', $user->id)
+                ->first();
+                  
+                $cart->delete();
+            }        
+                
             DB::commit();
             return response()->json(['status'=>0, 'data'=>'', 'message'=>'Cập nhật giỏ hàng thành công!']);
 

@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Http\Request as HttpRequest;
-use Validator;
+use Illuminate\Http\Request as HttpRequest;use Validator;
+
 use File;
 
 class ProductController extends Controller
@@ -180,7 +180,9 @@ class ProductController extends Controller
     {
         $product_id = (int) $request->product_id;
 
-        $rates = Rate::with(['pictures_rate'])
+        $rates = Rate::with(['pictures_rate'=> function($query) {
+            $query->select(['*', DB::raw('CONCAT("img/rates/",picture_value) AS picture_value')]);
+        }])
         ->with(['user'  => function($query) {
             $query->select(['*', DB::raw('CONCAT("img/users/",avatar) AS avatar')]);
         }])

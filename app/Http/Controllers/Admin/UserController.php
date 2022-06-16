@@ -37,8 +37,8 @@ class UserController extends Controller
         if((Auth::attempt(['phone' => $request->phone, 'password' =>
             $request->password])))
             {
-                #chỗ này của user
-                $taikhoan=Auth::User();
+                
+                $account=Auth::User();
 
 
                 if(Auth::User()->role != 0)

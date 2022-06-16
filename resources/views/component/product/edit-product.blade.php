@@ -19,7 +19,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">{{$title}}</h6>
             </div>
             <div class="card-body">
-                <form action="{{route('post-AddProduct')}}" method="post">
+                <form action="{{route('post-editProduct',$product->id)}}" method="post">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -98,31 +98,19 @@
 </div>
 @endsection
 @section('script')
+
     <script type="text/javascript">
    function add_append() {
        var selector = document.getElementById("add_color_and_size");
        selector.append('<div class="form-inline">\n'+'
-                        <div class="form-group form-inline col-lg-6" id="add_color_and_size">\n'+'
+                        <div class="form-group form-inline col-lg-6" id="add_color_and_size_2">\n'+'
                         <label for="color">Màu</label>\n'+'
                         <input type="color" id="color" class="form-control col-md-1 mx-sm-3">\n'+'
                         </div>');
    }
 </script>
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @parent
+    <script>
 
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="js/demo/chart-area-demo.js"></script>
-<script src="js/demo/chart-pie-demo.js"></script>
-
+    </script>
 @endsection

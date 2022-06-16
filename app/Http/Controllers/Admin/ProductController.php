@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\Request as HttpRequest;
 
 class ProductController extends Controller
@@ -22,7 +23,7 @@ class ProductController extends Controller
         $title = 'Danh sách sản phẩm';
         $products = DB::select('SELECT * FROM products ORDER BY created_at DESC');
 
-        return view('component.products',compact('title','products'));
+        return view('component.product.products',compact('title','products'));
     }
 
     /**
@@ -35,7 +36,7 @@ class ProductController extends Controller
     {
         $title = 'Thêm sản phẩm mới';
 
-        return view('component.add-product', compact('title'));
+        return view('component.product.add-product', compact('title'));
     }
     public function postCreate()
     {
@@ -61,9 +62,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        $title = 'Chi tiết sản phẩm';
         $product = new Product();
         $product = Product::with(['pictures'])->where('products.status', '=', 1)->find($id);
-        return response()->json(['status'=>0, 'data'=>$product, 'error'=>'']);
+        return view('component.product.product-detail',compact('title','product'));
     }
 
     /**
@@ -72,11 +74,19 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $title = 'Chỉnh sửa sản phẩm';
+        $product = new Product();
+        $product = Product::with(['pictures'])->where('products.status', '=', 1)->find($id);
+        return view('component.product.edit-product',compact('title','product'));
     }
-
+    public function postEdit(Request $request)
+    {
+        
+        //
+        
+    }
     /**
      * Update the specified resource in storage.
      *

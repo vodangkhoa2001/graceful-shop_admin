@@ -122,7 +122,7 @@ class UserController extends Controller
     { 
         try {            
             // $user = Auth::user();
-            $user = User::select(['*', DB::raw('CONCAT("img/users/",avatar) AS avatar')])
+            $user = User::select(['*', DB::raw('CONCAT("assets/img/users/",avatar) AS avatar')])
             ->where('role', '=', 0)
             ->where('status', '=', 1)
             ->where('id', '=', Auth::user()->id)
@@ -155,14 +155,14 @@ class UserController extends Controller
             if($request->hasFile('avatar')){
                 if($user->avatar != 'default_avatar.png'){
                     //Xoá ảnh cũ
-                    unlink(public_path('/img/users/'.$user->avatar));
+                    unlink(public_path('/assets/img/users/'.$user->avatar));
                 }               
                 $image= $request->file('avatar');
                 $namewithextension = $image->getClientOriginalName();
                 $fileName = explode('.', $namewithextension)[0];
                 $extension = $image->getClientOriginalExtension();
                 $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-                $destinationPath = public_path('/img/users/');
+                $destinationPath = public_path('/assets/img/users/');
                 $image->move($destinationPath,$fileNew);
                 $user->update([
                     'full_name' => $request->full_name,
@@ -206,19 +206,19 @@ class UserController extends Controller
             if($request->hasFile('avatar')){
                 if($user->avatar != 'default_avatar.png'){
                     //Xoá ảnh cũ
-                    unlink(public_path('/img/users/'.$user->avatar));
+                    unlink(public_path('/assets/img/users/'.$user->avatar));
                 }               
                 $image= $request->file('avatar');
                 $namewithextension = $image->getClientOriginalName();
                 $fileName = explode('.', $namewithextension)[0];
                 $extension = $image->getClientOriginalExtension();
                 $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-                $destinationPath = public_path('/img/users/');
+                $destinationPath = public_path('/assets/img/users/');
                 $image->move($destinationPath,$fileNew);
                 $user->update([
                     'avatar' => $fileNew,
                 ]);
-                return response()->json(['status'=>0, 'data'=>'img/users/'.$fileNew, 'message'=>'Cập nhật thành công!']);
+                return response()->json(['status'=>0, 'data'=>'assets/img/users/'.$fileNew, 'message'=>'Cập nhật thành công!']);
             }
             else{
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không tìm thấy ảnh']);

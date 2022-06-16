@@ -7,6 +7,8 @@ use \App\Http\Controllers\Api\ProductController;
 use \App\Http\Controllers\Api\CategoryController;
 use \App\Http\Controllers\Api\SlideController;
 use \App\Http\Controllers\Api\CartController;
+use \App\Http\Controllers\Api\InvoiceController;
+use \App\Http\Controllers\Api\VoucherController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -58,4 +60,10 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('product-cart', [CartController::class, 'getAllCartProduct']);
     Route::post('add-cart', [CartController::class, 'addCart']);
     Route::post('update-cart', [CartController::class, 'updateCart']);
+    Route::delete('delete-cart', [CartController::class, 'deleteCart']);
+    Route::get('invoice-list', [InvoiceController::class, 'getAllInvoice']);
+    Route::get('invoice-detail/{id}', [InvoiceController::class, 'getInvoiceDetail']);
+    Route::post('add-invoice', [InvoiceController::class, 'addInvoice']);
+    Route::get('cancel-invoice/{id}', [InvoiceController::class, 'cancelInvoice']);
+    Route::get('voucher-list', [VoucherController::class, 'getAllVoucher']);
 });

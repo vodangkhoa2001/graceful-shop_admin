@@ -15,7 +15,7 @@ class SlideController extends Controller
     //DS slideshow
     public function getAllSlideShow()
     {
-        $slides = Slide::select(['*', DB::raw('CONCAT("img/slideshows/",picture) AS picture')])
+        $slides = Slide::select(['*', DB::raw('CONCAT("assets/img/slideshows/",picture) AS picture')])
         ->where('status', '=', 1)
         ->orderBy('id')
         ->get();
@@ -27,7 +27,7 @@ class SlideController extends Controller
     public function getAllSlideShowDetail($id)
     {
         $products = Product::with(['pictures'  => function($query) {
-            $query->select(['*', DB::raw('CONCAT("img/products/",picture_value) AS picture_value')]);
+            $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture_value) AS picture_value')]);
         }])
         ->with(['likes'])
         ->join('slide_details', 'slide_details.product_id', '=', 'products.id')

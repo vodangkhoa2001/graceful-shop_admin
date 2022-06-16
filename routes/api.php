@@ -6,6 +6,7 @@ use \App\Http\Controllers\Api\UserController;
 use \App\Http\Controllers\Api\ProductController;
 use \App\Http\Controllers\Api\CategoryController;
 use \App\Http\Controllers\Api\SlideController;
+use \App\Http\Controllers\Api\CartController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,12 +46,16 @@ Route::post('register', [UserController::class, 'register']);
 
 //Authorization
 Route::group(['middleware' => 'auth:sanctum'], function(){
-    Route::get('user-info', [UserController::class, 'info']);
     Route::delete('logout', [UserController::class, 'logout']);
+    Route::get('user-info', [UserController::class, 'info']);
     Route::post('change_pass', [UserController::class, 'changePass']);
-    Route::post('like', [ProductController::class, 'likeProduct']);
-    Route::get('product-like', [ProductController::class, 'getAllProductLike']);
     Route::post('change-info', [UserController::class, 'changeInfo']);
     Route::post('change-avatar', [UserController::class, 'changeAvatar']);
+    Route::post('like', [ProductController::class, 'likeProduct']);
+    Route::get('product-like', [ProductController::class, 'getAllProductLike']);
     Route::post('rate-product', [ProductController::class, 'rateProduct']);
+    Route::post('edit-rate-product', [ProductController::class, 'editRateProduct']);
+    Route::get('product-cart', [CartController::class, 'getAllCartProduct']);
+    Route::post('add-cart', [CartController::class, 'addCart']);
+    Route::post('update-cart', [CartController::class, 'updateCart']);
 });

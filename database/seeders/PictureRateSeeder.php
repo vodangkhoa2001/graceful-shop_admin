@@ -15,7 +15,7 @@ class PictureRateSeeder extends Seeder
     public function run()
     {
         for ($i=1; $i < 30; $i+=3) {
-            for ($j=1; $j < 3; $j++) {
+            for ($j=1; $j < 4; $j++) {
                 DB::table('picture_rates')->insert([
                     'rate_id'=>$i,
                     'picture_value'=>random_int(1,8).'.jpg',

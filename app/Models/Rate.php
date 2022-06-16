@@ -23,6 +23,6 @@ class Rate extends Model
 
     public function pictures_rate()
     {
-        return $this->hasMany(PictureRate::class, 'rate_id', 'rates.id');
+        return $this->hasMany(PictureRate::class, 'rate_id', 'id');
     }
 }

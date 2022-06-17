@@ -17,6 +17,8 @@ class CreateInvoiceDetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('color_id');
+            $table->unsignedBigInteger('size_id');
             $table->integer('quantity');
             $table->integer('price');
             $table->integer('total_price');

@@ -16,11 +16,11 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('voucher_id');
+            $table->unsignedBigInteger('voucher_id')->nullable();
             $table->integer('quantity');
-            $table->integer('ship_price');
+            $table->integer('ship_price')->nullable();
             $table->integer('until_price');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status');//0: Đã huỷ, 1:Chờ xác nhận, 2:Xác nhận, 3:Đang giao, 4:Đã giao
             $table->timestamps();
 
             // $table->foreign('user-id')->references('id')->on('users');

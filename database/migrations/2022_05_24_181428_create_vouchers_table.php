@@ -17,8 +17,9 @@ class CreateVouchersTable extends Migration
             $table->id();
             $table->string('voucher_code');
             $table->text('description',64);
+            $table->integer('min_total_price');
             $table->integer('discount_price');
-            $table->string('end_date');
+            $table->dateTime('end_date');
             $table->tinyInteger('status');
             $table->timestamps();
         });

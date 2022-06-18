@@ -18,23 +18,23 @@ class VoucherController extends Controller
     {
         try {        
             $user = Auth::user();
-            
-            $vouchers = Voucher::select('*')
-            ->leftJoin('invoices', function($leftJoin)
+
+            $vouchers = Voucher::select('vouchers.*')
+            ->leftJoin('invoices', function($query) use ($user)
             {
-                $leftJoin->on('invoices.voucher_id', '=', 'vouchers.id')
-                         ->where('invoices.user_id', '=', $user->id);    
-            })
-           
+                $query->on('invoices.voucher_id', '=', 'vouchers.id')
+                    ->where('invoices.user_id', '=', $user->id)    
+                    ->where('invoices.status', '<>', 0);
+            })           
             ->where('invoices.id', '=', null)
-            // ->whereDate('vouchers.end_date', '=>', Carbon::create(2022, 06, 16, 0, 0, 0))
+            ->where('vouchers.end_date', '>=',  Carbon::now()->toDateString())
+            ->where('vouchers.status', '=', 1)
             ->orderBy('vouchers.id', 'DESC')
             ->get();
 
             return response()->json(['status'=>0, 'data'=>$vouchers, 'message'=>'']);
         } catch (\Throwable $e) {
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
-        }
-        
+        }        
     }
 }

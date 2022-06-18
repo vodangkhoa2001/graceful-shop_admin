@@ -29,4 +29,12 @@ class InvoiceDetail extends Model
         ->where('products.status', '=', 1)
         ->orderBy('products.id', 'DESC');
     }
+    public function color()
+    {
+        return $this->hasOne(Color::class, 'id', 'color_id');
+    }
+    public function size()
+    {
+        return $this->hasOne(Size::class, 'id', 'size_id');
+    }
 }

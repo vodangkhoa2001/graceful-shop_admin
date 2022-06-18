@@ -37,6 +37,7 @@ class ProductController extends Controller
 
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
+    
     //DS sản phẩm nổi bật
     public function getAllPopularProduct(HttpRequest $request)
     {
@@ -53,6 +54,7 @@ class ProductController extends Controller
         
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
+    
     //Chi tiết sản phẩm
     public function getProductDetailById($id)
     {
@@ -67,6 +69,7 @@ class ProductController extends Controller
 
         return response()->json(['status'=>0, 'data'=>$productDetail, 'message'=>'']);
     }
+
     //DS sản phẩm theo tất cả loại trong danh mục
     public function getProductByProductCategory(HttpRequest $request, $id)
     {
@@ -88,6 +91,7 @@ class ProductController extends Controller
 
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
+
     //DS sản phẩm theo loại
     public function getProductByProductType(HttpRequest $request, $id)
     {
@@ -107,6 +111,7 @@ class ProductController extends Controller
 
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
+
     //Tìm kiếm sản phẩm
     public function searchProduct(HttpRequest $request, $key_search)
     {
@@ -130,6 +135,7 @@ class ProductController extends Controller
 
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
+
     //Yêu thích sản phẩm
     public function likeProduct(HttpRequest $request)
     {
@@ -161,6 +167,7 @@ class ProductController extends Controller
         }
         
     }
+
     //Danh sách sản phẩm yêu thích
     public function getAllProductLike()
     {
@@ -178,6 +185,7 @@ class ProductController extends Controller
         }
         
     }
+
     //Danh sách đánh giá
     public function getAllRateOfProduct(HttpRequest $request)
     {
@@ -195,6 +203,7 @@ class ProductController extends Controller
 
         return response()->json(['status'=>0, 'data'=>$rates, 'message'=>'']);
     }
+
     //Đánh giá sản phẩm
     public function rateProduct(HttpRequest $request)
     {
@@ -261,6 +270,7 @@ class ProductController extends Controller
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     }
+    
     //Chỉnh sửa đánh giá
     public function editRateProduct(HttpRequest $request)
     {

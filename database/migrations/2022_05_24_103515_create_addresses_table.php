@@ -18,7 +18,7 @@ class CreateAddressesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('address');
             $table->string('phone_number');
-            $table->tinyInteger('is_default');
+            $table->boolean('is_default')->nullable()->default(false);
             $table->timestamps();
 
             // $table->foreign('user-id')->references('id')->on('users');

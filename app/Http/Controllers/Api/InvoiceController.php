@@ -44,10 +44,18 @@ class InvoiceController extends Controller
         try {        
             $user = Auth::user();
 
-            $invoice_detail = Invoice::with(['invoice_detail'])
-            ->where('invoices.id', '=', $id)
+            $invoices = Invoice::where('invoices.status', '=', 1)
             ->where('invoices.user_id', '=', $user->id)
+            ->where('invoices.id', '=', $id)
             ->first();
+
+            $invoice_detail = InvoiceDetail::with(['product'])
+            ->with(['color' => function($query) {
+                $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture) AS picture')]);
+            }])
+            ->with(['size'])
+            ->where('invoice_details.invoice_id', '=', $invoices->id)
+            ->get();
 
             return response()->json(['status'=>0, 'data'=>$invoice_detail, 'message'=>'']);
         } catch (\Throwable $e) {
@@ -132,16 +140,22 @@ class InvoiceController extends Controller
     }
 
     //Huỷ đơn hàng
-    public function cancelInvoice($id)
+    public function cancelInvoice(HttpRequest $request)
     {
         DB::beginTransaction();
         try {
+            $validator = Validator::make($request->all(), [ 
+                'id' => 'required', 
+            ]);
+            if ($validator->fails()) { 
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
+            }
         
             $user = Auth::user();
 
-            $invoice = Invoice::where('invoices.id', '=', $id)
+            $invoice = Invoice::where('invoices.id', '=', $request->id)
             ->where('invoices.user_id', '=', $user->id)
-            ->frist();
+            ->first();
 
             if($invoice){
                 $invoice->update([

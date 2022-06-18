@@ -9,6 +9,7 @@ use \App\Http\Controllers\Api\SlideController;
 use \App\Http\Controllers\Api\CartController;
 use \App\Http\Controllers\Api\InvoiceController;
 use \App\Http\Controllers\Api\VoucherController;
+use \App\Http\Controllers\Api\AddressController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -64,6 +65,11 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('invoice-list', [InvoiceController::class, 'getAllInvoice']);
     Route::get('invoice-detail/{id}', [InvoiceController::class, 'getInvoiceDetail']);
     Route::post('add-invoice', [InvoiceController::class, 'addInvoice']);
-    Route::get('cancel-invoice/{id}', [InvoiceController::class, 'cancelInvoice']);
+    Route::get('cancel-invoice', [InvoiceController::class, 'cancelInvoice']);
     Route::get('voucher-list', [VoucherController::class, 'getAllVoucher']);
+    Route::get('address-list', [AddressController::class, 'getAllAddress']);
+    Route::post('add-address', [AddressController::class, 'addNewAddress']);
+    Route::post('edit-address', [AddressController::class, 'editAddress']);
+    Route::delete('delete-address', [AddressController::class, 'deleteAddress']);
+    Route::post('send-feedback', [UserController::class, 'sendFeedback']);
 });

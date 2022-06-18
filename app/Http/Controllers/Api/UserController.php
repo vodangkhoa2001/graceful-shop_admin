@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\Feedback;
 use Carbon\Carbon;
 use Validator;
 use File;
@@ -18,6 +19,7 @@ class UserController extends Controller
     //Đăng ký
     public function register(HttpRequest $request) 
     { 
+        DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [ 
                 'name' => 'required', 
@@ -25,14 +27,14 @@ class UserController extends Controller
                 'password' => 'required', 
             ]);
             if ($validator->fails()) { 
-                return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Cần điền đầy đủ thông tin!']);
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
             } 
             else{
                 $validator = Validator::make($request->all(), [ 
                     'phone' => 'unique:users',
                 ]);
                 if ($validator->fails()) { 
-                    return response()->json(['status'=>-2, 'data'=>'', 'message'=>'Số điện thoại đã được đăng ký!']);
+                    return response()->json(['status'=>-2, 'data'=>'', 'message'=>'Số điện thoại đã được đăng ký']);
                 } 
                 $user = User::create([
                     'full_name' => $request->name, 
@@ -42,12 +44,15 @@ class UserController extends Controller
                     'role' => 0,
                     'status' => true
                 ]); 
+                DB::commit();
                 return response()->json(['status'=>0, 'data'=>$user->id.'', 'message'=>'Đăng ký thành công!']);
             }
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     }
+
     //Đăng nhập
     public function login(HttpRequest $request)
     {        
@@ -57,7 +62,7 @@ class UserController extends Controller
                 'password' => 'required', 
             ]);
             if ($validator->fails()) { 
-                return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Cần điền đầy đủ thông tin đăng nhập!']);
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
             }
             if(Auth::attempt(['phone' => $request->phone, 'password' => $request->password])){ 
                 $user = Auth::user(); 
@@ -81,6 +86,7 @@ class UserController extends Controller
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     }
+
     //Đăng xuất
     public function logout()
     {
@@ -91,9 +97,11 @@ class UserController extends Controller
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     }
+
     //Đổi mật khẩu
     public function changePass(HttpRequest $request)
     {
+        DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [ 
                 'old_pass' => 'required', 
@@ -101,22 +109,25 @@ class UserController extends Controller
             ]);            
             $user = Auth::user();
             if ($validator->fails()) { 
-                return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Cần điền đầy đủ thông tin đăng nhập!']);
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
             }           
             if(Auth::guard('web')->attempt(['phone' => $user->phone, 'password' => $request->old_pass])){ 
                 
                 $user->update(['password' => Hash::make($request->new_pass)]);
                 Auth::user()->tokens()->delete();
+                DB::commit();
                 return response()->json(['status'=>0, 'data'=>'', 'message'=>'Đổi mật thành công!']); 
             } 
             else{ 
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Mật khẩu cũ không chính xác!']);
             }               
         } catch (\Throwable $e) {
+            DB::rollBack();
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
         
     }
+
     //Thông tin người dùng 
     public function info() 
     { 
@@ -193,6 +204,7 @@ class UserController extends Controller
     //Thay đổi ảnh đại diện
     public function changeAvatar(HttpRequest $request) 
     {
+        DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [ 
                 'avatar' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240'
@@ -218,13 +230,43 @@ class UserController extends Controller
                 $user->update([
                     'avatar' => $fileNew,
                 ]);
+                DB::commit();
                 return response()->json(['status'=>0, 'data'=>'assets/img/users/'.$fileNew, 'message'=>'Cập nhật thành công!']);
             }
             else{
+                DB::rollBack();
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không tìm thấy ảnh']);
             }
 
         } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+        }
+    }
+
+    //Gửi phản hồi
+    public function sendFeedback(HttpRequest $request)
+    {        
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [ 
+                'description' => 'required', 
+            ]);
+            if ($validator->fails()) { 
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
+            }
+
+            $user = Auth::user();
+
+            Feedback::create([
+                'user_id'=> $user->id,
+                'description'=> $request->description,
+            ]); 
+            DB::commit();
+            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Gửi phản hồi thành công!']);
+        
+        } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     }

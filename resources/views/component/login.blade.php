@@ -48,7 +48,7 @@
                                         @csrf
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp" name="phone"
+                                                id="exampleInputEmail" aria-describedby="emailHelp" name="phone" value="{{ old('phone') }}"
                                                 placeholder="Enter Phone number..." required>
 
                                         </div>

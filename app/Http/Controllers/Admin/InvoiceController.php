@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\Invoice;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 
@@ -17,7 +18,9 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Danh sách đơn hàng';
+        $invoices = DB::select('SELECT invoices.*,users.full_name,vouchers.voucher_code FROM invoices,users,vouchers WHERE invoices.user_id = users.id and invoices.voucher_id = vouchers.id ORDER BY invoices.id DESC');
+        return view('component.invoice.list-invoice',compact('invoices','title'));
     }
 
     /**
@@ -58,7 +61,13 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function edit(Invoice $invoice)
+    public function getEdit($id)
+    {
+        $invoice = Invoice::find($id);
+        return view('component.invoice.edit-invoice',compact('invoice'));
+    }
+
+    public function postEdit($id,Invoice $invoice)
     {
         //
     }

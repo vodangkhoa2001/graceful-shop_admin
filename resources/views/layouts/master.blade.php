@@ -20,6 +20,7 @@
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
+        <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
         <link rel="shortcut icon" href="{{ asset('assets/img/logo-web.png') }}" type="image/x-icon">
     </head>
@@ -61,12 +62,12 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
                         aria-expanded="true" aria-controls="product">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fa-solid fa-bag-shopping"></i>
                         <span>Sản phẩm</span>
                     </a>
                     <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
                             <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
                             <a class="collapse-item" href="{{ route('get-AddProduct') }}">Thêm sản phẩm mới</a>
                         </div>
@@ -75,29 +76,58 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#user"
                         aria-expanded="true" aria-controls="user">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fa-solid fa-user"></i>
                         <span>Người dùng</span>
                     </a>
                     <div id="user" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
                             <a class="collapse-item" href="{{ route('list-user') }}">Danh sách người dùng</a>
+                            <a class="collapse-item" href="{{ route('get-CreateAccount') }}">Thêm người dùng</a>
                         </div>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                        aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Components</span>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#category"
+                        aria-expanded="true" aria-controls="category">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Danh mục</span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="category" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
-                            <a class="collapse-item" href="buttons.html">Buttons</a>
-                            <a class="collapse-item" href="cards.html">Cards</a>
-                            <a class="collapse-item" href="{{ route('list-user') }}">Users</a>
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-category') }}">Danh sách danh mục</a>
+                            <a class="collapse-item" href="{{ route('get-CreateCategory') }}">Thêm danh mục</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_type"
+                        aria-expanded="true" aria-controls="product_type">
+                        <i class="fa-solid fa-box"></i>
+                        <span>Loại sản phẩm</span>
+                    </a>
+                    <div id="product_type" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-productType') }}">Danh sách loại</a>
+                            <a class="collapse-item" href="{{ route('get-CreateProductType') }}">Thêm loại</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#invoice"
+                        aria-expanded="true" aria-controls="invoice">
+                        <i class="fa-solid fa-box"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+                    <div id="invoice" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-invoice') }}">Danh sách đơn hàng</a>
                             <a class="collapse-item" href="{{ route('products') }}">Products</a>
                         </div>
                     </div>
@@ -354,7 +384,7 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::User()->full_name }}</span>
                                     <img class="img-profile rounded-circle"
-                                        src="{{ asset('assets/img/users') }}/{{ Auth::User()->avatar }}">
+                                        src="{{ asset('storage/users') }}/{{ Auth::User()->avatar }}">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -391,14 +421,7 @@
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    {{-- {!! Assets::renderFooter() !!} --}}
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
-                        </div>
-                    </div>
-                </footer>
+
                 <!-- End of Footer -->
 
             </div>
@@ -450,6 +473,8 @@
 <script src="{{ asset('assets/js/demo/chart-area-demo.js') }}"></script>
 <script src="{{ asset('assets/js/demo/chart-pie-demo.js') }}"></script>
 <script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script>
+<script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script>
 ClassicEditor
     .create( document.querySelector( '.editor' ), {

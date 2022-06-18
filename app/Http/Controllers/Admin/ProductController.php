@@ -29,7 +29,7 @@ class ProductController extends Controller
     {
         $title = 'Danh sách sản phẩm';
         $products = DB::select('SELECT * FROM products ORDER BY created_at DESC');
-
+        // $products = Product::paginate(5);
         return view('component.product.products',compact('title','products'));
     }
 
@@ -99,8 +99,9 @@ class ProductController extends Controller
     {
         $title = 'Chi tiết sản phẩm';
         $product = new Product();
-        $product = Product::with(['pictures'])->where('products.status', '=', 1)->find($id);
-        return view('component.product.product-detail',compact('title','product'));
+        $product = Product::with(['pictures'])->find($id);
+        $pics = DB::select("SELECT picture_value FROM pictures,products WHERE products.id = pictures.product_id and product_id ={$id}");
+        return view('component.product.product-detail',compact('title','product','pics'));
     }
 
     /**
@@ -111,7 +112,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $title = 'Chỉnh sửa sản phẩm mới';
+        $title = 'Chỉnh sửa sản phẩm';
         $product = new Product();
         $product = Product::with(['pictures'])->find($id);
         $category = Category::all();

@@ -4,7 +4,7 @@
 @endsection
 @section('head')
     @parent
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 @endsection
 @section('content')
     <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
@@ -13,7 +13,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
-                            <a href="{{ route('get-AddProduct') }}" target="_blank" rel="noopener noreferrer" style="float:right">Thêm mới</a>
+                            <a href="{{ route('get-AddProduct') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -26,7 +26,7 @@
                                             <th>Giá bán</th>
                                             <th>Giảm giá</th>
                                             <th width="15%">Số lượng đang bán</th>
-                                            <th width="2%">VAT(%)</th>
+                                            <th>Trạng thái</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -41,7 +41,11 @@
                                             <td>{{ $item->price }}</td>
                                             <td>{{ $item->discount_price }}</td>
                                             <td>{{ $item->stock }}</td>
-                                            <td>{{ $item->vat }}</td>
+                                            <td>@if ($item->status==0)
+                                                <span class="text-danger">Ngưng hoạt động</span>
+                                                @else
+                                                <span class="text-success">Hoạt động</span>
+                                            @endif</td>
                                             <td><a href="{{ route('get-product',$item->id) }}">Xem chi tiết</a> <br> <a href="#">Xóa</a></td>
                                         </tr>
 
@@ -56,6 +60,7 @@
                             </div>
                         </div>
                     </div>
+                    {{-- {{ $products->appends(request()->all())->links("pagination::bootstrap-4") }} --}}
 
 @endsection
 @section('script')
@@ -63,8 +68,8 @@
    @parent
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    {{-- <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script> --}}
 
 
 

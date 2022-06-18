@@ -4,7 +4,7 @@
 @endsection
 @section('head')
     @parent
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
     <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
@@ -21,30 +21,31 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
-                                            <th>Họ và tên</th>
-                                            <th>Email</th>
-                                            <th>Số điện thoại</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Role</th>
+                                            <th>Tên loại</th>
+                                            <th>Tên danh mục</th>
+                                            <th>Trạng thái</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (!empty($users))
-                                        @foreach ($users as $key=>$item)
+                                        @if (!empty($product_type))
+                                        @foreach ($product_type as $key=>$item)
+
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ $item->full_name }}</td>
-                                                <td>{{ $item->email }}</td>
-                                                <td>{{ $item->phone }}</td>
-                                                <td>{{ $item->address }}</td>
-                                                <td>{{ $item->role }}</td>
-                                                <td><a href="#">Xem chi tiết</a> <br> <a href="#">Xóa</a></td>
+                                                <td>{{ $item->product_type_name }}</td>
+                                                <td>{{ $item->category_name }}</td>
+                                                <td>@if ($item->status==0)
+                                                    <span class="text-danger">Ngưng hoạt động</span>
+                                                @else
+                                                    <span class="text-success">Hoạt động</span>
+                                                @endif</td>
+                                                <td><a href="{{ route('get-EditProductType',$item->id) }}">Sửa</a> <br> <a href="#">Xóa</a></td>
                                             </tr>
                                         @endforeach
                                         @else
                                         <tr>
-                                            <td colspan="7">Không có người dùng nào</td>
+                                            <td colspan="5">Không có loại sản phẩm nào</td>
                                         </tr>
                                         @endif
 
@@ -60,6 +61,5 @@
 
     @parent
 
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
 @endsection

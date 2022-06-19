@@ -82,6 +82,7 @@ class InvoiceController extends Controller
 
             $invoice = Invoice::create([
                 'user_id'=> $user->id,
+                'invoice_code'=>Str::random(10),
                 'voucher_id'=> $request->voucher_id,
                 'quantity'=> 0,
                 'ship_price'=> $request->ship_price,

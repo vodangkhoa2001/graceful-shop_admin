@@ -37,6 +37,7 @@ class AddressController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [ 
+                'name' => 'required', 
                 'address' => 'required', 
                 'phone_number' => 'required', 
                 'is_default' => 'nullable',
@@ -62,6 +63,7 @@ class AddressController extends Controller
 
             Address::insert([
                 'user_id'=> $user->id,
+                'name'=> $request->name,
                 'address'=> $request->address,
                 'phone_number'=> $request->phone_number,
                 'is_default'=> $request->is_default,
@@ -85,6 +87,7 @@ class AddressController extends Controller
         try {
             $validator = Validator::make($request->all(), [ 
                 'id' => 'required',
+                'name' => 'required', 
                 'address' => 'required', 
                 'phone_number' => 'required', 
                 'is_default' => 'nullable',
@@ -117,7 +120,7 @@ class AddressController extends Controller
                 }
 
                 $address->update([
-                    'user_id'=> $user->id,
+                    'name'=> $request->name,
                     'address'=> $request->address,
                     'phone_number'=> $request->phone_number,
                     'is_default'=> $request->is_default,

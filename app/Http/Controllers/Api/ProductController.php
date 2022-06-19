@@ -10,10 +10,12 @@ use App\Models\Color;
 use App\Models\Size;
 use App\Models\ProductDetail;
 use App\Models\PictureRate;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+
 use Illuminate\Http\Request as HttpRequest;
 use Carbon\Carbon;
 use Validator;
@@ -213,6 +215,7 @@ class ProductController extends Controller
                 'product_id' => 'required', 
                 'num_rate' => 'required',
                 'description' => 'required',
+                'images' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240'
             ]);
 
             if ($validator->fails()) { 
@@ -245,12 +248,13 @@ class ProductController extends Controller
             $product->update([
                 'num_rate' => $num_rate,
             ]);
-
+             
             if($request->hasFile('images')){
-                $images = $request->file('images');
+                $images = $request->file('images');      
+
                 foreach ($images as $image){
                     $picture_rate = new PictureRate;
-
+                
                     $namewithextension = $image->getClientOriginalName();
                     $fileName = explode('.', $namewithextension)[0];
                     $extension = $image->getClientOriginalExtension();
@@ -261,7 +265,7 @@ class ProductController extends Controller
                     $picture_rate->rate_id = $rate->id;
                     $picture_rate->picture_value = $fileNew;
                     $picture_rate->save();
-                }
+                }    
             } 
             DB::commit();
             return response()->json(['status'=>0, 'data'=>'', 'message'=>'Đánh giá thành công!']); 
@@ -281,6 +285,7 @@ class ProductController extends Controller
                 'product_id' => 'required', 
                 'num_rate' => 'required',
                 'description' => 'required',
+                'images' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240'
             ]);
 
             if ($validator->fails()) { 

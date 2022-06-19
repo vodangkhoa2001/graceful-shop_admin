@@ -16,6 +16,7 @@ class Invoice extends Model
         'quantity',
         'ship_price',
         'until_price',
+        'name',
         'phone',
         'address',
         'status',

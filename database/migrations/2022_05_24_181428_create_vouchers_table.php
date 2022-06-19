@@ -19,6 +19,7 @@ class CreateVouchersTable extends Migration
             $table->text('description',64);
             $table->integer('min_total_price');
             $table->integer('discount_price');
+            $table->date('start_date');
             $table->date('end_date');
             $table->tinyInteger('status');
             $table->timestamps();

@@ -11,10 +11,14 @@ class Invoice extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'invoice_code',
         'voucher_id',
         'quantity',
         'ship_price',
         'until_price',
+        'name',
+        'phone',
+        'address',
         'status',
     ];
     public function invoice_detail()

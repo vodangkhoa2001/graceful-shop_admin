@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\InvoiceDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use Illuminate\Http\Request as HttpRequest;
@@ -26,7 +27,8 @@ class InvoiceController extends Controller
         try {        
             $user = Auth::user();
 
-            $invoices = Invoice::where('invoices.status', '=', 1)
+            $invoices = Invoice::with(['voucher'])
+            // ->where('invoices.status', '=', 1)
             ->where('invoices.user_id', '=', $user->id)
             ->orderBy('invoices.id', 'DESC')
             ->get();
@@ -73,21 +75,29 @@ class InvoiceController extends Controller
                 'cart_id' => 'required', 
                 'voucher_id' => 'nullable|int',
                 'ship_price' => 'nullable|int',
+                'name' => 'required', 
+                'phone' => 'required', 
+                'address' => 'required', 
             ]);
             if ($validator->fails()) { 
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
             }
-        
+           
             $user = Auth::user();
-
+         
             $invoice = Invoice::create([
                 'user_id'=> $user->id,
                 'invoice_code'=>Str::random(10),
                 'voucher_id'=> $request->voucher_id,
                 'quantity'=> 0,
                 'ship_price'=> $request->ship_price,
-                'until_price'=> 0 - $request->ship_price,
+                'until_price'=> 0 + $request->ship_price,
+                'name'=> $request->name,
+                'phone'=> $request->phone,
+                'address'=> $request->address,
                 'status'=> 1,
+                'canceler_id' => null,
+                'reason' => null,
             ]); 
 
             foreach ($request->cart_id as $id){
@@ -147,6 +157,7 @@ class InvoiceController extends Controller
         try {
             $validator = Validator::make($request->all(), [ 
                 'id' => 'required', 
+                'reason' => 'required'
             ]);
             if ($validator->fails()) { 
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
@@ -161,6 +172,8 @@ class InvoiceController extends Controller
             if($invoice){
                 $invoice->update([
                     'status'=> 0,
+                    'canceler_id'=> $user->id,
+                    'reason'=> $request->reason,
                 ]); 
                 DB::commit();
                 return response()->json(['status'=>0, 'data'=>'', 'message'=>'Huỷ đơn hàng thành công!']);

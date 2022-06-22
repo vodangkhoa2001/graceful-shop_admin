@@ -20,9 +20,15 @@ class Invoice extends Model
         'phone',
         'address',
         'status',
+        'canceler_id',
+        'reason',
     ];
     public function invoice_detail()
     {
         return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'id')->with(['product']);
+    }
+    public function voucher()
+    {
+        return $this->hasOne(Voucher::class, 'id', 'voucher_id');
     }
 }

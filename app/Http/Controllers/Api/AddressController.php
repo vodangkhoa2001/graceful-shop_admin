@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Address;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\UpdateAddressRequest;
 use Illuminate\Http\Request as HttpRequest;
@@ -21,7 +22,7 @@ class AddressController extends Controller
            $user = Auth::user();
 
            $addresses = Address::where('addresses.user_id', '=', $user->id)
-           ->orderBy('addresses.updated_at', 'DESC')
+        //    ->orderBy('addresses.updated_at', 'DESC')
            ->get();
 
            return response()->json(['status'=>0, 'data'=>$addresses, 'message'=>'']);

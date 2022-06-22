@@ -118,22 +118,113 @@ class ProductController extends Controller
     public function searchProduct(HttpRequest $request, $key_search)
     {
         $num = (int) $request->num;
-        
-        $products = Product::with(['pictures'  => function($query) {
-            $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture_value) AS picture_value')]);
-        }])
-        ->with(['likes'])
-        ->join('product_types', 'product_types.id', '=', 'products.product_type_id')
+
+        $validator = Validator::make($request->all(), [ 
+            'product_type_id' => 'nullable', 
+            'from_price' => 'nullable',
+            'to_price' => 'nullable',
+        ]);
+            // dd($request->to_price);
+
+        if($request->product_type_id && $request->from_price > -1 && $request->to_price > 0){
+            $products = Product::with(['pictures'  => function($query) {
+                $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture_value) AS picture_value')]);
+            }])
+            ->with(['likes'])
+            ->join('product_types', 'product_types.id', '=', 'products.product_type_id')
+            ->join('categories', 'categories.id', '=', 'product_types.categorie_id')
+            ->select('products.*')
+            ->where(function ($query) use ($key_search) {
+                $query->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
+            })
+            ->Where('products.product_type_id', '=', (int) $request->product_type_id)   
+            ->whereBetween('products.price', [$request->from_price, $request->to_price])  
+            ->where('products.status', '=', 1)
+            ->where('product_types.status', '=', 1)
+            ->where('categories.status', '=', 1)
+            ->orderBy('products.id', 'DESC')
+            ->paginate($num);
+        }else if($request->product_type_id){
+            $products = Product::with(['pictures'  => function($query) {
+                $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture_value) AS picture_value')]);
+            }])
+            ->with(['likes'])
+            ->join('product_types', 'product_types.id', '=', 'products.product_type_id')
+            ->join('categories', 'categories.id', '=', 'product_types.categorie_id')
+            ->select('products.*')
+            ->where(function ($query) use ($key_search) {
+                $query->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
+            })
+            ->Where('products.product_type_id', '=', (int) $request->product_type_id)      
+            ->where('products.status', '=', 1)
+            ->where('product_types.status', '=', 1)
+            ->where('categories.status', '=', 1)
+            ->orderBy('products.id', 'DESC')
+            ->paginate($num);
+        }else if($request->from_price > -1 && $request->to_price > 0){
+            $products = Product::with(['pictures'  => function($query) {
+                $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture_value) AS picture_value')]);
+            }])
+            ->with(['likes'])
+            ->join('product_types', 'product_types.id', '=', 'products.product_type_id')
+            ->join('categories', 'categories.id', '=', 'product_types.categorie_id')
+            ->select('products.*')
+            ->where(function ($query) use ($key_search) {
+                $query->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
+            })
+            ->whereBetween('products.price', [$request->from_price, $request->to_price])  
+            ->where('products.status', '=', 1)
+            ->where('product_types.status', '=', 1)
+            ->where('categories.status', '=', 1)
+            ->orderBy('products.id', 'DESC')
+            ->paginate($num);
+        }
+        else{
+            $products = Product::with(['pictures'  => function($query) {
+                $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture_value) AS picture_value')]);
+            }])
+            ->with(['likes'])
+            ->join('product_types', 'product_types.id', '=', 'products.product_type_id')
+            ->join('categories', 'categories.id', '=', 'product_types.categorie_id')
+            ->select('products.*')
+            ->where(function ($query) use ($key_search) {
+                $query->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
+                    ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
+            })      
+            ->where('products.status', '=', 1)
+            ->where('product_types.status', '=', 1)
+            ->where('categories.status', '=', 1)
+            ->orderBy('products.id', 'DESC')
+            ->paginate($num);
+        }
+
+        return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
+    }
+
+    //Tìm kiếm loại phẩm
+    public function searchProductType(HttpRequest $request, $key_search)
+    {
+        $products = Product::join('product_types', 'product_types.id', '=', 'products.product_type_id')
         ->join('categories', 'categories.id', '=', 'product_types.categorie_id')
-        ->select('products.*')
-        ->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
-        ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
-        ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%')    
+        ->select('product_types.*')
+        ->where(function ($query) use ($key_search) {
+            $query->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
+                ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
+                ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
+        })      
         ->where('products.status', '=', 1)
         ->where('product_types.status', '=', 1)
         ->where('categories.status', '=', 1)
         ->orderBy('products.id', 'DESC')
-        ->paginate($num);
+        ->distinct()
+        ->get();
 
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }

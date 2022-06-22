@@ -33,6 +33,7 @@ Route::get('product-byid/{id}', [ProductController::class, 'getProductDetailById
 Route::post('product-category-byid/{id}', [ProductController::class, 'getProductByProductCategory']);
 Route::post('product-type-byid/{id}', [ProductController::class, 'getProductByProductType']);
 Route::post('product-search/{key_search}', [ProductController::class, 'searchProduct']);
+Route::get('product-type-search/{key_search}', [ProductController::class, 'searchProductType']);
 
 //Rate
 Route::post('rate-of-product', [RateController::class, 'getAllRateOfProduct']);

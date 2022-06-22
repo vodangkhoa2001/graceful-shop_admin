@@ -21,7 +21,7 @@ class ProductTypeController extends Controller
     public function index()
     {
         $title = 'Danh sách loại sản phẩm';
-        $product_type = DB::select('SELECT product_types.*,categories.category_name FROM product_types,categories WHERE product_types.categorie_id = categories.id ORDER BY product_types.id DESC');
+        $product_type = DB::select('SELECT product_types.*,categories.category_name FROM product_types,categories WHERE product_types.categorie_id = categories.id ORDER BY product_types.categorie_id DESC');
         return view('component.product_type.list-product-type',compact('title','product_type'));
     }
 
@@ -90,7 +90,7 @@ class ProductTypeController extends Controller
         $product_type->status = $request->status;
 
         $success = $product_type->update();
-        return view('component.product_type.edit-product-type',compact('success')); 
+        return view('component.product_type.edit-product-type',compact('success'));
     }
     /**
      * Update the specified resource in storage.

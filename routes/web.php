@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\ProductController;
@@ -67,4 +68,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/edit/{id}',[InvoiceController::class,'postEdit'])->name('post-EditInvoice');
     });
 
+    Route::prefix('brands')->group(function () {
+        Route::get('/',[BrandController::class, 'index'])->name('list-brand');
+        Route::get('/{id}/detail',[BrandController::class, 'show'])->name('detail-brand');
+        Route::get('/create',[BrandController::class,'getCreate'])->name('get-CreateBrand');
+        Route::post('/create',[BrandController::class,'postCreate'])->name('post-CreateBrand');
+        Route::get('/edit/{id}',[BrandController::class,'getEdit'])->name('get-EditBrand');
+        Route::post('/edit/{id}',[BrandController::class,'postEdit'])->name('post-EditBrand');
+        // Route::get('/{id}/delete',[BrandController::class,'destroy'])->name('delete-brand');
+    });
 });

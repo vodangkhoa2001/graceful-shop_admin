@@ -16,6 +16,7 @@
                             <a href="{{ route('get-AddProduct') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
                         </div>
                         <div class="card-body">
+
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -68,8 +69,8 @@
    @parent
 
     <!-- Page level plugins -->
-    {{-- <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script> --}}
+    {{-- <script src="{{ asset('//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js') }}"></script> --}}
+   
 
 
 

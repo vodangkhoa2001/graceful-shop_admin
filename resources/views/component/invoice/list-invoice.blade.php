@@ -13,7 +13,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
-                            {{-- <a href="{{ route('get-AddProduct') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a> --}}
+                            
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -56,7 +56,7 @@
                                         @endforeach
                                         @else
                                         <tr>
-                                            <td colspan="8">Không có đơn hàng nào</td>
+                                            <td colspan="7">Không có đơn hàng nào</td>
                                         </tr>
                                         @endif
                                     </tbody>

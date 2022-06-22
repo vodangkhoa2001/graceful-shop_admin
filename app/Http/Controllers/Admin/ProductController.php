@@ -12,6 +12,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Picture;
+use App\Models\ProductDetail;
 use App\Models\ProductType;
 use App\Models\Size;
 use Carbon\Carbon;
@@ -63,7 +64,12 @@ class ProductController extends Controller
     {
         $colors = new Color();
         $sizes = new Size();
+        $sizes->size_name = $request->size_name;
+        $sizes->product_id = $request->id;
         $pic = new Picture();
+        $product_detail = new ProductDetail();
+        $product_detail->color_id = $request->color;
+
         $product = new Product();
         $product->product_barcode = $request->product_code;
         $product->product_name = $request->product_name;

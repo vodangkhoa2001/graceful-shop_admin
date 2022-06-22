@@ -25,6 +25,8 @@ class CreateInvoicesTable extends Migration
             $table->string('phone');
             $table->string('address');
             $table->tinyInteger('status');//0: Đã huỷ, 1:Chờ xác nhận, 2:Xác nhận, 3:Đang giao, 4:Đã giao
+            $table->unsignedBigInteger('canceler_id')->nullable();//id của người huỷ đơn hàng
+            $table->string('reason')->nullable();//Lý do huỷ đơn hàng
             $table->timestamps();
 
             // $table->foreign('user-id')->references('id')->on('users');

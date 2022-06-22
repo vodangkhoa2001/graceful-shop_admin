@@ -10,6 +10,7 @@ use \App\Http\Controllers\Api\CartController;
 use \App\Http\Controllers\Api\InvoiceController;
 use \App\Http\Controllers\Api\VoucherController;
 use \App\Http\Controllers\Api\AddressController;
+use \App\Http\Controllers\Api\RateController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,9 +33,10 @@ Route::get('product-byid/{id}', [ProductController::class, 'getProductDetailById
 Route::post('product-category-byid/{id}', [ProductController::class, 'getProductByProductCategory']);
 Route::post('product-type-byid/{id}', [ProductController::class, 'getProductByProductType']);
 Route::post('product-search/{key_search}', [ProductController::class, 'searchProduct']);
+Route::get('product-type-search/{key_search}', [ProductController::class, 'searchProductType']);
 
 //Rate
-Route::post('rate-of-product', [ProductController::class, 'getAllRateOfProduct']);
+Route::post('rate-of-product', [RateController::class, 'getAllRateOfProduct']);
 
 //Category
 Route::get('category', [CategoryController::class, 'getAllCategory']);
@@ -56,8 +58,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('change-avatar', [UserController::class, 'changeAvatar']);
     Route::post('like', [ProductController::class, 'likeProduct']);
     Route::get('product-like', [ProductController::class, 'getAllProductLike']);
-    Route::post('rate-product', [ProductController::class, 'rateProduct']);
-    Route::post('edit-rate-product', [ProductController::class, 'editRateProduct']);
+    Route::post('rate-product', [RateController::class, 'rateProduct']);
+    Route::post('edit-rate-product', [RateController::class, 'editRateProduct']);
     Route::get('product-cart', [CartController::class, 'getAllCartProduct']);
     Route::post('add-cart', [CartController::class, 'addCart']);
     Route::post('update-cart', [CartController::class, 'updateCart']);
@@ -72,4 +74,6 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('edit-address', [AddressController::class, 'editAddress']);
     Route::delete('delete-address', [AddressController::class, 'deleteAddress']);
     Route::post('send-feedback', [UserController::class, 'sendFeedback']);
+    Route::get('product-not-yed-rated', [RateController::class, 'getProductNotYedRated']);
+    Route::get('product-rated', [RateController::class, 'getProductRated']);
 });

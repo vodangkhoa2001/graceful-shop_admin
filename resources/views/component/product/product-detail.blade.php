@@ -24,7 +24,10 @@
                 </div>
             </div>
             <div class="card-body">
-                <ul>
+                <ul style="list-style:none;line-height:2.0;">
+                    <li>@foreach ($pics as $pro)
+                        <img width="200" src="{{ asset('assets/img/products') }}/{{ $pro->picture_value }}">
+                    @endforeach </li>
                     <li>Mã sản phẩm: {{ $product->product_barcode }}</li>
                     <li>Tên sản phẩm: {{ $product->product_name }}</li>
                     <li>Số lượng đang bán: {{ $product->stock }}</li>

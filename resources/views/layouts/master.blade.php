@@ -14,21 +14,78 @@
 
         <!-- Custom fonts for this template-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
-
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
         <!-- Custom styles for this template-->
+        <link href="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
         <link rel="shortcut icon" href="{{ asset('assets/img/logo-web.png') }}" type="image/x-icon">
     </head>
     @show
+    <style>
+        div.dataTables_wrapper div.dataTables_length select{
+            width:50px;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+            border:none !important;
+            background: none !important;
+        }
+        body label{
+            font-weight: 700;
+            color: #333;
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            /*overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
 
-    <body id="page-top">
+            /* Modal Content */
+            .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 20%;
+
+            }
+
+            /* The Close Button */
+            .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            }
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+    </style>
+    <body  id="page-top">
 
         <!-- Page Wrapper -->
-        <div id="wrapper">
+        <div  id="wrapper">
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
@@ -59,14 +116,28 @@
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brand"
+                        aria-expanded="true" aria-controls="brand">
+                        <i class="fa-solid fa-building"></i>
+                        <span>Thương hiệu</span>
+                    </a>
+                    <div id="brand" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-brand') }}">Danh sách thương hiệu</a>
+                            <a class="collapse-item" href="{{ route('get-CreateBrand') }}">Thêm thương hiệu</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
                         aria-expanded="true" aria-controls="product">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fa-solid fa-bag-shopping"></i>
                         <span>Sản phẩm</span>
                     </a>
                     <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
                             <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
                             <a class="collapse-item" href="{{ route('get-AddProduct') }}">Thêm sản phẩm mới</a>
                         </div>
@@ -75,29 +146,58 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#user"
                         aria-expanded="true" aria-controls="user">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fa-solid fa-user"></i>
                         <span>Người dùng</span>
                     </a>
                     <div id="user" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
                             <a class="collapse-item" href="{{ route('list-user') }}">Danh sách người dùng</a>
+                            <a class="collapse-item" href="{{ route('get-CreateAccount') }}">Thêm người dùng</a>
                         </div>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                        aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Components</span>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#category"
+                        aria-expanded="true" aria-controls="category">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Danh mục</span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="category" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
-                            <a class="collapse-item" href="buttons.html">Buttons</a>
-                            <a class="collapse-item" href="cards.html">Cards</a>
-                            <a class="collapse-item" href="{{ route('list-user') }}">Users</a>
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-category') }}">Danh sách danh mục</a>
+                            <a class="collapse-item" href="{{ route('get-CreateCategory') }}">Thêm danh mục</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_type"
+                        aria-expanded="true" aria-controls="product_type">
+                        <i class="fa-solid fa-box"></i>
+                        <span>Loại sản phẩm</span>
+                    </a>
+                    <div id="product_type" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-productType') }}">Danh sách loại</a>
+                            <a class="collapse-item" href="{{ route('get-CreateProductType') }}">Thêm loại</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#invoice"
+                        aria-expanded="true" aria-controls="invoice">
+                        <i class="fa-solid fa-box"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+                    <div id="invoice" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-invoice') }}">Danh sách đơn hàng</a>
                             <a class="collapse-item" href="{{ route('products') }}">Products</a>
                         </div>
                     </div>
@@ -354,7 +454,7 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::User()->full_name }}</span>
                                     <img class="img-profile rounded-circle"
-                                        src="{{ asset('assets/img/users') }}/{{ Auth::User()->avatar }}">
+                                        src="{{ asset('storage/users') }}/{{ Auth::User()->avatar }}">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -390,17 +490,6 @@
                 </div>
                 <!-- End of Main Content -->
 
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    {{-- {!! Assets::renderFooter() !!} --}}
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
-
             </div>
             <!-- End of Content Wrapper -->
         </div>
@@ -434,19 +523,81 @@
 
 </html>
 @section('script')
-<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+<script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
 
 <!-- Page level plugins -->
-<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/chart.js/Chart.min.js') }}"></script>
 
 <!-- Page level custom scripts -->
-<script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-<script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+<script src="{{ asset('assets/js/demo/chart-area-demo.js') }}"></script>
+<script src="{{ asset('assets/js/demo/chart-pie-demo.js') }}"></script>
+<script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script>
+    $(document).ready( function () {
+    $('#dataTable').DataTable();
+} );
+</script>
+<script>
+ClassicEditor
+    .create( document.querySelector( '.editor' ), {
+
+        licenseKey: '',
+
+
+
+    } )
+    .then( editor => {
+        window.editor = editor;
+
+
+
+
+    } )
+    .catch( error => {
+        console.error( 'Oops, something went wrong!' );
+        console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+        console.warn( 'Build id: p8v55eincfpa-2rypji8si6vw' );
+        console.error( error );
+    } );
+</script>
+<script>
+    var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("btn-delete");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+var cancle = document.getElementById("btn-cancel");
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+cancle.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
 @show

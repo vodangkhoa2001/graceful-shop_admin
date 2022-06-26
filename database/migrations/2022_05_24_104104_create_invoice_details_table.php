@@ -23,6 +23,7 @@ class CreateInvoiceDetailsTable extends Migration
             $table->integer('price');
             $table->integer('total_price');
             $table->tinyInteger('status');
+            $table->boolean('rated')->nullable()->default(false);
             $table->timestamps();
 
             // $table->foreign('product-id')->references('id')->on('products');

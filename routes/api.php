@@ -67,7 +67,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('invoice-list', [InvoiceController::class, 'getAllInvoice']);
     Route::get('invoice-detail/{id}', [InvoiceController::class, 'getInvoiceDetail']);
     Route::post('add-invoice', [InvoiceController::class, 'addInvoice']);
-    Route::get('cancel-invoice', [InvoiceController::class, 'cancelInvoice']);
+    Route::post('cancel-invoice', [InvoiceController::class, 'cancelInvoice']);
     Route::get('voucher-list', [VoucherController::class, 'getAllVoucher']);
     Route::get('address-list', [AddressController::class, 'getAllAddress']);
     Route::post('add-address', [AddressController::class, 'addNewAddress']);
@@ -76,4 +76,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('send-feedback', [UserController::class, 'sendFeedback']);
     Route::get('product-not-yed-rated', [RateController::class, 'getProductNotYedRated']);
     Route::get('product-rated', [RateController::class, 'getProductRated']);
+    Route::get('rated-detail/{id}', [RateController::class, 'getRatedDetail']);
 });

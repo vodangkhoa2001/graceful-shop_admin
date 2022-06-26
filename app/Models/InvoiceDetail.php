@@ -18,6 +18,7 @@ class InvoiceDetail extends Model
         'price',
         'total_price',
         'status',
+        'rated',
     ];
     public function product()
     {

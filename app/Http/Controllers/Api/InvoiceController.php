@@ -46,11 +46,10 @@ class InvoiceController extends Controller
         try {        
             $user = Auth::user();
 
-            $invoices = Invoice::where('invoices.status', '=', 1)
-            ->where('invoices.user_id', '=', $user->id)
+            $invoices = Invoice::where('invoices.user_id', '=', $user->id)
             ->where('invoices.id', '=', $id)
             ->first();
-
+            
             $invoice_detail = InvoiceDetail::with(['product'])
             ->with(['color' => function($query) {
                 $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture) AS picture')]);

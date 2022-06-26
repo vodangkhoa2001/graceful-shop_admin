@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductType;
 use App\Http\Requests\StoreProductTypeRequest;
 use App\Http\Requests\UpdateProductTypeRequest;
+use Illuminate\Support\Facades\DB;
+use App\Models\Category;
+use Illuminate\Http\Request;
 
 class ProductTypeController extends Controller
 {
@@ -17,7 +20,9 @@ class ProductTypeController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Danh sách loại sản phẩm';
+        $product_type = DB::select('SELECT product_types.*,categories.category_name FROM product_types,categories WHERE product_types.categorie_id = categories.id ORDER BY product_types.categorie_id DESC');
+        return view('component.product_type.list-product-type',compact('title','product_type'));
     }
 
     /**
@@ -25,9 +30,21 @@ class ProductTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+    public function getCreate()
     {
-        //
+        $categories = Category::all();
+        return view('component.product_type.create-product-type',compact('categories'));
+    }
+
+    public function postCreate(Request $request)
+    {
+        $product_type = new ProductType();
+        $product_type->product_type_name = $request->product_type_name;
+        $product_type->categorie_id = $request->category_id;
+        $product_type->status = $request->status;
+        $success = $product_type->save();
+        return view('component.product_type.create-product-type',compact('success'));
     }
 
     /**
@@ -58,11 +75,23 @@ class ProductTypeController extends Controller
      * @param  \App\Models\ProductType  $productType
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductType $productType)
+    public function getEdit($id)
     {
-        //
+        $categories = Category::all();
+        $product_type = ProductType::find($id);
+        return view('component.product_type.edit-product-type',compact('product_type','categories'));
     }
 
+    public function postEdit($id,Request $request)
+    {
+        $product_type = ProductType::find($id);
+        $product_type->product_type_name = $request->product_type_name;
+        $product_type->categorie_id = $request->categorie_id;
+        $product_type->status = $request->status;
+
+        $success = $product_type->update();
+        return view('component.product_type.edit-product-type',compact('success'));
+    }
     /**
      * Update the specified resource in storage.
      *

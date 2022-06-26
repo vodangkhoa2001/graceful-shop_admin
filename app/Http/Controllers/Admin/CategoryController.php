@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -17,7 +18,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Danh sách danh mục';
+        $category = Category::orderBy('id','DESC')->get();
+        return view('component.category.category',compact('title','category'));
     }
 
     /**
@@ -25,9 +28,19 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getCreate()
     {
-        //
+        return view('component.category.create-category');
+    }
+    public function postCreate(Request $request)
+    {
+        $category = new Category();
+        $category->category_name = $request->category_name;
+        $category->icon = $request->file('icon_category')->getClientOriginalName();
+        $request->icon_category->storeAs('public/categories/',$request->file('icon_category')->getClientOriginalName());
+        $category->status = $request->status;
+        $success = $category->save();
+        return view('component.category.create-category',compact('success'));
     }
 
     /**
@@ -58,9 +71,22 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function getEdit($id){
+        $category = Category::find($id);
+        return view('component.category.edit-category',compact('category'));
+    }
+    public function postEdit($id,Request $request)
     {
-        //
+        $category = Category::find($id);
+        if($request->hasFile('icon_category')){
+            $newImg = $request->file('icon_category')->getClientOriginalName();
+            $request->icon_category->storeAs('public/categories/', $newImg);
+            $category->icon = $newImg;
+        }
+        $category->category_name = $request->category_name;
+        $category->status = $request->status;
+        $success = $category->update();
+        return view('component.category.edit-category', compact('success'));
     }
 
     /**

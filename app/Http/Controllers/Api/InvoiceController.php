@@ -209,6 +209,15 @@ class InvoiceController extends Controller
                         'stock'=> $product->stock + $invoice_detail->quantity,
                     ]); 
                 }
+
+                $message = [
+                    'type' => 'Đơn hàng',
+                    'hi' => $user->full_name,
+                    'content1' => 'Mã đơn hàng: ',
+                    'num' => $invoice->invoice_code,
+                    'content2' => ' đã huỷ thành công. Lý do: '.$request->reason,
+                ];
+                SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));            
                 
                 DB::commit();
                 return response()->json(['status'=>0, 'data'=>'', 'message'=>'Huỷ đơn hàng thành công!']);

@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Validator;
 use File;
 use Hash;
+use App\Jobs\SendEmail;
 
 class InvoiceController extends Controller
 {
@@ -83,10 +84,19 @@ class InvoiceController extends Controller
             }
            
             $user = Auth::user();
+
+            $date = Carbon::now();
+            $year = $date->year;
+            $month = $date->month;
+            $day = $date->day;
+            if(Str::length($month)==1)
+            {
+                $month = '0'.$month;
+            }
          
             $invoice = Invoice::create([
                 'user_id'=> $user->id,
-                'invoice_code'=>Str::random(10),
+                'invoice_code'=> $year.$month.$day.Str::random(10),
                 'voucher_id'=> $request->voucher_id,
                 'quantity'=> 0,
                 'ship_price'=> $request->ship_price,
@@ -118,7 +128,11 @@ class InvoiceController extends Controller
                     $invoice->update([
                         'quantity'=> $invoice->quantity + $invoice_detail->quantity,
                         'until_price'=> $invoice->until_price + $invoice_detail->total_price,
-                    ]);  
+                    ]); 
+                    Product::where('id', $cart->product_id)
+                    ->update([
+                        'stock'=> $product->stock - $cart->quantity,
+                    ]);   
                     $cart->delete();
                 }else{
                     DB::rollBack();
@@ -138,6 +152,15 @@ class InvoiceController extends Controller
                     'until_price'=> 0,
                 ]); 
             }
+
+            $message = [
+                'type' => 'Đơn hàng',
+                'hi' => $user->full_name,
+                'content1' => 'Chúng tôi đã tiếp nhận đơn đặt hàng của bạn. Mã đơn hàng của bạn là: ',
+                'num' => $invoice->invoice_code,
+                'content2' => ' và tổng giá trị đơn hàng: '.$invoice->until_price.' VND. Chúng tôi sẽ phản hồi sớm nhất cho bạn, xin cảm ơn!',
+            ];
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));            
 
             DB::commit();
             return response()->json(['status'=>0, 'data'=>'', 'message'=>'Hoá đơn được tạo thành công!']);
@@ -174,6 +197,19 @@ class InvoiceController extends Controller
                     'canceler_id'=> $user->id,
                     'reason'=> $request->reason,
                 ]); 
+
+                $invoice_details = InvoiceDetail::join('invoices', 'invoices.id', '=', 'invoice_details.invoice_id')
+                ->where('invoices.id', '=', $invoice->id)
+                ->get();    
+
+                foreach ($invoice_details as $invoice_detail){
+                    $product = Product::where('id', $invoice_detail->product_id)->first();
+                    Product::where('id', $invoice_detail->product_id)
+                    ->update([
+                        'stock'=> $product->stock + $invoice_detail->quantity,
+                    ]); 
+                }
+                
                 DB::commit();
                 return response()->json(['status'=>0, 'data'=>'', 'message'=>'Huỷ đơn hàng thành công!']);
             }

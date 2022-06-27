@@ -21,11 +21,13 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone');
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('address')->nullable();
             $table->string('avatar');
             $table->unsignedBigInteger('role')->unsigned();//0.user, 1.admin, 2.staff
             $table->tinyInteger('status');//0.inactive, 1.active
+            $table->tinyInteger('type_login')->default('0');//0.đăng nhập thông thường, 1.với google
+            $table->string('otp')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

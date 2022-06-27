@@ -28,6 +28,8 @@ class User extends Authenticatable
         'avatar',
         'role',
         'status',
+        'type_login',
+        'otp',
     ];
 
     /**
@@ -38,6 +40,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'api_token',
+        'otp',
     ];
 
     /**

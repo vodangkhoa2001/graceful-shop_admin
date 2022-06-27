@@ -48,6 +48,10 @@ Route::get('slide-show-detail/{id}', [SlideController::class, 'getAllSlideShowDe
 //User
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
+// Route::get('forgot-pass', [UserController::class, 'forgotPass']);
+Route::post('request-otp', [UserController::class, 'requestOtp']);
+Route::post('verify-otp', [UserController::class, 'verifyOtp']);
+Route::post('login-with-google', [UserController::class, 'loginWithGoogle']);
 
 //Authorization
 Route::group(['middleware' => 'auth:sanctum'], function(){

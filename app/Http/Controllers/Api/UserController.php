@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Validator;
 use File;
 use Hash;
+use App\Jobs\SendEmail;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -23,7 +25,8 @@ class UserController extends Controller
         try {
             $validator = Validator::make($request->all(), [ 
                 'name' => 'required', 
-                'phone' => 'required', 
+                'phone' => 'required',
+                'email' => 'required|email', 
                 'password' => 'required', 
             ]);
             if ($validator->fails()) { 
@@ -39,6 +42,7 @@ class UserController extends Controller
                 $user = User::create([
                     'full_name' => $request->name, 
                     'phone' => $request->phone,
+                    'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'avatar' => 'default_avatar.png',
                     'role' => 0,
@@ -86,6 +90,38 @@ class UserController extends Controller
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     }
+
+    
+    protected function loginWithGoogle(Request $request){
+        try {
+            // Getting the user from socialite using token from google
+            $user_google = Socialite::driver('google')->stateless()->userFromToken($request->token);
+            
+            // Getting or creating user from db
+            $user = User::firstOrCreate(
+                [
+                    'email' => $user_google->email,
+                    'type_login' => 1,
+                ],
+                [
+                    // 'email_verified_at' => now(),
+                    'full_name' => $user_google->name,
+                    'phone' => $user_google->phone,
+                    'avatar' => 'default_avatar.png',
+                    'role' => 0,
+                    'status' => true,
+                ]
+            );
+
+            // Returning response
+            $token = $user->createToken('MobileApp', ['Graceful'])->plainTextToken;
+            return response()->json(['status'=>0, 'data'=>$token, 'message'=>'Đăng nhập thành công!']); 
+
+        } catch (\Exception $e) {
+            return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+        }
+    }
+
 
     //Đăng xuất
     public function logout()
@@ -153,7 +189,7 @@ class UserController extends Controller
                 'full_name' => 'required', 
                 'date_of_birth' => 'nullable|date',
                 'sex' => 'nullable|int',
-                'email' => 'nullable|email',
+                'email' => 'email',
                 'address' => 'nullable|string',
                 'avatar' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240'
             ]);            
@@ -265,6 +301,96 @@ class UserController extends Controller
             DB::commit();
             return response()->json(['status'=>0, 'data'=>'', 'message'=>'Gửi phản hồi thành công!']);
         
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+        }
+    }
+
+    //Quên mật khẩu
+    // public function forgotPass(HttpRequest $request)
+    // {        
+    //     try {
+    //         $user = Auth::user();
+    //         $message = [
+    //             'type' => 'Quên mật khẩu',
+    //             'hi' => $user->full_name,
+    //             'content1' => 'Sau đây là mật khẩu mới của bạn: ',
+    //             'num' => '123456',
+    //             'content2' => '.',
+    //         ];
+    //         SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
+
+    //         return response()->json(['status'=>0, 'data'=>'', 'message'=>'Mật khẩu mới sẽ được gửi về mail bạn!']);
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+    //     }
+    // }
+
+    //Gửi OTP
+    public function requestOtp(HttpRequest $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [ 
+                'phone' => 'required', 
+            ]);
+            if ($validator->fails()) { 
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
+            }
+
+            $otp = rand(1000,9999);
+            Log::info("otp = ".$otp);   
+
+            $user = User::where('phone','=',$request->phone)->first();
+            User::where('id', '=', $user->id)
+            ->where('type_login', '=', 0)
+            ->update(['otp' => $otp]);
+
+            $message = [
+                'type' => 'Mã xác thực',
+                'hi' => $user->full_name,
+                'content1' => 'Sau đây là mã xác thực của bạn: ',
+                'num' => $otp,
+                'content2' => '. Vui lòng không cung cấp mã này cho bất kỳ ai!',
+            ];
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
+        
+            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Mã xác thực đã được gửi về mail bạn']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+        }
+    }
+
+    //Xác thực OTP
+    public function verifyOtp(HttpRequest $request){
+        try {
+            $validator = Validator::make($request->all(), [ 
+                'phone' => 'required', 
+                'otp' => 'required', 
+            ]);
+            if ($validator->fails()) { 
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
+            }
+
+            $user = User::where('phone', '=', $request->phone)
+            ->where('otp', '=', $request->otp)
+            ->where('type_login', '=', 0)
+            ->first();
+
+            if($user){
+                $user->update(['otp' => null]);
+                return response()->json(['status'=>0, 'data'=>'', 'message'=>'Thành công!']);
+            }
+            else{
+                $user = User::where('phone', '=', $request->phone)
+                ->where('type_login', '=', 0)
+                ->update(['otp' => null]);
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không thành công!']);
+            }
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);

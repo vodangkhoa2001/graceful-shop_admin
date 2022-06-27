@@ -8,9 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'num_like', 
+        'product_barcode',
+        'product_name',
+        'stock',
+        'brand_id',
+        'import_price',
+        'price',
+        'discount_price',
+        'product_type_id',
+        'description',
+        'vat',
+        'popular',
+        'status',
+        'num_like',
     ];
-    
+
     use HasFactory;
     public function pictures()
     {

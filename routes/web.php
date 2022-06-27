@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductTypeController;
+use App\Http\Controllers\Admin\VoucherController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -76,5 +77,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{id}',[BrandController::class,'getEdit'])->name('get-EditBrand');
         Route::post('/edit/{id}',[BrandController::class,'postEdit'])->name('post-EditBrand');
         // Route::get('/{id}/delete',[BrandController::class,'destroy'])->name('delete-brand');
+    });
+
+    Route::prefix('voucher')->group(function () {
+        Route::get('/',[VoucherController::class,'index'])->name('list-voucher');
+        Route::get('/{id}/detail',[VoucherController::class,'show'])->name('detail-voucher');
+        Route::get('/create',[VoucherController::class,'getCreate'])->name('get-CreateVoucher');
+        Route::post('/create',[VoucherController::class,'postCreate'])->name('post-CreateVoucher');
+        Route::get('{id}/edit',[VoucherController::class,'getEdit'])->name('get-EditVoucher');
+        Route::post('{id}/edit',[VoucherController::class,'postEdit'])->name('post-EditVoucher');
     });
 });

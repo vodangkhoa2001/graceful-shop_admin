@@ -203,21 +203,17 @@
                     </div>
                 </li>
 
-                <!-- Nav Item - Utilities Collapse Menu -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                        aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-fw fa-wrench"></i>
-                        <span>Utilities</span>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#voucher"
+                        aria-expanded="true" aria-controls="voucher">
+                        <i class="fa-solid fa-tag"></i>
+                        <span>Voucher</span>
                     </a>
-                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
+                    <div id="voucher" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Utilities:</h6>
-                            <a class="collapse-item" href="utilities-color.html">Colors</a>
-                            <a class="collapse-item" href="utilities-border.html">Borders</a>
-                            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                            <a class="collapse-item" href="utilities-other.html">Other</a>
+                            <h6 class="collapse-header">Danh sách chức năng:</h6>
+                            <a class="collapse-item" href="{{ route('list-voucher') }}">Danh sách voucher</a>
+                            <a class="collapse-item" href="{{ route('get-CreateVoucher') }}">Thêm voucher</a>
                         </div>
                     </div>
                 </li>
@@ -569,6 +565,7 @@ ClassicEditor
         console.error( error );
     } );
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var modal = document.getElementById("myModal");
 
@@ -599,5 +596,8 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
+$('.datepicker').datepicker();
 </script>
+
 @show

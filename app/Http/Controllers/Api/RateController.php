@@ -11,15 +11,16 @@ use App\Models\InvoiceDetail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request as HttpRequest;
 use Carbon\Carbon;
-use Validator;
+// use Validator;
 use File;
 use Hash;
 
 class RateController extends Controller
-{   
+{
     //DS sản phẩm chưa đánh giá
     public function getProductNotYedRated()
     {
@@ -34,8 +35,8 @@ class RateController extends Controller
         {
             $query->on('invoice_details.product_id', '=', 'products.id')
                 ->join('invoices', 'invoices.id', '=', 'invoice_details.invoice_id')
-                ->where('invoices.user_id', '=', $user->id)    
-                ->where('invoice_details.rated', '=', false)  
+                ->where('invoices.user_id', '=', $user->id)
+                ->where('invoice_details.rated', '=', false)
                 ->where('invoices.status', '=', 4);
         })
         // ->leftJoin('rates', function($query) use ($user)
@@ -66,7 +67,7 @@ class RateController extends Controller
         {
             $query->on('invoice_details.product_id', '=', 'products.id')
                 ->join('invoices', 'invoices.id', '=', 'invoice_details.invoice_id')
-                ->where('invoices.user_id', '=', $user->id)    
+                ->where('invoices.user_id', '=', $user->id)
                 ->where('invoices.status', '=', 4);
         })
         ->rightJoin('rates', function($query) use ($user)
@@ -125,14 +126,14 @@ class RateController extends Controller
     {
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [ 
-                'product_id' => 'required', 
+            $validator = Validator::make($request->all(), [
+                'product_id' => 'required',
                 'num_rate' => 'required',
                 'description' => 'required',
                 // 'images' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240'
             ]);
 
-            if ($validator->fails()) { 
+            if ($validator->fails()) {
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
             }
 
@@ -143,11 +144,11 @@ class RateController extends Controller
             // ->first();
 
             // if ($rate) {
-            //     return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Sản phẩm chỉ được đánh giá một lần!']); 
+            //     return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Sản phẩm chỉ được đánh giá một lần!']);
             // }
 
             $rate = Rate::create([
-                'product_id' => $request->product_id, 
+                'product_id' => $request->product_id,
                 'user_id' =>  $user->id,
                 'num_rate' => $request->num_rate,
                 'description' => $request->description,
@@ -166,8 +167,8 @@ class RateController extends Controller
             InvoiceDetail::join('invoices', 'invoices.id', '=', 'invoice_details.invoice_id')
             ->where('invoice_details.product_id', $request->product_id)
             ->where('invoices.user_id', $user->id)
-            ->update(['rated' => true]);            
-             
+            ->update(['rated' => true]);
+
             if($request->hasFile('images')){
                 foreach ($request->file('images') as $image){
                     $picture_rate = new PictureRate;
@@ -182,30 +183,30 @@ class RateController extends Controller
                     $picture_rate->rate_id = $rate->id;
                     $picture_rate->picture_value = $fileNew;
                     $picture_rate->save();
-                }   
-            } 
+                }
+            }
             DB::commit();
-            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Đánh giá thành công!']); 
+            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Đánh giá thành công!']);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
     }
-    
+
     //Chỉnh sửa đánh giá
     public function editRateProduct(HttpRequest $request)
     {
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [ 
-                'id' => 'required',  
-                'product_id' => 'required', 
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'product_id' => 'required',
                 'num_rate' => 'required',
                 'description' => 'required',
                 // 'images' => 'nullable|image|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:10240'
             ]);
 
-            if ($validator->fails()) { 
+            if ($validator->fails()) {
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
             }
 
@@ -217,7 +218,7 @@ class RateController extends Controller
             ->first();
 
             if (!$rate) {
-                return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không tìm thấy đánh giá!']); 
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không tìm thấy đánh giá!']);
             }
 
             $rate->update([
@@ -241,7 +242,7 @@ class RateController extends Controller
                 foreach ($picture_rate_lst as $pic){
                     unlink(public_path('/assets/img/rates/'.$pic->picture_value));
                     $pic->delete();
-                }               
+                }
                 foreach ($images as $image){
                     $picture_rate = new PictureRate;
 
@@ -256,9 +257,9 @@ class RateController extends Controller
                     $picture_rate->picture_value = $fileNew;
                     $picture_rate->save();
                 }
-            } 
+            }
             DB::commit();
-            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Sửa đánh giá tin thành công!']); 
+            return response()->json(['status'=>0, 'data'=>'', 'message'=>'Sửa đánh giá tin thành công!']);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);

@@ -42,7 +42,7 @@ class ProductTypeController extends Controller
         $product_type = new ProductType();
         $product_type->product_type_name = $request->product_type_name;
         $product_type->categorie_id = $request->category_id;
-        $product_type->status = $request->status;
+        $product_type->status = 1;
         $success = $product_type->save();
         return view('component.product_type.create-product-type',compact('success'));
     }

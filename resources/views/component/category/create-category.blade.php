@@ -31,13 +31,6 @@
                             <label for="category_name">Tên danh mục</label>
                             <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên danh mục" value="{{ old('category_name') }}" >
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="status">Trạng thái</label>
-                                <select name="status" class="form-control">
-                                    <option value="1">Đang hoạt động</option>
-                                    <option value="0">Ngưng hoạt động</option>
-                                </select>
-                            </div>
                         </div>
 
 

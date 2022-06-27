@@ -38,13 +38,6 @@
                                 <input type="text" name="product_type_name" id="product_type_name" placeholder="Tên loại" class="form-control">
                             </div>
 
-                            <div class="form-group col-md-4">
-                                <label for="status">Trạng thái</label>
-                                <select name="status" class="form-control">
-                                    <option value="1">Đang hoạt động</option>
-                                    <option value="0">Ngưng hoạt động</option>
-                                </select>
-                            </div>
                         </div>
 
 

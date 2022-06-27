@@ -18,6 +18,8 @@ use App\Models\Size;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -60,28 +62,56 @@ class ProductController extends Controller
         }
         return view('component.product.add-product', compact('title','category','product_type','productCode','brand'));
     }
-    public function postCreate( Request $request)
+    public function postCreate( HttpRequest $request)
     {
-        $colors = new Color();
-        $sizes = new Size();
-        $sizes->size_name = $request->size_name;
-        $sizes->product_id = $request->id;
-        $pic = new Picture();
-        $product_detail = new ProductDetail();
-        $product_detail->color_id = $request->color;
+        $data = Validator::make($request->all(),[
+            'product_name'=> 'required',
+            'stock'=>'required',
+            'brand_id'=>'required',
+            'import_price'=>'required',
+            'price'=>'required',
+            'discount_price'=>'required',
+            'product_type_id'=>'required',
+            'description'=>'required',
+        ]);
+        $product = Product::create([
+            'product_barcode'=> $request->product_code,
+            'product_name'=> $request->product_name,
+            'stock'=> $request->stock,
+            'brand_id'=> $request->brand,
+            'import_price'=> $request->import_price,
+            'price'=>$request->price,
+            'discount_price'=>$request->discount_price,
+            'product_type_id'=>$request->product_type,
+            'description'=>$request->description,
+        ]);
 
-        $product = new Product();
-        $product->product_barcode = $request->product_code;
-        $product->product_name = $request->product_name;
-        $product->stock = $request->stock;
-        $product->brand_id = $request->brand;
-        $product->import_price = $request->import_price;
-        $product->price = $request->price;
-        $product->discount_price = $request->discount_price;
-        $product->product_type_id = $request->product_type;
-        $product->description = $request->description;
-        $product->status = $request->status;
-        $product->save();
+        $size = Size::create([
+            'size_name'=>$request->size_name,
+            'product_id'=>$product->id,
+            'status'=>1,
+        ]);
+
+        $success = $product->save();
+        if($request->hasFile('images')){
+            foreach ($request->file('images') as $image){
+                dd('vào for');
+                $pics = new Picture();
+
+                $namewithextension = $image->getClientOriginalName();
+                $fileName = explode('.', $namewithextension)[0];
+                $extension = $image->getClientOriginalExtension();
+                $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                $destinationPath = public_path('/assets/img/products/');
+                $image->move($destinationPath,$fileNew);
+
+                $pics->product_id = $product->id;
+                $pics->picture_value = $fileNew;
+                $pics->save();
+            }
+        }
+
+        return view('component.product.add-product',compact('success'));
     }
 
     /**

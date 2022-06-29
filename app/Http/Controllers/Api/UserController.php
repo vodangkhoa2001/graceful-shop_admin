@@ -91,7 +91,7 @@ class UserController extends Controller
         }
     }
 
-    
+    //Đăng nhập với google
     protected function loginWithGoogle(Request $request){
         try {
             // Getting the user from socialite using token from google
@@ -150,7 +150,11 @@ class UserController extends Controller
             if(Auth::guard('web')->attempt(['phone' => $user->phone, 'password' => $request->old_pass])){ 
                 
                 $user->update(['password' => Hash::make($request->new_pass)]);
-                Auth::user()->tokens()->delete();
+                // Auth::user()->tokens()->delete();
+                $tokens = $user->tokens;
+                foreach ($tokens as $tKey => $token) {
+                    $token->delete();
+                }                
                 DB::commit();
                 return response()->json(['status'=>0, 'data'=>'', 'message'=>'Đổi mật thành công!']); 
             } 
@@ -308,30 +312,54 @@ class UserController extends Controller
     }
 
     //Quên mật khẩu
-    // public function forgotPass(HttpRequest $request)
-    // {        
-    //     try {
-    //         $user = Auth::user();
-    //         $message = [
-    //             'type' => 'Quên mật khẩu',
-    //             'hi' => $user->full_name,
-    //             'content1' => 'Sau đây là mật khẩu mới của bạn: ',
-    //             'num' => '123456',
-    //             'content2' => '.',
-    //         ];
-    //         SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
+    public function forgotPass(HttpRequest $request)
+    {        
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [ 
+                'phone' => 'required', 
+                'new_pass' => 'required', 
+                'otp' => 'required', 
+            ]);
+            if ($validator->fails()) { 
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>$validator->errors()->all()[0]]);
+            }
 
-    //         return response()->json(['status'=>0, 'data'=>'', 'message'=>'Mật khẩu mới sẽ được gửi về mail bạn!']);
+            $user = User::where('phone', '=', $request->phone)
+            ->where('otp', '=', $request->otp)
+            ->where('type_login', '=', 0)
+            ->first();
 
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
-    //     }
-    // }
+            if($user){
+                $user->update(['otp' => null]);
+                $user->update(['password' => Hash::make($request->new_pass)]);
+
+                $tokens = $user->tokens;
+                foreach ($tokens as $tKey => $token) {
+                    $token->delete();
+                }
+
+                DB::commit();
+                return response()->json(['status'=>0, 'data'=>'', 'message'=>'Mật khẩu đã được thay đổi thành công!']);
+            }
+            else{
+                $user = User::where('phone', '=', $request->phone)
+                ->where('type_login', '=', 0)
+                ->update(['otp' => null]);
+                DB::commit();
+                return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không thành công!']);
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
+        }
+    }
 
     //Gửi OTP
     public function requestOtp(HttpRequest $request)
     {
+        DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [ 
                 'phone' => 'required', 
@@ -356,7 +384,7 @@ class UserController extends Controller
                 'content2' => '. Vui lòng không cung cấp mã này cho bất kỳ ai!',
             ];
             SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
-        
+            DB::commit();
             return response()->json(['status'=>0, 'data'=>'', 'message'=>'Mã xác thực đã được gửi về mail bạn']);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -365,7 +393,9 @@ class UserController extends Controller
     }
 
     //Xác thực OTP
-    public function verifyOtp(HttpRequest $request){
+    public function verifyOtp(HttpRequest $request)
+    {
+        DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [ 
                 'phone' => 'required', 
@@ -382,12 +412,14 @@ class UserController extends Controller
 
             if($user){
                 $user->update(['otp' => null]);
+                DB::commit();
                 return response()->json(['status'=>0, 'data'=>'', 'message'=>'Thành công!']);
             }
             else{
                 $user = User::where('phone', '=', $request->phone)
                 ->where('type_login', '=', 0)
                 ->update(['otp' => null]);
+                DB::commit();
                 return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không thành công!']);
             }
 

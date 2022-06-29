@@ -170,15 +170,21 @@ class RateController extends Controller
              
             if($request->hasFile('images')){
                 foreach ($request->file('images') as $image){
+                    //Tạo một đối tượng nè
                     $picture_rate = new PictureRate;
-
+                    //Lấy full cái tên file
                     $namewithextension = $image->getClientOriginalName();
+                    //Lấy cái tên file 
                     $fileName = explode('.', $namewithextension)[0];
+                    //Lấy cái đuôi mở rộng của file
                     $extension = $image->getClientOriginalExtension();
+                    //Đặt tên file mới
                     $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                    //Đường dẫn tới chổ m lưu hình
                     $destinationPath = public_path('/assets/img/rates/');
+                    //Lưu nó dô trong cái đường dẫn với cái tên mới tạo
                     $image->move($destinationPath,$fileNew);
-
+                    //Add link hình đó dô db
                     $picture_rate->rate_id = $rate->id;
                     $picture_rate->picture_value = $fileNew;
                     $picture_rate->save();

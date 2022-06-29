@@ -22,6 +22,7 @@ class Invoice extends Model
         'status',
         'canceler_id',
         'reason',
+        'type_pay',
     ];
     public function invoice_detail()
     {

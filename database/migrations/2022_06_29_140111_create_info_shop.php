@@ -20,6 +20,7 @@ class CreateInfoShop extends Migration
             $table->string('phone')->nullable();
             $table->text('mess_manager')->nullable();
             $table->text('mess_chat')->nullable();
+            $table->text('page_fb')->nullable();
         });
     }
 

@@ -26,7 +26,7 @@
             <div class="card-body">
                 <ul style="list-style:none;line-height:2.0;">
                     <li>@foreach ($pics as $pro)
-                        <img width="200" src="{{ asset('assets/img/products') }}/{{ $pro->picture_value }}">
+                        <img height="150" src="{{ asset('assets/img/products') }}/{{ $pro->picture_value }}">
                     @endforeach </li>
                     <li>Mã sản phẩm: {{ $product->product_barcode }}</li>
                     <li>Tên sản phẩm: {{ $product->product_name }}</li>

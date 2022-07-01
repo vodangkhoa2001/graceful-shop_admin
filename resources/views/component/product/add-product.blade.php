@@ -138,10 +138,13 @@
                     </div>
 
                     </div>
-
                     <button onclick="add_append();" type="button"  class="btn btn-info ml-4 btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm màu</button>
-                    <div class="add_color_and_size">
-
+                    <div class="add_color_and_size" >
+                        {{-- màu trong này phải qua cái js --}}
+                        @for ($i =0;$i<;$i++)
+                        <div class="form-group form-inline ml-md-4"><label for="color"> Tên màu :</label><input type="text" id="color" name="color_name[]" placeholder="Tên màu" class="form-control col-md-1 mx-sm-3"> <input type="file" accept="image/*" multiple="" required="" name="image_colors"><button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button></div>
+                        
+                        @endfor
                     </div>
                     <div class="form-group m-4">
                         <label for="editor">Nội dung</label>

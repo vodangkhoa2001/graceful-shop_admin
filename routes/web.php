@@ -27,9 +27,7 @@ Route::post('/login',[UserController::class,'postLogin'])->name('postLogin');
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', function() {
-        return view('home');
-    })->name('home');
+    Route::get('/home',[UserController::class,'statistic'])->name('home');
     Route::prefix('user')->group(function(){
         Route::get('/', 'App\Http\Controllers\Admin\UserController@getUsers')->name('list-user');
         Route::get('/create-account', [UserController::class,'getCreateAccount'])->name('get-CreateAccount');

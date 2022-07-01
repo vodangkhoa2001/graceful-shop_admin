@@ -21,6 +21,8 @@ use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
+use function PHPSTORM_META\type;
+
 class ProductController extends Controller
 {
     /**
@@ -74,6 +76,9 @@ class ProductController extends Controller
             'product_type_id'=>'required',
             'description'=>'required',
         ]);
+
+        dd($request->all());
+
         $product = Product::create([
             'product_barcode'=> $request->product_code,
             'product_name'=> $request->product_name,
@@ -95,7 +100,7 @@ class ProductController extends Controller
         $success = $product->save();
         if($request->hasFile('images')){
             foreach ($request->file('images') as $image){
-                dd('vào for');
+                // dd('vào for');
                 $pics = new Picture();
 
                 $namewithextension = $image->getClientOriginalName();
@@ -145,22 +150,93 @@ class ProductController extends Controller
      *
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
+     *
      */
     public function edit($id)
     {
-        $title = 'Chỉnh sửa sản phẩm';
-        $product = new Product();
-        $product = Product::with(['pictures'])->find($id);
+
+        // $product = Product::with(['pictures','sizes'=>function($query){
+        //     $query->select(['*',DB::raw("size_name")]);
+        // }])
+        // ->find($id);
+        $product = DB::table('products')->find($id);
+        $size = DB::select("SELECT sizes.size_name FROM sizes WHERE product_id = {$id}");
+        // dd($size);
         $category = Category::all();
         $product_type = ProductType::all();
         $brand = Brand::all();
-        $colors = Color::all();
-        return view('component.product.edit-product', compact('title','brand','category','product_type','product','colors'));
-    }
-    public function postEdit(Request $request)
-    {
+        $colors = DB::select("SELECT colors.color_name,colors.picture from colors WHERE colors.product_id = {$id}");
+        $pics = DB::select("SELECT pictures.picture_value from pictures WHERE pictures.product_id ={$id}");
+        // dd($pics);
 
-        //
+        return view('component.product.edit-product', compact('brand','category','product_type','product','size','colors','pics'));
+    }
+    public function postEdit($id,HttpRequest $request)
+    {
+        $data = Validator::make($request->all(),[
+            'product_name'=> 'required','min:2',
+            'stock'=>'required',
+            'import_price'=>'required',
+            'price'=>'required',
+            'discount_price'=>'required',
+            'description'=>'required',
+        ],
+        [
+            'product_name.required'=>'Vui lòng nhập tên sản phẩm.',
+            'product_name.min'=>'Tên sản phẩm quá ngắn',
+        ]
+    );
+        $product = Product::find($id);
+        $size = DB::table('sizes')->where("product_id = {$id}");
+        $colors = DB::table('colors')->where("product_id={$id}");
+        $product->product_name = $request->product_name;
+        $product->brand_id = $request->brand;
+        $product->product_type_id = $request->product_type;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->import_price = $request->import_price;
+        $product->discount_price = $request->discount_price;
+        $product->status = $request->status;
+
+        dd($request->input('color_name'));
+        foreach($request->color_name as $key=>$color){
+            $colors->color_name = $request->color_name[$key];
+        }
+        foreach($request->image_colors as $key=>$color){
+            $colors->picture = $request->image_colors[$key];
+        }
+        // dd($size);
+        // if($request->hasFile('images') || $request->hasFile('image_colors')){
+        //     $product->product_name = $request->product_name;
+        //     $product->brand_id = $request->brand;
+        //     $product->product_type_id = $request->product_type;
+        //     $product->price = $request->price;
+        //     $product->stock = $request->stock;
+        //     $product->import_price = $request->import_price;
+        //     $product->discount_price = $request->discount_price;
+        //     $product->status = $request->status;
+
+        //     foreach($request->color_name as $key=>$color){
+        //         $colors->color_name = $request->color_name[$key];
+        //     }
+        //     foreach($request->image_colors as $key=>$color){
+        //         $colors->picture = $request->image_colors[$key];
+        //     }
+        //     dd($colors->color_name);
+        //     $size->size_name = $request->size_name;
+        // }else{
+        //     $product->product_name = $request->product_name;
+        //     $product->brand_id = $request->brand;
+        //     $product->product_type_id = $request->product_type;
+        //     $product->price = $request->price;
+        //     $product->stock = $request->stock;
+        //     $product->import_price = $request->import_price;
+        //     $product->discount_price = $request->discount_price;
+        //     $size->size_name = $request->size_name;
+        // }
+
+        $success = $product->update();
+        return view('component.product.edit-product',compact('success'));
 
     }
     /**

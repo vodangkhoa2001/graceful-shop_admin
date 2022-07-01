@@ -33,6 +33,13 @@ class UserController extends Controller
         return view('component.account.users',compact('title','users','role'));
     }
 
+    //đếm số người dùng
+    public function statistic(){
+        $countUser = User::where('status','1')->count();
+        // dd($countUser);
+        return view('home',compact('countUser'));
+    }
+
 
     public function getLogin(){
         return view('component.login');

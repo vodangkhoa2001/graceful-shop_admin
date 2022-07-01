@@ -47,7 +47,9 @@
                                                 @else
                                                 <span class="text-success">Hoạt động</span>
                                             @endif</td>
-                                            <td><a href="{{ route('get-product',$item->id) }}">Xem chi tiết</a> <br> <a href="#">Xóa</a></td>
+                                            <td><a href="{{ route('get-product',$item->id) }}">Xem chi tiết</a> <br>
+                                                <a href="{{ route('edit-product',$item->id) }}">Sửa</a>
+                                                <a href="#">Xóa</a></td>
                                         </tr>
 
                                         @endforeach
@@ -70,7 +72,7 @@
 
     <!-- Page level plugins -->
     {{-- <script src="{{ asset('//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js') }}"></script> --}}
-   
+
 
 
 

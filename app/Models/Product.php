@@ -28,6 +28,10 @@ class Product extends Model
     {
         return $this->hasMany(Picture::class, 'product_id', 'id')->where('pictures.status', '=', 1);
     }
+    public function sizes()
+    {
+        return $this->hasMany(Size::class, 'product_id', 'id')->where('sizes.status', '=', 1);
+    }
     public function likes()
     {
         return $this->hasMany(Like::class, 'product_id', 'id');

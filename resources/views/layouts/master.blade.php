@@ -285,7 +285,7 @@
                         </button>
 
                         <!-- Topbar Search -->
-                        <form
+                        {{-- <form
                             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -296,7 +296,8 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> --}}
+                        <h1>Welcome, {{ Auth::User()->full_name }}</h1>
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
@@ -450,7 +451,7 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::User()->full_name }}</span>
                                     <img class="img-profile rounded-circle"
-                                        src="{{ asset('storage/users') }}/{{ Auth::User()->avatar }}">
+                                        src="{{ asset('assets/img/users') }}/{{ Auth::User()->avatar }}">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -567,6 +568,9 @@ ClassicEditor
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
+
+
     var modal = document.getElementById("myModal");
 
 // Get the button that opens the modal

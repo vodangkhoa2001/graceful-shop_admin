@@ -18,6 +18,10 @@ use App\Models\Size;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
+use function PHPSTORM_META\type;
 
 class ProductController extends Controller
 {
@@ -60,28 +64,59 @@ class ProductController extends Controller
         }
         return view('component.product.add-product', compact('title','category','product_type','productCode','brand'));
     }
-    public function postCreate( Request $request)
+    public function postCreate( HttpRequest $request)
     {
-        $colors = new Color();
-        $sizes = new Size();
-        $sizes->size_name = $request->size_name;
-        $sizes->product_id = $request->id;
-        $pic = new Picture();
-        $product_detail = new ProductDetail();
-        $product_detail->color_id = $request->color;
+        $data = Validator::make($request->all(),[
+            'product_name'=> 'required',
+            'stock'=>'required',
+            'brand_id'=>'required',
+            'import_price'=>'required',
+            'price'=>'required',
+            'discount_price'=>'required',
+            'product_type_id'=>'required',
+            'description'=>'required',
+        ]);
 
-        $product = new Product();
-        $product->product_barcode = $request->product_code;
-        $product->product_name = $request->product_name;
-        $product->stock = $request->stock;
-        $product->brand_id = $request->brand;
-        $product->import_price = $request->import_price;
-        $product->price = $request->price;
-        $product->discount_price = $request->discount_price;
-        $product->product_type_id = $request->product_type;
-        $product->description = $request->description;
-        $product->status = $request->status;
-        $product->save();
+        dd($request->all());
+
+        $product = Product::create([
+            'product_barcode'=> $request->product_code,
+            'product_name'=> $request->product_name,
+            'stock'=> $request->stock,
+            'brand_id'=> $request->brand,
+            'import_price'=> $request->import_price,
+            'price'=>$request->price,
+            'discount_price'=>$request->discount_price,
+            'product_type_id'=>$request->product_type,
+            'description'=>$request->description,
+        ]);
+
+        $size = Size::create([
+            'size_name'=>$request->size_name,
+            'product_id'=>$product->id,
+            'status'=>1,
+        ]);
+
+        $success = $product->save();
+        if($request->hasFile('images')){
+            foreach ($request->file('images') as $image){
+                // dd('vào for');
+                $pics = new Picture();
+
+                $namewithextension = $image->getClientOriginalName();
+                $fileName = explode('.', $namewithextension)[0];
+                $extension = $image->getClientOriginalExtension();
+                $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                $destinationPath = public_path('/assets/img/products/');
+                $image->move($destinationPath,$fileNew);
+
+                $pics->product_id = $product->id;
+                $pics->picture_value = $fileNew;
+                $pics->save();
+            }
+        }
+
+        return view('component.product.add-product',compact('success'));
     }
 
     /**
@@ -115,22 +150,93 @@ class ProductController extends Controller
      *
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
+     *
      */
     public function edit($id)
     {
-        $title = 'Chỉnh sửa sản phẩm';
-        $product = new Product();
-        $product = Product::with(['pictures'])->find($id);
+
+        // $product = Product::with(['pictures','sizes'=>function($query){
+        //     $query->select(['*',DB::raw("size_name")]);
+        // }])
+        // ->find($id);
+        $product = DB::table('products')->find($id);
+        $size = DB::select("SELECT sizes.size_name FROM sizes WHERE product_id = {$id}");
+        // dd($size);
         $category = Category::all();
         $product_type = ProductType::all();
         $brand = Brand::all();
-        $colors = Color::all();
-        return view('component.product.edit-product', compact('title','brand','category','product_type','product','colors'));
-    }
-    public function postEdit(Request $request)
-    {
+        $colors = DB::select("SELECT colors.color_name,colors.picture from colors WHERE colors.product_id = {$id}");
+        $pics = DB::select("SELECT pictures.picture_value from pictures WHERE pictures.product_id ={$id}");
+        // dd($pics);
 
-        //
+        return view('component.product.edit-product', compact('brand','category','product_type','product','size','colors','pics'));
+    }
+    public function postEdit($id,HttpRequest $request)
+    {
+        $data = Validator::make($request->all(),[
+            'product_name'=> 'required','min:2',
+            'stock'=>'required',
+            'import_price'=>'required',
+            'price'=>'required',
+            'discount_price'=>'required',
+            'description'=>'required',
+        ],
+        [
+            'product_name.required'=>'Vui lòng nhập tên sản phẩm.',
+            'product_name.min'=>'Tên sản phẩm quá ngắn',
+        ]
+    );
+        $product = Product::find($id);
+        $size = DB::table('sizes')->where("product_id = {$id}");
+        $colors = DB::table('colors')->where("product_id={$id}");
+        $product->product_name = $request->product_name;
+        $product->brand_id = $request->brand;
+        $product->product_type_id = $request->product_type;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->import_price = $request->import_price;
+        $product->discount_price = $request->discount_price;
+        $product->status = $request->status;
+
+        dd($request->input('color_name'));
+        foreach($request->color_name as $key=>$color){
+            $colors->color_name = $request->color_name[$key];
+        }
+        foreach($request->image_colors as $key=>$color){
+            $colors->picture = $request->image_colors[$key];
+        }
+        // dd($size);
+        // if($request->hasFile('images') || $request->hasFile('image_colors')){
+        //     $product->product_name = $request->product_name;
+        //     $product->brand_id = $request->brand;
+        //     $product->product_type_id = $request->product_type;
+        //     $product->price = $request->price;
+        //     $product->stock = $request->stock;
+        //     $product->import_price = $request->import_price;
+        //     $product->discount_price = $request->discount_price;
+        //     $product->status = $request->status;
+
+        //     foreach($request->color_name as $key=>$color){
+        //         $colors->color_name = $request->color_name[$key];
+        //     }
+        //     foreach($request->image_colors as $key=>$color){
+        //         $colors->picture = $request->image_colors[$key];
+        //     }
+        //     dd($colors->color_name);
+        //     $size->size_name = $request->size_name;
+        // }else{
+        //     $product->product_name = $request->product_name;
+        //     $product->brand_id = $request->brand;
+        //     $product->product_type_id = $request->product_type;
+        //     $product->price = $request->price;
+        //     $product->stock = $request->stock;
+        //     $product->import_price = $request->import_price;
+        //     $product->discount_price = $request->discount_price;
+        //     $size->size_name = $request->size_name;
+        // }
+
+        $success = $product->update();
+        return view('component.product.edit-product',compact('success'));
 
     }
     /**

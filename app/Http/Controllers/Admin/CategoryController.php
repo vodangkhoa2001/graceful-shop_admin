@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -34,11 +35,18 @@ class CategoryController extends Controller
     }
     public function postCreate(Request $request)
     {
+        $image = $request->file('icon_category');
+        $namewithextension = $image->getClientOriginalName();
+        $fileName = explode('.', $namewithextension)[0];
+        $extension = $image->getClientOriginalExtension();
+        $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+        $destinationPath = public_path('/assets/img/categories/');
+        $image->move($destinationPath,$fileNew);
+
         $category = new Category();
         $category->category_name = $request->category_name;
-        $category->icon = $request->file('icon_category')->getClientOriginalName();
-        $request->icon_category->storeAs('public/categories/',$request->file('icon_category')->getClientOriginalName());
-        $category->status = $request->status;
+        $category->icon = $fileNew;
+        $category->status = 1;
         $success = $category->save();
         return view('component.category.create-category',compact('success'));
     }
@@ -79,12 +87,22 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         if($request->hasFile('icon_category')){
-            $newImg = $request->file('icon_category')->getClientOriginalName();
-            $request->icon_category->storeAs('public/categories/', $newImg);
-            $category->icon = $newImg;
+            $image = $request->file('icon_category');
+            $namewithextension = $image->getClientOriginalName();
+            $fileName = explode('.', $namewithextension)[0];
+            $extension = $image->getClientOriginalExtension();
+            $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+            $destinationPath = public_path('/assets/img/categories/');
+            $image->move($destinationPath,$fileNew);
+            $category->icon = $fileNew;
+            $category->category_name = $request->category_name;
+            $category->status = $request->status;
         }
-        $category->category_name = $request->category_name;
-        $category->status = $request->status;
+        else{
+            $category->category_name = $request->category_name;
+            $category->status = $request->status;
+        }
+
         $success = $category->update();
         return view('component.category.edit-category', compact('success'));
     }

@@ -34,7 +34,7 @@
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $item->category_name }}</td>
-                                                <td class="d-flex justify-content-center"><img width="60"  src="{{ asset('storage/categories') }}/{{ $item->icon }}" ></td>
+                                                <td class="d-flex justify-content-center"><img width="60"  src="{{ asset('assets/img/categories') }}/{{ $item->icon }}" ></td>
                                                 <td>@if ($item->status==0)
                                                     <span class="text-danger">Ngưng hoạt động</span>
                                                 @else

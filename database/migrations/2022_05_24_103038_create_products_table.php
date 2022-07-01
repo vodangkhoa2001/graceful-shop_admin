@@ -19,16 +19,16 @@ class CreateProductsTable extends Migration
             $table->integer('stock');
             $table->integer('import_price');
             $table->integer('price');
-            $table->double('vat');
+            $table->double('vat')->default(0);
             $table->integer('discount_price');
             $table->unsignedBigInteger('product_type_id');
             $table->string('product_barcode');
             $table->unsignedBigInteger('brand_id');
-            $table->integer('popular');
-            $table->integer('num_like');
-            $table->double('num_rate');
+            $table->integer('popular')->default(0);
+            $table->integer('num_like')->default(0);
+            $table->double('num_rate')->default(0);
             $table->text('description', 64);
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
 

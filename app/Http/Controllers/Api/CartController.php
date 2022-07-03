@@ -62,6 +62,9 @@ class CartController extends Controller
             ->where('size_id', '=', $request->size_id)
             ->first();
 
+            // dd(date_default_timezone_get());
+            // dd(env('TIMEZONE'));
+
             if($cart == null){
                 Cart::insert([
                     'product_id'=> $request->product_id,

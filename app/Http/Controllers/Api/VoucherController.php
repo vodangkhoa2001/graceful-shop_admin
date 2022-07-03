@@ -27,6 +27,7 @@ class VoucherController extends Controller
                     ->where('invoices.status', '<>', 0);
             })           
             ->where('invoices.id', '=', null)
+            ->where('vouchers.start_date', '<=',  Carbon::now()->toDateString())
             ->where('vouchers.end_date', '>=',  Carbon::now()->toDateString())
             ->where('vouchers.status', '=', 1)
             ->orderBy('vouchers.id', 'DESC')

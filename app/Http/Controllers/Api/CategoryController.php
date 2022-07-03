@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function getAllCategory()
     {
         $categories = Category::with(['product_types'])
-        ->select(['*', DB::raw('CONCAT("assets/img/categorys/", icon) AS icon')])
+        ->select(['*', DB::raw('CONCAT("assets/img/categories/", icon) AS icon')])
         ->where('status', '=', 1)
         ->orderBy('category_name')
         ->get();

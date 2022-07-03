@@ -116,7 +116,19 @@ class RateController extends Controller
         }])
         ->where('rates.product_id', '=', $product_id)
         ->orderBy('rates.id', 'DESC')
+        ->select('*' , 'rates.created_at as rate_created_at')
         ->get();
+
+        foreach ($rates as $rate){
+            try {
+                $avatar = explode('users/', $rate->user->avatar)[1];
+            } catch (\Throwable $th) {
+                $avatar = explode('users/', $rate->user->avatar)[0];
+            }
+            if( explode(':', $avatar)[0] == 'https'){
+                $rate->user->avatar = $avatar;
+            }
+        }
 
         return response()->json(['status'=>0, 'data'=>$rates, 'message'=>'']);
     }
@@ -158,9 +170,7 @@ class RateController extends Controller
             ->avg('num_rate');
 
             $product = Product::where('id', $request->product_id)
-            ->first();
-
-            $product->update([
+            ->update([
                 'num_rate' => $num_rate,
             ]);
 
@@ -236,9 +246,7 @@ class RateController extends Controller
             ->avg('num_rate');
 
             $product = Product::where('id', $request->product_id)
-            ->first();
-
-            $product->update([
+            ->update([
                 'num_rate' => $num_rate,
             ]);
 

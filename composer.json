@@ -9,6 +9,7 @@
         "botble/assets": "^1.0",
         "cviebrock/eloquent-sluggable": "8.0.8",
         "fruitcake/laravel-cors": "^2.0",
+        "google/apiclient": "^2.12",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.15",
@@ -27,7 +28,7 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/"            
         }
     },
     "autoload-dev": {

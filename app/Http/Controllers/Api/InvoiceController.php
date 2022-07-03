@@ -31,7 +31,7 @@ class InvoiceController extends Controller
             $invoices = Invoice::with(['voucher'])
             // ->where('invoices.status', '=', 1)
             ->where('invoices.user_id', '=', $user->id)
-            ->orderBy('invoices.id', 'DESC')
+            ->orderBy('invoices.created_at', 'DESC')
             ->get();
 
             return response()->json(['status'=>0, 'data'=>$invoices, 'message'=>'']);
@@ -86,17 +86,21 @@ class InvoiceController extends Controller
             $user = Auth::user();
 
             $date = Carbon::now();
-            $year = $date->year;
+            $year = Str::substr($date->year, 2, 2);
             $month = $date->month;
             $day = $date->day;
             if(Str::length($month)==1)
             {
                 $month = '0'.$month;
             }
-         
+            if(Str::length($day)==1)
+            {
+                $day = '0'.$day;
+            }
+            
             $invoice = Invoice::create([
                 'user_id'=> $user->id,
-                'invoice_code'=> $year.$month.$day.Str::random(10),
+                'invoice_code'=> $year.$month.$day.'_'.Str::random(12),
                 'voucher_id'=> $request->voucher_id,
                 'quantity'=> 0,
                 'ship_price'=> $request->ship_price,
@@ -139,7 +143,7 @@ class InvoiceController extends Controller
                     return response()->json(['status'=>-1, 'data'=>'', 'message'=>'Không tìm thấy sản phẩm trong giỏ hàng']);
                 }                
             }        
-
+            
             if($request->voucher_id){
                 $voucher = Voucher::where('id', '=', $request->voucher_id)->first();
                 $invoice->update([
@@ -153,6 +157,13 @@ class InvoiceController extends Controller
                 ]); 
             }
 
+            if($request->type_pay){
+                $invoice->update([
+                    'invoice_code'=> $request->invoice_code,
+                    'type_pay'=> $request->type_pay,
+                ]);
+            } 
+
             $message = [
                 'type' => 'Đơn hàng',
                 'hi' => $user->full_name,
@@ -160,7 +171,7 @@ class InvoiceController extends Controller
                 'num' => $invoice->invoice_code,
                 'content2' => ' và tổng giá trị đơn hàng: '.$invoice->until_price.' VND. Chúng tôi sẽ phản hồi sớm nhất cho bạn, xin cảm ơn!',
             ];
-            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));            
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
 
             DB::commit();
             return response()->json(['status'=>0, 'data'=>'', 'message'=>'Hoá đơn được tạo thành công!']);

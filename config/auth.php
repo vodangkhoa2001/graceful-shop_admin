@@ -113,4 +113,11 @@ return [
         'driver' => 'token',
         'provider' => 'users',
     ],
+
+    'socialite' => [
+        'drivers' => [
+            'google',
+        ],
+    ],
+
 ];

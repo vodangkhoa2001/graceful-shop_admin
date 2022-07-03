@@ -15,6 +15,7 @@ use File;
 use Hash;
 use App\Jobs\SendEmail;
 use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -92,22 +93,23 @@ class UserController extends Controller
     }
 
     //Đăng nhập với google
-    protected function loginWithGoogle(Request $request){
+    protected function loginWithGoogle(HttpRequest $request){
         try {
             // Getting the user from socialite using token from google
-            $user_google = Socialite::driver('google')->stateless()->userFromToken($request->token);
-            
+            // $user_google = Socialite::driver('google')->stateless()->userFromToken($request->token);
+            // dd($user_google);
             // Getting or creating user from db
+        
             $user = User::firstOrCreate(
                 [
-                    'email' => $user_google->email,
+                    'email' => $request->email,
                     'type_login' => 1,
                 ],
                 [
                     // 'email_verified_at' => now(),
-                    'full_name' => $user_google->name,
-                    'phone' => $user_google->phone,
-                    'avatar' => 'default_avatar.png',
+                    'full_name' => $request->displayName,
+                    'phone' => "",
+                    'avatar' => $request->photoUrl,
                     'role' => 0,
                     'status' => true,
                 ]
@@ -172,12 +174,16 @@ class UserController extends Controller
     public function info() 
     { 
         try {            
-            // $user = Auth::user();
-            $user = User::select(['*', DB::raw('CONCAT("assets/img/users/",avatar) AS avatar')])
-            ->where('role', '=', 0)
+            // $user = Auth::user(); 
+            $user = User::where('role', '=', 0)
             ->where('status', '=', 1)
             ->where('id', '=', Auth::user()->id)
             ->first();
+
+            if( explode(':', $user->avatar)[0] != 'https'){
+                $user->avatar = "assets/img/users/".$user->avatar;
+            }
+
             return response()->json(['status'=>0, 'data' => $user, 'message'=>'']);   
         } catch (\Throwable $e) {
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
@@ -204,7 +210,7 @@ class UserController extends Controller
             $user = Auth::user();
             
             if($request->hasFile('avatar')){
-                if($user->avatar != 'default_avatar.png'){
+                if($user->avatar != 'default_avatar.png' && explode(':', $user->avatar)[0] != 'https'){
                     //Xoá ảnh cũ
                     unlink(public_path('/assets/img/users/'.$user->avatar));
                 }               
@@ -256,7 +262,7 @@ class UserController extends Controller
             
             $user = Auth::user();
             if($request->hasFile('avatar')){
-                if($user->avatar != 'default_avatar.png'){
+                if($user->avatar != 'default_avatar.png' && explode(':', $user->avatar)[0] != 'https'){
                     //Xoá ảnh cũ
                     unlink(public_path('/assets/img/users/'.$user->avatar));
                 }               

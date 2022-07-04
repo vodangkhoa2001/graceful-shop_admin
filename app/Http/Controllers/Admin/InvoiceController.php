@@ -8,6 +8,11 @@ use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\InvoiceDetail;
+use App\Models\Product;
+use App\Models\Size;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class InvoiceController extends Controller
 {
@@ -19,8 +24,20 @@ class InvoiceController extends Controller
     public function index()
     {
         $title = 'Danh sách đơn hàng';
-        $invoices = DB::select('SELECT invoices.*,users.full_name,vouchers.voucher_code FROM invoices,users,vouchers WHERE invoices.user_id = users.id and invoices.voucher_id = vouchers.id ORDER BY invoices.id DESC');
+        $invoices = DB::table('invoices')
+        ->join('users','users.id','=','invoices.user_id')
+        ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
+        ->select('invoices.*','users.full_name','vouchers.voucher_code')
+        ->get();
+        // dd($invoices);
         return view('component.invoice.list-invoice',compact('invoices','title'));
+    }
+
+    public function updateStatus($id){
+        $invoice = Invoice::find($id);
+        $invoice->status = $invoice->status+1;
+        $success = $invoice->update();
+        return Redirect::route('list-invoice',compact('success'));
     }
 
     /**
@@ -50,9 +67,18 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoice $invoice)
+    public function show($id)
     {
-        //
+        $invoice = Invoice::find($id);
+        $invoice_v = DB::select("SELECT vouchers.* FROM invoices LEFT JOIN vouchers on voucher_id = vouchers.id WHERE invoices.id = {$id}");
+        $invoice_detail = DB::table('invoice_details')
+        ->leftJoin('invoices','invoices.id','=','invoice_id')
+        ->leftJoin('products','products.id','=','product_id')
+        ->where('invoice_id','=',$id)
+        ->select('invoice_details.*','products.*','invoices.quantity as invoice_quantity')
+        ->get();
+        // dd($invoice_v[0]);
+        return view('component.invoice.detail-invoice',compact('invoice','invoice_detail','invoice_v'));
     }
 
     /**
@@ -90,8 +116,18 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Invoice $invoice)
+    public function destroy($id)
     {
-        //
+        $invoice = Invoice::find($id);
+        $invoice_detail = InvoiceDetail::find($invoice->id);
+        $product = Product::find($invoice_detail->product_id);
+        $old_stock = $product->stock;
+        $product->stock += $invoice->quantity;
+        $invoice->status = 0;
+        dd($invoice->id);
+        if($product->update() && $invoice->update()){
+            $success = true;
+        }
+        return Redirect::route('list-invoice',compact('success'));
     }
 }

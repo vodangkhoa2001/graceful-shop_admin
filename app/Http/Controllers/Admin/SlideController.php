@@ -17,7 +17,9 @@ class SlideController extends Controller
      */
     public function index()
     {
-        //
+        $slides = Slide::all();
+        // dd($slides);
+        return view('component.slide.list-slide',compact('slides'));
     }
 
     /**

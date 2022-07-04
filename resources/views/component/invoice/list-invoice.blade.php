@@ -9,64 +9,129 @@
 @section('content')
     <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
-                            
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Tên KH</th>
-                                            <th>Mã Voucher</th>
-                                            <th>Số lượng</th>
-                                            <th>Thành tiền</th>
-                                            <th width="15%">Trạng thái</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (!empty($invoices))
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
 
-                                        @foreach ($invoices as $key=>$item)
-                                        <tr>
-                                            <td>{{ $key+1 }}</td>
-                                            <td>{{ $item->full_name }}</td>
-                                            <td>{{ $item->voucher_code }}</td>
-                                            <td>{{ $item->quantity }}</td>
-                                            <td>{{ $item->until_price }}</td>
-                                            <td>@if ($item->status==0)
-                                                <span class="text-danger">Đã hủy</span>
-                                            @elseif($item->status==1)
-                                                <span class="text-warning">Đã xác nhận</span>
-                                            @elseif($item->status==2)
-                                                <span class="text-warning">Đã đến kho</span>
-                                            @elseif($item->status==3)
-                                                <span class="text-warning">Đang vận chuyển</span>
-                                            @else
-                                                <span class="text-success">Đã giao</span>
-                                            @endif</td>
-                                            <td><a href="{{ route('get-EditInvoice',$item->id) }}">Chỉnh sửa</a> <br> <a href="#">Xóa</a></td>
-                                        </tr>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                {{-- @if (!empty($success))
+                    <span class="alert alert-primary">Đã duyệt cho đơn hàng {{ $invoice->invoice_code }}</span>
+                @endif --}}
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th width="5%">STT</th>
+                            <th>Mã đơn hàng</th>
+                            <th>Tên KH</th>
+                            <th>Mã Voucher</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th width="10%">Trạng thái</th>
+                            <th>Duyệt</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!empty($invoices))
+                        @foreach ($invoices as $key=>$item)
 
-                                        @endforeach
-                                        @else
-                                        <tr>
-                                            <td colspan="7">Không có đơn hàng nào</td>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- {{ $products->appends(request()->all())->links("pagination::bootstrap-4") }} --}}
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $item->invoice_code }}</td>
+                            <td>{{ $item->full_name }}</td>
+                            <td>
+                                @if (empty($item->voucher_id))
+                                    <span>Không áp dụng</span>
+                                @else
+                                    {{ $item->voucher_code }}
+                                @endif
+                            </td>
+                            <td>{{ $item->quantity }}</td>
+                            <td>{{ number_format( $item->until_price, 0, '', '.') }}</td>
+                            <td>@if ($item->status==0)
+                                <span class="text-danger">Đã hủy</span>
+                            @elseif($item->status==1)
+                                <span class="text-warning">Chờ xác nhận</span>
+                            @elseif($item->status==2)
+                                <span class="text-success">Đã xác nhận</span>
+                            @elseif($item->status==3)
+                                <span class="text-warning">Đang vận chuyển</span>
+                            @else
+                                <span class="text-primary">Đã giao</span>
+                            @endif</td>
+                            <td>
+                                @if($item->status == 1)
+                                    <form action="{{ route('update-invoiceStatus',$item->id) }}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                    </form>
+                                @elseif ($item->status == 2)
+                                    <form action="{{ route('update-invoiceStatus',$item->id) }}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Đang vận chuyển</button>
+                                    </form>
+                                @elseif ($item->status == 3)
+                                    <form action="{{ route('update-invoiceStatus',$item->id) }}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Đã giao</button>
+                                    </form>
+                                @else
+                                    <span class="text-success">Hoàn thành</span>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('detail-invoice',$item->id) }}" class="btn btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                @if ($item->status!=0 && $item->status!=4)
+                                <a href=""title="Chỉnh sửa" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#removeModal{{ $item->id }}" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Hủy"><i class="fa-solid fa-minus"></i></a>
+                                {{-- Modal --}}
+                                <div class="modal fade" id="removeModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Hủy đơn hàng</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <span>Bạn có chắc muốn hủy đơn hàng {{ $item->invoice_code }}?</span>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{{ route('cancel-invoice',$item->id) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-primary">OK</button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @endif
+
+                            </td>
+                        </tr>
+
+
+                        @endforeach
+                        @else
+                        <tr>
+                            <td colspan="7">Không có đơn hàng nào</td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 
 @endsection
+
 @section('script')
 
    @parent

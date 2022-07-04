@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductTypeController;
 use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\SlideController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -27,7 +30,7 @@ Route::post('/login',[UserController::class,'postLogin'])->name('postLogin');
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home',[UserController::class,'statistic'])->name('home');
+    Route::get('/home',[HomeController::class,'statistic'])->name('home');
     Route::prefix('user')->group(function(){
         Route::get('/', 'App\Http\Controllers\Admin\UserController@getUsers')->name('list-user');
         Route::get('/create-account', [UserController::class,'getCreateAccount'])->name('get-CreateAccount');
@@ -63,6 +66,9 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('invoices')->group(function () {
         Route::get('/',[InvoiceController::class, 'index'])->name('list-invoice');
+        Route::get('invoice/{id}',[InvoiceController::class, 'show'])->name('detail-invoice');
+        Route::post('/{id}/update-status',[InvoiceController::class, 'updateStatus'])->name('update-invoiceStatus');
+        Route::post('/{id}/cancel',[InvoiceController::class,'destroy'])->name('cancel-invoice');
         Route::get('/edit/{id}',[InvoiceController::class,'getEdit'])->name('get-EditInvoice');
         Route::post('/edit/{id}',[InvoiceController::class,'postEdit'])->name('post-EditInvoice');
     });
@@ -84,5 +90,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/create',[VoucherController::class,'postCreate'])->name('post-CreateVoucher');
         Route::get('{id}/edit',[VoucherController::class,'getEdit'])->name('get-EditVoucher');
         Route::post('{id}/edit',[VoucherController::class,'postEdit'])->name('post-EditVoucher');
+    });
+
+    Route::prefix('feedbacks')->group(function () {
+        Route::get('/',[FeedbackController::class,'index'])->name('list-feedback');
+    });
+
+    Route::prefix('slides')->group(function () {
+        Route::get('/',[SlideController::class,'index'])->name('list-slide');
     });
 });

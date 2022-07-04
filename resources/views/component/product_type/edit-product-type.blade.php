@@ -13,12 +13,13 @@
         <!-- Basic Card Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
+                <a href="{{ route('list-productType') }}">Trở lại</a>
                 <h6 class="m-0 font-weight-bold text-primary">Sửa loại sản phẩm</h6>
             </div>
             <div class="card-body">
                 @if (!empty($success))
                     <h3>Cập nhật thành công.</h3>
-                    <a href="{{ route('list-productType') }}">Danh mục</a>
+                    <a href="{{ route('list-productType') }}">Danh sách loại sản phẩm</a>
                 @else
                 <form action="{{ route('post-EditProductType',$product_type->id) }}" method="post" enctype="multipart/form-data">
                     @csrf

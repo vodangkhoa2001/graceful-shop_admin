@@ -17,7 +17,7 @@ class CreatePicturesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->text('picture_value');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
             // $table->foreign('product-id')->references('id')->on('products');

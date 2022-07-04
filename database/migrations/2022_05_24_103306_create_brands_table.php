@@ -23,7 +23,7 @@ class CreateBrandsTable extends Migration
             $table->string('bank_account_name');
             $table->string('phone_number');
             $table->string('email');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

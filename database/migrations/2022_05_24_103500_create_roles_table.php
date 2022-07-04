@@ -17,7 +17,7 @@ class CreateRolesTable extends Migration
             $table->id('id');
             $table->tinyInteger('role_value');
             $table->string('role_name');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

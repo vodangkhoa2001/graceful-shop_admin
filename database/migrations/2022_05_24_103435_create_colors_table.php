@@ -18,7 +18,7 @@ class CreateColorsTable extends Migration
             $table->string('color_name');
             $table->string('picture');
             $table->unsignedBigInteger('product_id');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
             // $table->foreign('product-id')->references('id')->on('products');

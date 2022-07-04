@@ -17,7 +17,7 @@ class CreateProductTypesTable extends Migration
             $table->id();
             $table->string('product_type_name');
             $table->unsignedBigInteger('categorie_id');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
             // $table->foreign('categories-id')->references('id')->on('categoriess');

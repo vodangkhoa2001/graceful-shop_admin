@@ -17,7 +17,7 @@ class CreateSizesTable extends Migration
             $table->id();
             $table->string('size_name');
             $table->unsignedBigInteger('product_id');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
             // $table->foreign('product-id')->references('id')->on('products');

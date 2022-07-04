@@ -22,7 +22,7 @@ class CreateInvoiceDetailsTable extends Migration
             $table->integer('quantity');
             $table->integer('price');
             $table->integer('total_price');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->boolean('rated')->nullable()->default(false);
             $table->timestamps();
 

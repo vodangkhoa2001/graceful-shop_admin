@@ -16,6 +16,8 @@ class AddForeginKeyToInvoiceDetailsTable extends Migration
         Schema::table('invoice_details', function (Blueprint $table) {
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('invoice_id')->references('id')->on('invoices');
+            $table->foreign('color_id')->references('id')->on('colors');
+            $table->foreign('size_id')->references('id')->on('sizes');
         });
     }
 

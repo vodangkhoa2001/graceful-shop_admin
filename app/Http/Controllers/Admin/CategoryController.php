@@ -33,8 +33,9 @@ class CategoryController extends Controller
     {
         return view('component.category.create-category');
     }
-    public function postCreate(Request $request)
+    public function postCreate(StoreCategoryRequest $request)
     {
+       
         $image = $request->file('icon_category');
         $namewithextension = $image->getClientOriginalName();
         $fileName = explode('.', $namewithextension)[0];
@@ -49,17 +50,6 @@ class CategoryController extends Controller
         $category->status = 1;
         $success = $category->save();
         return view('component.category.create-category',compact('success'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCategoryRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCategoryRequest $request)
-    {
-        //
     }
 
     /**
@@ -83,8 +73,9 @@ class CategoryController extends Controller
         $category = Category::find($id);
         return view('component.category.edit-category',compact('category'));
     }
-    public function postEdit($id,Request $request)
+    public function postEdit($id,UpdateCategoryRequest $request)
     {
+
         $category = Category::find($id);
         if($request->hasFile('icon_category')){
             $image = $request->file('icon_category');

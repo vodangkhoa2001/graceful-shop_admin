@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ProductTypeController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\SlideController;
+use App\Http\Controllers\Admin\InfoShopController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -31,6 +32,7 @@ Route::post('/login',[UserController::class,'postLogin'])->name('postLogin');
 
 Route::middleware('auth')->group(function () {
     Route::get('/home',[HomeController::class,'statistic'])->name('home');
+    Route::post('/home',[HomeController::class,'saleOfYear'])->name('get-SaleOfYear');
     Route::prefix('user')->group(function(){
         Route::get('/', 'App\Http\Controllers\Admin\UserController@getUsers')->name('list-user');
         Route::get('/create-account', [UserController::class,'getCreateAccount'])->name('get-CreateAccount');
@@ -98,5 +100,10 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('slides')->group(function () {
         Route::get('/',[SlideController::class,'index'])->name('list-slide');
+    });
+    Route::prefix('info-shop')->group(function () {
+        Route::get('/',[InfoShopController::class,'index'])->name('info-store');
+        Route::get('/edit',[InfoShopController::class,'getEdit'])->name('get-editInfoStore');
+        Route::post('/edit',[InfoShopController::class,'postEdit'])->name('post-editInfoStore');
     });
 });

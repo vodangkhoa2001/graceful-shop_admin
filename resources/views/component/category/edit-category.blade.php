@@ -22,16 +22,26 @@
                 @else
                 <form action="{{ route('post-EditCategory',$category->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    @if ($errors->any())
+                    @endif
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="icon_category">Icon</label><br>
-                                <img width="50" src="{{ asset('storage/categories') }}/{{ $category->icon }}" alt="">
+                                <img width="50" src="{{ asset('assets/img/categories') }}/{{ $category->icon }}" alt="">
                                 <button class="btn btn-info" type="button"><label class="m-0" for="icon_category">Đổi</label></button>
                                 <input style="display:none;" type="file" accept="image/*" name="icon_category" id="icon_category" value="" >
-                                </div>
+
+                                @error('icon_category')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="form-group col-md-4">
-                            <label for="category_name">Tên danh mục</label>
-                            <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên danh mục" value="{{ $category->category_name }}" >
+                                <label for="category_name">Tên danh mục</label>
+                                <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên danh mục" value="{{ $category->category_name }}" >
+
+                                @error('category_name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="status">Trạng thái</label>

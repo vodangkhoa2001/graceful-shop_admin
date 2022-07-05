@@ -33,7 +33,7 @@ class UserController extends Controller
         return view('component.account.users',compact('title','users','role'));
     }
 
-    
+
 
 
     public function getLogin(){

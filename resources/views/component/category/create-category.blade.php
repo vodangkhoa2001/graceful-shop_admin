@@ -22,14 +22,23 @@
                 @else
                 <form action="{{ route('post-CreateCategory') }}" method="post" enctype="multipart/form-data">
                     @csrf
+
+                    @if ($errors->any())
+                    @endif
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="icon_category">Icon</label>
                                 <input type="file" accept="image/*" name="icon_category" id="icon_category" placeholder="Icon" value="{{ old('icon_category') }}" >
-                                </div>
+                                @error('icon_category')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="form-group col-md-4">
-                            <label for="category_name">Tên danh mục</label>
-                            <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên danh mục" value="{{ old('category_name') }}" >
+                                <label for="category_name">Tên danh mục</label>
+                                <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên danh mục" value="{{ old('category_name') }}" >
+                                @error('category_name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 

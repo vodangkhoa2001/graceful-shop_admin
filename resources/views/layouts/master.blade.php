@@ -33,6 +33,9 @@
             border:none !important;
             background: none !important;
         }
+        body{
+            color:#000;
+        }
         body label{
             font-weight: 700;
             color: #333;
@@ -239,6 +242,12 @@
                     <a class="nav-link" href="{{ route('list-feedback') }}">
                         <i class="fa-solid fa-comments"></i>
                         <span>Feedbacks</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('info-store') }}">
+                        <i class="fa-solid fa-store"></i>
+                        <span>Thông tin cửa hàng</span>
                     </a>
                 </li>
 

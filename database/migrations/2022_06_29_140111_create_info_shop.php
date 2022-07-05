@@ -13,7 +13,7 @@ class CreateInfoShop extends Migration
      */
     public function up()
     {
-        Schema::create('info_shop', function (Blueprint $table) {
+        Schema::create('info_shops', function (Blueprint $table) {
             $table->id();
             $table->string('address')->nullable();
             $table->text('address_map')->nullable();
@@ -21,6 +21,7 @@ class CreateInfoShop extends Migration
             $table->text('mess_manager')->nullable();
             $table->text('mess_chat')->nullable();
             $table->text('page_fb')->nullable();
+            $table->timestamps();
         });
     }
 

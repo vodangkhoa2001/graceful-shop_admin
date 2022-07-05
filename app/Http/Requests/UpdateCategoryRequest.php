@@ -13,7 +13,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,19 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'category_name'=>'min:2',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'min'=>':attribute quá ngắn, ít nhất :min ký tự',
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'category_name'=>'Tên danh mục',
         ];
     }
 }

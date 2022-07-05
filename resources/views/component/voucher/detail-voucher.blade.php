@@ -31,7 +31,7 @@
                     <li>Ngày bắt đầu: {{ $voucher->start_date }}</li>
                     <li>Ngày kết thúc: {{ $voucher->end_date }}</li>
                     <li>Mô tả: {{ $voucher->description }}</li>
-                    <li>Lượt thích: {{ $voucher->status==0?'Không hoạt động':'Hoạt động' }}</li>
+                    <li>Trạng thái: {{ $voucher->status==0?'Không hoạt động':'Hoạt động' }}</li>
                 </ul>
 
             </div>

@@ -20,7 +20,7 @@ class BrandController extends Controller
     public function index()
     {
         $title = 'Danh sách thương hiệu';
-        $brand = Brand::orderBy('id','DESC')->get();
+        $brand = Brand::where('status','=',1)->orderBy('id','DESC')->get();
         return view('component.brand.list-brand',compact('title','brand'));
     }
 
@@ -120,8 +120,9 @@ class BrandController extends Controller
     {
         $brand = Brand::find($id);
         $brand->status = 0;
-
-        return Redirect::route('list-brand',['delete'=>$brand->save()]);
+        $name=$brand->brand_name;
+        $brand->update();
+        return Redirect::route('list-brand')->with('msg','Đã xóa thành công thương hiệu '.$name);
 
     }
 }

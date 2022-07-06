@@ -21,7 +21,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $voucher = Voucher::orderBy('id','DESC')->get();
+        $voucher = Voucher::where('status','=',1)->orderBy('id','DESC')->get();
         return view('component.voucher.list-voucher',compact('voucher'));
     }
 
@@ -123,8 +123,13 @@ class VoucherController extends Controller
      * @param  \App\Models\Voucher  $voucher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Voucher $voucher)
+    public function destroy($id)
     {
-        //
+        $voucher = Voucher::find($id);
+        $voucher->status = 0;
+        $name=$voucher->voucher_code;
+        $voucher->update();
+        return redirect()->route('list-voucher')->with('msg','Đã xóa thành công voucher '.$name);
+
     }
 }

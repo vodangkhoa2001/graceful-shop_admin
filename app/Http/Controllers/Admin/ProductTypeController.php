@@ -21,7 +21,7 @@ class ProductTypeController extends Controller
     public function index()
     {
         $title = 'Danh sách loại sản phẩm';
-        $product_type = DB::select('SELECT product_types.*,categories.category_name FROM product_types,categories WHERE product_types.categorie_id = categories.id ORDER BY product_types.categorie_id DESC');
+        $product_type = DB::select('SELECT product_types.*,categories.category_name FROM product_types,categories WHERE product_types.categorie_id = categories.id and categories.status=1 and product_types.status =1  ORDER BY product_types.categorie_id DESC');
         return view('component.product_type.list-product-type',compact('title','product_type'));
     }
 
@@ -33,7 +33,7 @@ class ProductTypeController extends Controller
 
     public function getCreate()
     {
-        $categories = Category::all();
+        $categories = Category::where('status','=',1)->get();
         return view('component.product_type.create-product-type',compact('categories'));
     }
 
@@ -77,7 +77,7 @@ class ProductTypeController extends Controller
      */
     public function getEdit($id)
     {
-        $categories = Category::all();
+        $categories = Category::where('status','=',1)->get();
         $product_type = ProductType::find($id);
         return view('component.product_type.edit-product-type',compact('product_type','categories'));
     }
@@ -110,8 +110,12 @@ class ProductTypeController extends Controller
      * @param  \App\Models\ProductType  $productType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductType $productType)
+    public function destroy($id)
     {
-        //
+        $product_type = ProductType::find($id);
+        $product_type->status = 0;
+        $name= $product_type->product_type_name;
+        $product_type->update();
+        return redirect()->route('list-productType')->with('msg','Đã xóa thành công '.$name);
     }
 }

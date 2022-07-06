@@ -118,8 +118,14 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
+        $invoice_detail = DB::table('invoice_details')
+        ->leftJoin('invoices','invoices.id','=','invoice_id')
+        ->leftJoin('products','products.id','=','product_id')
+        ->where('invoices.id','=',$id)
+        ->select('invoices.id as invoice_id','products.product_name','products.stock','invoice_details.*')
+        ->get();
+        dd($invoice_detail[0]);
         $invoice = Invoice::find($id);
-        $invoice_detail = InvoiceDetail::find($invoice->id);
         $product = Product::find($invoice_detail->product_id);
         $old_stock = $product->stock;
         $product->stock += $invoice->quantity;

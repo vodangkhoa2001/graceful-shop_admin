@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     @section('head')
@@ -11,7 +12,8 @@
 
 
         <title>Graceful - @yield('title')</title>
-
+        {{-- datepicker css --}}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
         <!-- Custom fonts for this template-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -85,6 +87,7 @@
             }
             table th,
             table td{
+                text-align:center;
                 color:#000;
             }
 
@@ -490,7 +493,8 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
-
+{{-- datepicker --}}
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
 <script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -523,7 +527,6 @@ ClassicEditor
         console.error( error );
     } );
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 @show

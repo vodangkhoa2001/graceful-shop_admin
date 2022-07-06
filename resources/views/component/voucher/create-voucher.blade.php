@@ -20,7 +20,7 @@
                     <h3>Thêm voucher thành công.</h3>
                     <a href="{{ route('list-voucher') }}">Danh sách voucher</a>
                 @else
-                <form action="{{ route('post-CreateVoucher') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('post-CreateVoucher') }}" method="post" autocomplete="off">
                     @csrf
                         <div class="form-row">
                             <div class="form-group col-md-4">
@@ -39,11 +39,11 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="start_date">Ngày bắt đầu</label>
-                                <input type="date" class="form-control datepicker" name="start_date" id="start_date"  value="{{ old('start_date') }}" >
+                                <input type="text" class="form-control" name="start_date" id="start_date"  value="{{ old('start_date') }}" >
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="end_date">Ngày kết thúc</label>
-                                <input type="date" class="form-control datepicker" name="end_date" id="end_date"  value="{{ old('end_date') }}" >
+                                <input type="text" class="form-control" name="end_date" id="end_date"  value="{{ old('end_date') }}" >
                             </div>
                         </div>
                         <div class="form-row">
@@ -70,4 +70,29 @@
 
 @section('script')
     @parent
+
+{{-- datepicker --}}
+
+<script type="text/javascript">
+    $( function() {
+        $( "#start_date" ).datepicker({
+            prevText: "Tháng trước",
+            nextText: "Tháng sau",
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: ["T2","T3","T4","T5","T6","T7","CN"],
+            monthNames: [ "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5","Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" ],
+            duration:"slow",
+            minDate: new Date(),
+        });
+        $( "#end_date" ).datepicker({
+            prevText: "Tháng trước",
+            nextText: "Tháng sau",
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: ["T2","T3","T4","T5","T6","T7","CN"],
+            monthNames: [ "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5","Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" ],
+            duration:"slow",
+            minDate: new Date()
+        });
+    } );
+</script>
 @endsection

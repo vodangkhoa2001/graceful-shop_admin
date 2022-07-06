@@ -44,43 +44,41 @@
                         <a href="{{ route('products') }}">Danh sách sản phẩm</a>
                     </div>
                 @else
-                <form action="{{route('post-AddProduct')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('post-AddProduct')}}" method="POST" enctype="multipart/form-data">
                     @csrf
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
                             <label for="product_code">Mã sản phẩm</label>
                             <input type="text" class="form-control" name="product_code" id="product_code" value="{{ $productCode }}" placeholder="Mã sản phẩm" readonly >
-                            </div>
-                            <div class="form-group col-md-6">
+                        </div>
+                        <div class="form-group col-md-6">
                             <label for="product_name">Tên sản phẩm</label>
                             <input type="text" class="form-control" name="product_name" id="product_name" placeholder="Tên sản phẩm" value="{{ old('product_name') }}" >
-                            </div>
                         </div>
-                      <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="brand">Thương hiệu</label>
-                                <select name="brand" id="brand" class="form-control">
-                                    <option value="">-- Chọn thương hiệu --</option>
-                                    @foreach ($brand as $item)
-                                        @if ($item->status ==1)
-                                            <option value="{{ $item->id }}">{{ $item->brand_name }}</option>
-
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="stock">Số lượng</label>
-                                <input type="number" class="form-control" id="stock" name="stock" placeholder="Số lượng" value="{{ old('stock') }}">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="import_price">Giá nhập</label>
-                                <input type="text" class="form-control" id="import_price" name="import_price" placeholder="Giá nhập" value="{{ old('import_price') }}">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="price">Giá bán</label>
-                                <input type="text" class="form-control" id="price" name="price" placeholder="Giá bán" value="{{ old('price') }}">
-                            </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="brand">Thương hiệu</label>
+                            <select name="brand" id="brand" class="form-control">
+                                <option value="">-- Chọn thương hiệu --</option>
+                                @foreach ($brand as $item)
+                                    @if ($item->status ==1)
+                                        <option value="{{ $item->id }}">{{ $item->brand_name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="stock">Số lượng</label>
+                            <input type="number" class="form-control" id="stock" name="stock" placeholder="Số lượng" value="{{ old('stock') }}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="import_price">Giá nhập</label>
+                            <input type="text" class="form-control" id="import_price" name="import_price" placeholder="Giá nhập" value="{{ old('import_price') }}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="price">Giá bán</label>
+                            <input type="text" class="form-control" id="price" name="price" placeholder="Giá bán" value="{{ old('price') }}">
                         </div>
                     </div>
                     <div class="form-row pl-4 pr-4">
@@ -88,7 +86,6 @@
                             <label for="discount_price">Giá giảm</label>
                             <input class="form-control" type="text" placeholder="Giá giảm" id="discount_price" name="discount_price" value="{{ old('discount_price') }}">
                         </div>
-
                         <div class="form-group col-md-6">
                             <label for="product_type">Loại sản phẩm</label>
                             <select name="product_type" id="product_type" class="form-control">
@@ -98,7 +95,7 @@
                                 @endforeach
                             </select>
                         </div>
-
+                    </div>
 
                     <div class="form-row pl-4">
                         <div class="form-group col-md-7">
@@ -132,19 +129,17 @@
                         </div>
                         <div class="form-group col-md-5">
                             <label for="images">Hình ảnh</label>
-                        <input type="file" id="images" accept="image/*" multiple required name="images">
-
+                            <input type="file" id="images" accept="image/*" multiple required name="images">
                         </div>
                     </div>
-
+                    <div class="form-group m-4 row">
+                        <button onclick="add_append();" type="button"  class="btn btn-info ml-4 btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm màu</button>
                     </div>
-                    <button onclick="add_append();" type="button"  class="btn btn-info ml-4 btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm màu</button>
-                    <div class="add_color_and_size" >
-                        {{-- màu trong này phải qua cái js --}}
-                        @for ($i =0;$i<;$i++)
-                        <div class="form-group form-inline ml-md-4"><label for="color"> Tên màu :</label><input type="text" id="color" name="color_name[]" placeholder="Tên màu" class="form-control col-md-1 mx-sm-3"> <input type="file" accept="image/*" multiple="" required="" name="image_colors"><button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button></div>
-                        
-                        @endfor
+                    <div class="row">
+                        <div class="add_color_and_size" >
+                            {{-- màu trong này phải qua cái js --}}
+                            <div class="form-group form-inline ml-md-4"><label for="color"> Tên màu :</label><input type="text" id="color" name="color_name[]" placeholder="Tên màu" class="form-control col-md-1 mx-sm-3"> <input type="file" accept="image/*" multiple="" required="" name="image_colors[]"><button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button></div>
+                        </div>
                     </div>
                     <div class="form-group m-4">
                         <label for="editor">Nội dung</label>

@@ -13,7 +13,7 @@ class StoreSlideDetailRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,22 @@ class StoreSlideDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'description'=>'required|min:50',
+            'picture'=>'required'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'required'=>':attribute không được bỏ trống',
+            'min'=>':attribute quá ngắn, ít nhất :min ký tự',
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'description'=>'Mô tả slide',
+            'picture'=>'Hình ảnh'
         ];
     }
 }

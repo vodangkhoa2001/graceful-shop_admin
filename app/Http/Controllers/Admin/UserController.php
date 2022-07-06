@@ -28,8 +28,7 @@ class UserController extends Controller
     public function getUsers(){
         $title = 'Danh sách người dùng';
         $role = Role::all();
-        $users = new User();
-        $users = DB::select('SELECT users.*,roles.role_name FROM users,roles WHERE users.role = roles.role_value ORDER BY created_at DESC');
+        $users = DB::select('SELECT users.*,roles.role_name FROM users,roles WHERE users.role = roles.role_value and users.role != 1 and users.status = 1 ORDER BY created_at DESC');
         return view('component.account.users',compact('title','users','role'));
     }
 
@@ -117,6 +116,16 @@ class UserController extends Controller
         $user->status = $request->input('status');
         $success = $user->update();
         return view('component.account.edit-account',compact('success'));
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->status = 0;
+        $name=$user->full_name;
+        $user->update();
+        return redirect()->route('list-user')->with('msg','Đã xóa thành công người dùng '.$name);
+
     }
 }
 

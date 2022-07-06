@@ -66,27 +66,27 @@
                                 @if($item->status == 1)
                                     <form action="{{ route('update-invoiceStatus',$item->id) }}" method="post">
                                         @csrf
-                                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                        <button type="submit" class="btn btn-sm btn-primary">Xác nhận</button>
                                     </form>
                                 @elseif ($item->status == 2)
                                     <form action="{{ route('update-invoiceStatus',$item->id) }}" method="post">
                                         @csrf
-                                        <button type="submit" class="btn btn-primary">Đang vận chuyển</button>
+                                        <button type="submit" class="btn btn-sm btn-primary">Đang vận chuyển</button>
                                     </form>
                                 @elseif ($item->status == 3)
                                     <form action="{{ route('update-invoiceStatus',$item->id) }}" method="post">
                                         @csrf
-                                        <button type="submit" class="btn btn-primary">Đã giao</button>
+                                        <button type="submit" class="btn btn-sm btn-primary">Đã giao</button>
                                     </form>
                                 @else
                                     <span class="text-success">Hoàn thành</span>
                                 @endif
                             </td>
-                            <td>
-                                <a href="{{ route('detail-invoice',$item->id) }}" class="btn btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                            <td class="d-flex justify-content-around">
+                                <a href="{{ route('detail-invoice',$item->id) }}" class="btn btn-sm btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
                                 @if ($item->status!=0 && $item->status!=4)
-                                <a href=""title="Chỉnh sửa" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="#removeModal{{ $item->id }}" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Hủy"><i class="fa-solid fa-minus"></i></a>
+                                <a href=""title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#removeModal{{ $item->id }}" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Hủy"><i class="fa-solid fa-minus"></i></a>
                                 {{-- Modal --}}
                                 <div class="modal fade" id="removeModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">

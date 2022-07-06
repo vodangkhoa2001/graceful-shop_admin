@@ -12,7 +12,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Danh sách Slide </h6>
-            <a href="{{ route('get-AddProduct') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
+            <a href="{{ route('get-CreateSlide') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
         </div>
         <div class="card-body">
 
@@ -33,11 +33,11 @@
                         @foreach ($slides as $key=>$item)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td><img height="50" width="100" src="{{ asset('assets/img/slideshows') }}/{{ $item->picture }}"></td>
+                            <td><img width="100" src="{{ asset('assets/img/slideshows') }}/{{ $item->picture }}"></td>
                             <td>{{ $item->description }}</td>
                             <td>{{ $item->created_at }}</td>
                             <td>
-                                <a href="{{ route('detail-invoice',$item->id) }}" class="btn btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="{{ route('detail-slide',$item->id) }}" class="btn btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
                                 <a href=""title="Chỉnh sửa" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a href="#removeModal{{ $item->id }}" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Xóa"><i class="fa-solid fa-minus"></i></a>
                                 {{-- Modal --}}

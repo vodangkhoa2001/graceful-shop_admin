@@ -1,3 +1,4 @@
+{{-- {{ dd(Date('Y')) }} --}}
 @extends('layouts.master')
 @section('head')
     @parent
@@ -98,20 +99,11 @@
         <div class="col-xl-12">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-xl-between">
-                    <form action="{{ route('get-SaleOfYear') }}" method="post" class="col-6 d-flex align-items-center">
+                    <form action="{{ route('post-SaleOfYear') }}" method="post" class="col-6 d-flex align-items-center">
                         @csrf
                         <i class="fas fa-chart-bar me-1"></i>
                         <span class="ml-1 col-4">Doanh thu năm</span>
-                        <select name="year" id="year" class="form-control col-3">
-                            <?php
-                                for ($i = Date::now()->format('Y');$i>=2019;$i--){
-                                    ?>
-                                    <option value="<?php echo $i?>"><?php echo $i?></option>
-
-                                    <?php
-                                }
-                            ?>
-                        </select>
+                        
                         <button type="submit" class="btn btn-primary ml-4">Chọn</button>
                     </form>
                     <span>Tổng doanh thu: {{ number_format($saleNowYear, 0, '', '.')." VNĐ"; }}</span>
@@ -125,70 +117,70 @@
 @endsection
 
 @section('script')
+
 {{-- bieu do --}}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script> --}}
 <script type="text/javascript">
     var _ydata = JSON.parse('{!! json_encode($months) !!}');
     var _xdata = JSON.parse('{!! json_encode($monthSum) !!}');
     // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#292b2c';
+    Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// Bar Chart Example
-var ctx = document.getElementById("myBarChart");
-var myLineChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: _ydata,
-    datasets: [{
-      label: "Số lượng",
-      backgroundColor: "rgba(2,117,216,1)",
-      borderColor: "rgba(2,117,216,1)",
-      data: _xdata,
-    }],
-  },
-  options: {
-    tooltips: {
-         callbacks: {
-            label: function(t, d) {
-               var xLabel = d.datasets[t.datasetIndex].label;
-               var yLabel = t.yLabel >= 1000 ? t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VNĐ" : t.yLabel + " VNĐ";
-               return xLabel + ': ' + yLabel;
-            }
-         }
-      },
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'month'
-        },
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          maxTicksLimit: 12
-        }
-      }],
-      yAxes: [{
-            ticks: {
-               callback: function(value, index, values) {
-                  if (parseInt(value) >= 1000) {
-                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+" VNĐ";
-                  } else {
-                     return  value+" VNĐ";
-                  }
-               }
-            }
-         }]
+    // Bar Chart Example
+    var ctx = document.getElementById("myBarChart");
+    var myLineChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: _ydata,
+        datasets: [{
+        label: "Số lượng",
+        backgroundColor: "rgba(2,117,216,1)",
+        borderColor: "rgba(2,117,216,1)",
+        data: _xdata,
+        }],
     },
-    legend: {
-      display: false
+    options: {
+        tooltips: {
+            callbacks: {
+                label: function(t, d) {
+                var xLabel = d.datasets[t.datasetIndex].label;
+                var yLabel = t.yLabel >= 1000 ? t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VNĐ" : t.yLabel + " VNĐ";
+                return xLabel + ': ' + yLabel;
+                }
+            }
+        },
+        scales: {
+        xAxes: [{
+            time: {
+            unit: 'month'
+            },
+            gridLines: {
+            display: false
+            },
+            ticks: {
+            maxTicksLimit: 12
+            }
+        }],
+        yAxes: [{
+                ticks: {
+                callback: function(value, index, values) {
+                    if (parseInt(value) >= 1000) {
+                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+" VNĐ";
+                    } else {
+                        return  value+" VNĐ";
+                    }
+                }
+                }
+            }]
+        },
+        legend: {
+        display: false
+        }
     }
-  }
-});
+    });
 </script>
 
 @parent

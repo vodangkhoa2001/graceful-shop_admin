@@ -7,7 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Slide;
 use App\Http\Requests\StoreSlideRequest;
 use App\Http\Requests\UpdateSlideRequest;
-
+use Illuminate\Http\Request;
+use App\Http\Requests\StoreSlideDetailRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 class SlideController extends Controller
 {
     /**
@@ -27,9 +30,26 @@ class SlideController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getCreate()
     {
-        //
+        return view('component.slide.create-slide');
+    }
+    public function postCreate(StoreSlideDetailRequest $request)
+    {
+        $image = $request->file('picture');
+        $namewithextension = $image->getClientOriginalName();
+        $fileName = explode('.', $namewithextension)[0];
+        $extension = $image->getClientOriginalExtension();
+        $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+        $destinationPath = public_path('/assets/img/slideshows/');
+        $image->move($destinationPath,$fileNew);
+
+        $slide = new Slide();
+        $slide->picture = $fileNew;
+        $slide->description = $request->description;
+        $slide->status=1;
+        $success = $slide->save();
+        return view('component.slide.create-slide',compact('success'));
     }
 
     /**
@@ -49,9 +69,11 @@ class SlideController extends Controller
      * @param  \App\Models\Slide  $slide
      * @return \Illuminate\Http\Response
      */
-    public function show(Slide $slide)
+    public function show($id)
     {
-        //
+
+        $slide = Slide::find($id);
+        return view('component.slide.detail-slide',compact('slide'));
     }
 
     /**

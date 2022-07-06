@@ -20,7 +20,7 @@ class CategoryController extends Controller
     public function index()
     {
         $title = 'Danh sách danh mục';
-        $category = Category::orderBy('id','DESC')->get();
+        $category = Category::where('status','=',1)->orderBy('id','DESC')->get();
         return view('component.category.category',compact('title','category'));
     }
 
@@ -35,7 +35,7 @@ class CategoryController extends Controller
     }
     public function postCreate(StoreCategoryRequest $request)
     {
-       
+
         $image = $request->file('icon_category');
         $namewithextension = $image->getClientOriginalName();
         $fileName = explode('.', $namewithextension)[0];
@@ -116,8 +116,12 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->status = 0;
+        $name= $category->category_name;
+        $category->update();
+        return redirect()->route('list-category')->with('msg','Đã xóa thành công '.$name);
     }
 }

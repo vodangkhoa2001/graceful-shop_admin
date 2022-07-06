@@ -11,7 +11,7 @@ class InfoShopController extends Controller
     //Lấy thông tin shop
     public function getInfoShop()
     {
-        $info =  DB::table('info_shop')->first();
+        $info =  DB::table('info_shops')->first();
 
         return response()->json(['status'=>0, 'data'=>$info, 'message'=>'']);
     }

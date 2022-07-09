@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\InfoShopController;
+use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit-account/{id}', [UserController::class,'getEditUser'])->name('get-EditUser');
         Route::post('/edit-account/{id}', [UserController::class,'postEditUser'])->name('post-EditUser');
         Route::post('/delete/{id}', [UserController::class,'destroy'])->name('cancel-user');
+        Route::get('/my-profile', [UserController::class,'getProfile'])->name('get-Profile');
+        Route::post('/my-profile', [UserController::class,'postProfile'])->name('post-Profile');
+
     });
 
     Route::prefix('products')->group(function(){
@@ -49,6 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/product/{id}',[ProductController::class, 'show'])->name('get-product');
         Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('edit-product');
         Route::post('/product/edit/{id}',[ProductController::class, 'postEdit'])->name('post-editProduct');
+        Route::post('/{id}/delete',[ProductController::class,'destroy'])->name('cancel-product');
     });
 
     Route::prefix('category')->group(function () {
@@ -109,6 +114,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}',[SlideController::class,'show'])->name('detail-slide');
         Route::get('/create',[SlideController::class,'getCreate'])->name('get-CreateSlide');
         Route::post('/create',[SlideController::class,'postCreate'])->name('post-CreateSlide');
+        Route::get('/edit/{id}',[SlideController::class,'getEdit'])->name('get-EditSlide');
+        Route::post('/edit/{id}',[SlideController::class,'postEdit'])->name('post-EditSlide');
+        Route::post('{id}/delete',[SlideController::class,'destroy'])->name('cancel-slide');
+    });
+    Route::prefix('roles')->group(function () {
+        Route::get('/',[RoleController::class,'index'])->name('list-role');
+        // Route::get('/{id}',[SlideController::class,'show'])->name('detail-slide');
+        // Route::get('/create',[SlideController::class,'getCreate'])->name('get-CreateSlide');
+        // Route::post('/create',[SlideController::class,'postCreate'])->name('post-CreateSlide');
+        // Route::get('/edit/{id}',[SlideController::class,'getEdit'])->name('get-EditSlide');
+        // Route::post('/edit/{id}',[SlideController::class,'postEdit'])->name('post-EditSlide');
+        // Route::post('{id}/delete',[SlideController::class,'destroy'])->name('cancel-slide');
     });
     Route::prefix('info-shop')->group(function () {
         Route::get('/',[InfoShopController::class,'index'])->name('info-store');

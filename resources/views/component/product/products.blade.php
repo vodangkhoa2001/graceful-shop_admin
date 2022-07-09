@@ -7,6 +7,11 @@
 
 @endsection
 @section('content')
+    @if (session('msg'))
+        <div class="alert alert-success">
+            {{ session('msg') }}
+        </div>
+    @endif
     <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -46,9 +51,33 @@
                                 @else
                                 <span class="text-success">Hoạt động</span>
                             @endif</td>
-                            <td><a href="{{ route('get-product',$item->id) }}">Xem chi tiết</a> <br>
-                                <a href="{{ route('edit-product',$item->id) }}">Sửa</a>
-                                <a href="#">Xóa</a></td>
+                            <td>
+                                <a href="{{ route('get-product',$item->id) }}" class="btn btn-sm btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="{{ route('edit-product',$item->id) }}"title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#removeModal{{ $item->id }}" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Xóa"><i class="fa-solid fa-minus"></i></a>
+                                {{-- Modal --}}
+                                <div class="modal fade" id="removeModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Xóa sản phẩm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <span>Bạn có chắc muốn xóa sản phẩm {{ $item->product_name }}?</span>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{{ route('cancel-product',$item->id) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-primary">OK</button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </tr>
 
                         @endforeach

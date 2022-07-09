@@ -44,7 +44,7 @@
                         <a href="{{ route('products') }}">Danh sách sản phẩm</a>
                     </div>
                 @else
-                <form action="{{route('post-AddProduct')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('post-AddProduct')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -102,34 +102,34 @@
                             <label for="">Kích thước:</label>
                             <div class="sizes">
                                 <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name" value="S" id="sizeS">
+                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="S" id="sizeS">
                                     <label class="form-check-label" for="sizeS">S</label>
                                 </div>
                                 <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name" value="M" id="sizeM">
+                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="M" id="sizeM">
                                     <label class="form-check-label" for="sizeM">M</label>
                                 </div>
                                 <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name" value="L" id="sizeL">
+                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="L" id="sizeL">
                                     <label class="form-check-label" for="sizeL">L</label>
                                 </div>
                                 <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name" value="XL" id="sizeXL">
+                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="XL" id="sizeXL">
                                     <label class="form-check-label" for="sizeXL">XL</label>
                                 </div>
                                 <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name" value="XXL" id="size2XL">
+                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="XXL" id="size2XL">
                                     <label class="form-check-label" for="size2XL">XXL</label>
                                 </div>
                                 <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name" value="Free size" id="free_size">
+                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="Free size" id="free_size">
                                     <label class="form-check-label" for="free_size">Free size</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group col-md-5">
                             <label for="images">Hình ảnh</label>
-                            <input type="file" id="images" accept="image/*" multiple required name="images">
+                            <input type="file" id="images" accept="image/*" multiple required name="images[]">
                         </div>
                     </div>
                     <div class="form-group m-4 row">

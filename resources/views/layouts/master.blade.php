@@ -125,134 +125,172 @@
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brand"
-                        aria-expanded="true" aria-controls="brand">
-                        <i class="fa-solid fa-building"></i>
-                        <span>Thương hiệu</span>
-                    </a>
-                    <div id="brand" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('list-brand') }}">Danh sách thương hiệu</a>
-                            <a class="collapse-item" href="{{ route('get-CreateBrand') }}">Thêm thương hiệu</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
-                        aria-expanded="true" aria-controls="product">
-                        <i class="fa-solid fa-bag-shopping"></i>
-                        <span>Sản phẩm</span>
-                    </a>
-                    <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
-                            <a class="collapse-item" href="{{ route('get-AddProduct') }}">Thêm sản phẩm mới</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#user"
-                        aria-expanded="true" aria-controls="user">
-                        <i class="fa-solid fa-user"></i>
-                        <span>Người dùng</span>
-                    </a>
-                    <div id="user" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('list-user') }}">Danh sách người dùng</a>
-                            <a class="collapse-item" href="{{ route('get-CreateAccount') }}">Thêm người dùng</a>
-                        </div>
-                    </div>
-                </li>
+                @if (Auth::user()->role == 1)
+                    {{-- brand --}}
+                    <li class="nav-item">
 
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#category"
-                        aria-expanded="true" aria-controls="category">
-                        <i class="fa-solid fa-list-check"></i>
-                        <span>Danh mục</span>
-                    </a>
-                    <div id="category" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('list-category') }}">Danh sách danh mục</a>
-                            <a class="collapse-item" href="{{ route('get-CreateCategory') }}">Thêm danh mục</a>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brand"
+                            aria-expanded="true" aria-controls="brand">
+                            <i class="fa-solid fa-building"></i>
+                            <span>Thương hiệu</span>
+                        </a>
+                        <div id="brand" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('list-brand') }}">Danh sách thương hiệu</a>
+                                <a class="collapse-item" href="{{ route('get-CreateBrand') }}">Thêm thương hiệu</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_type"
-                        aria-expanded="true" aria-controls="product_type">
-                        <i class="fa-solid fa-cubes"></i>
-                        <span>Loại sản phẩm</span>
-                    </a>
-                    <div id="product_type" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('list-productType') }}">Danh sách loại</a>
-                            <a class="collapse-item" href="{{ route('get-CreateProductType') }}">Thêm loại</a>
+                    </li>
+                    {{-- San pham --}}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
+                            aria-expanded="true" aria-controls="product">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <span>Sản phẩm</span>
+                        </a>
+                        <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
+                                <a class="collapse-item" href="{{ route('get-AddProduct') }}">Thêm sản phẩm mới</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#invoice"
-                        aria-expanded="true" aria-controls="invoice">
-                        <i class="fa-solid fa-box"></i>
-                        <span>Đơn hàng</span>
-                    </a>
-                    <div id="invoice" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('list-invoice') }}">Danh sách đơn hàng</a>
-                            <a class="collapse-item" href="{{ route('products') }}">Products</a>
+                    </li>
+                    {{-- user --}}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#user"
+                            aria-expanded="true" aria-controls="user">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Người dùng</span>
+                        </a>
+                        <div id="user" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('list-user') }}">Danh sách người dùng</a>
+                                <a class="collapse-item" href="{{ route('get-CreateAccount') }}">Thêm người dùng</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#voucher"
-                        aria-expanded="true" aria-controls="voucher">
-                        <i class="fa-solid fa-tag"></i>
-                        <span>Voucher</span>
-                    </a>
-                    <div id="voucher" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('list-voucher') }}">Danh sách voucher</a>
-                            <a class="collapse-item" href="{{ route('get-CreateVoucher') }}">Thêm voucher</a>
+                    </li>
+                    {{-- danh muc --}}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#category"
+                            aria-expanded="true" aria-controls="category">
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>Danh mục</span>
+                        </a>
+                        <div id="category" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('list-category') }}">Danh sách danh mục</a>
+                                <a class="collapse-item" href="{{ route('get-CreateCategory') }}">Thêm danh mục</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#slide"
-                        aria-expanded="true" aria-controls="slide">
-                        <i class="fa-solid fa-tag"></i>
-                        <span>Slide</span>
-                    </a>
-                    <div id="slide" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Danh sách chức năng:</h6>
-                            <a class="collapse-item" href="{{ route('list-slide') }}">Danh sách slide</a>
-                            <a class="collapse-item" href="{{ route('get-CreateVoucher') }}">Thêm slide</a>
+                    </li>
+                    {{-- loai san pham --}}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_type"
+                            aria-expanded="true" aria-controls="product_type">
+                            <i class="fa-solid fa-cubes"></i>
+                            <span>Loại sản phẩm</span>
+                        </a>
+                        <div id="product_type" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('list-productType') }}">Danh sách loại</a>
+                                <a class="collapse-item" href="{{ route('get-CreateProductType') }}">Thêm loại</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('list-feedback') }}">
-                        <i class="fa-solid fa-comments"></i>
-                        <span>Feedbacks</span>
-                    </a>
-                </li>
+                    </li>
+                    {{-- Voucher --}}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#voucher"
+                            aria-expanded="true" aria-controls="voucher">
+                            <i class="fa-solid fa-tag"></i>
+                            <span>Voucher</span>
+                        </a>
+                        <div id="voucher" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('list-voucher') }}">Danh sách voucher</a>
+                                <a class="collapse-item" href="{{ route('get-CreateVoucher') }}">Thêm voucher</a>
+                            </div>
+                        </div>
+                    </li>
+                    {{-- slide --}}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#slide"
+                            aria-expanded="true" aria-controls="slide">
+                            <i class="fa-solid fa-tag"></i>
+                            <span>Slide</span>
+                        </a>
+                        <div id="slide" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('list-slide') }}">Danh sách slide</a>
+                                <a class="collapse-item" href="{{ route('get-CreateSlide') }}">Thêm slide</a>
+                            </div>
+                        </div>
+                    </li>
+                    {{-- role --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('list-role') }}">
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span>Role</span>
+                        </a>
+                    </li>
+                    {{-- don hang --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('list-invoice') }}">
+                            <i class="fa-solid fa-box"></i>
+                            <span>Danh sách đơn hàng</span>
+                        </a>
+                    </li>
+                    {{-- feedback --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('list-feedback') }}">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Feedbacks</span>
+                        </a>
+                    </li>
+                    {{-- thong tin cua hang --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('info-store') }}">
+                            <i class="fa-solid fa-store"></i>
+                            <span>Thông tin cửa hàng</span>
+                        </a>
+                    </li>
+                @elseif (Auth::user()->role == 2)
+                    {{-- San pham --}}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
+                            aria-expanded="true" aria-controls="product">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <span>Sản phẩm</span>
+                        </a>
+                        <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                                <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
+                                <a class="collapse-item" href="{{ route('get-AddProduct') }}">Thêm sản phẩm mới</a>
+                            </div>
+                        </div>
+                    </li>
+                    {{-- don hang --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('list-invoice') }}">
+                            <i class="fa-solid fa-box"></i>
+                            <span>Danh sách đơn hàng</span>
+                        </a>
+                    </li>
+                @elseif (Auth::user()->role == 3)
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('info-store') }}">
                         <i class="fa-solid fa-store"></i>
                         <span>Thông tin cửa hàng</span>
                     </a>
                 </li>
+                @endif
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
@@ -278,7 +316,7 @@
                         </button>
 
 
-                        <h1>Welcome, {{ Auth::User()->full_name }}</h1>
+                        <h2>Welcome, {{ Auth::User()->full_name }}</h2>
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
@@ -421,7 +459,7 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('get-Profile') }}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>

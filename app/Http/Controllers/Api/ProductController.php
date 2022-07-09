@@ -23,7 +23,7 @@ use File;
 use Hash;
 
 class ProductController extends Controller
-{   
+{
     //DS sản phẩm mới
     public function getAllNewProduct(HttpRequest $request)
     {
@@ -39,7 +39,7 @@ class ProductController extends Controller
 
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
-    
+
     //DS sản phẩm nổi bật
     public function getAllPopularProduct(HttpRequest $request)
     {
@@ -53,16 +53,16 @@ class ProductController extends Controller
         ->where('products.status', '=', 1)
         ->orderBy('products.id', 'DESC')
         ->paginate($num);
-        
+
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
-    
+
     //Chi tiết sản phẩm
     public function getProductDetailById($id)
     {
         $color = Color::select(['*', DB::raw('CONCAT("assets/img/products/",picture) AS picture')])
         ->where('status', '=', 1)->where('product_id', '=', $id)->get();
-   
+
         $size = Size::where('status', '=', 1)->where('product_id', '=', $id)->get();
 
         $quantityOfType = ProductDetail::where('product_id', '=', $id)->get();
@@ -119,8 +119,8 @@ class ProductController extends Controller
     {
         $num = (int) $request->num;
 
-        $validator = Validator::make($request->all(), [ 
-            'product_type_id' => 'nullable', 
+        $validator = Validator::make($request->all(), [
+            'product_type_id' => 'nullable',
             'from_price' => 'nullable',
             'to_price' => 'nullable',
         ]);
@@ -139,8 +139,8 @@ class ProductController extends Controller
                     ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
                     ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
             })
-            ->Where('products.product_type_id', '=', (int) $request->product_type_id)   
-            ->whereBetween('products.price', [$request->from_price, $request->to_price])  
+            ->Where('products.product_type_id', '=', (int) $request->product_type_id)
+            ->whereBetween('products.price', [$request->from_price, $request->to_price])
             ->where('products.status', '=', 1)
             ->where('product_types.status', '=', 1)
             ->where('categories.status', '=', 1)
@@ -159,7 +159,7 @@ class ProductController extends Controller
                     ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
                     ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
             })
-            ->Where('products.product_type_id', '=', (int) $request->product_type_id)      
+            ->Where('products.product_type_id', '=', (int) $request->product_type_id)
             ->where('products.status', '=', 1)
             ->where('product_types.status', '=', 1)
             ->where('categories.status', '=', 1)
@@ -178,7 +178,7 @@ class ProductController extends Controller
                     ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
                     ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
             })
-            ->whereBetween('products.price', [$request->from_price, $request->to_price])  
+            ->whereBetween('products.price', [$request->from_price, $request->to_price])
             ->where('products.status', '=', 1)
             ->where('product_types.status', '=', 1)
             ->where('categories.status', '=', 1)
@@ -197,7 +197,7 @@ class ProductController extends Controller
                 $query->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
                     ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
                     ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
-            })      
+            })
             ->where('products.status', '=', 1)
             ->where('product_types.status', '=', 1)
             ->where('categories.status', '=', 1)
@@ -218,7 +218,7 @@ class ProductController extends Controller
             $query->orWhere('products.product_name', 'like' , '%'.$key_search.'%')
                 ->orWhere('product_types.product_type_name', 'like' , '%'.$key_search.'%')
                 ->orWhere('categories.category_name', 'like' , '%'.$key_search.'%');
-        })      
+        })
         ->where('products.status', '=', 1)
         ->where('product_types.status', '=', 1)
         ->where('categories.status', '=', 1)
@@ -234,7 +234,7 @@ class ProductController extends Controller
     {
         try {
             $product_id = (int) $request->product_id;
-        
+
             $user = Auth::user();
 
             $like = Like::where('user_id', '=', $user->id)
@@ -247,7 +247,7 @@ class ProductController extends Controller
                 Like::insert([
                     'product_id'=> $product_id,
                     'user_id'=> $user->id,
-                ]);                
+                ]);
                 $product->update(['num_like' => $product->num_like + 1]);
             }else{
                 $like->delete();
@@ -258,13 +258,13 @@ class ProductController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
-        
+
     }
 
     //Danh sách sản phẩm yêu thích
     public function getAllProductLike()
     {
-        try {        
+        try {
             $user = Auth::user();
 
             $products = Like::with(['product'])
@@ -276,6 +276,6 @@ class ProductController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['status'=>-5, 'data'=>'', 'message'=>$e->getMessage()]);
         }
-        
+
     }
 }

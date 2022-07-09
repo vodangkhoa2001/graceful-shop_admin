@@ -27,9 +27,22 @@
                 <ul style="list-style:none;line-height:2.0;">
 
                     <li><h3>Đơn hàng: #{{ $invoice->invoice_code }}</h3></li>
+                    <li>Tình trạng:
+                        @if ($invoice->status==0)
+                                <span class="text-danger">Đã hủy</span>
+                            @elseif($invoice->status==1)
+                                <span class="text-warning">Chờ xác nhận</span>
+                            @elseif($invoice->status==2)
+                                <span class="text-success">Đã xác nhận</span>
+                            @elseif($invoice->status==3)
+                                <span class="text-warning">Đang vận chuyển</span>
+                            @else
+                                <span class="text-primary">Đã giao</span>
+                            @endif
+                    </li>
                     <li>Mã giảm giá: @if(!empty($invoice->voucher_id)){{ $invoice_v[0]->voucher_code }}@else Không áp dụng @endif</li>
                     <li>Giá giảm: @if(!empty($invoice->voucher_id)){{ number_format($invoice_v[0]->discount_price, 0, '', '.')." VNĐ"; }}@else 0 VNĐ @endif</li>
-                    @foreach ($invoice_detail as $key=>$item)
+                    @foreach ($invoice_details as $key=>$item)
                         <li class="mt-5">Sản phẩm {{ $key+1 }}: {{ $item->product_name }} </li>
                         <li>Giá sản phẩm: {{ number_format($item->price, 0, '', '.')." VNĐ"; }}</li>
                         <li>Số lượng: {{ $item->quantity }}</li>

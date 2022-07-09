@@ -23,25 +23,12 @@
                 @else
                 <form action="{{ route('post-CreateSlide') }}" method="post" enctype="multipart/form-data">
                     @csrf
-
-
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="picture">Ảnh slide</label>
-                                <input type="file" accept="image/*" name="picture" id="picture" placeholder="Icon" value="{{ old('picture') }}" >
-
+                                <input type="text" placeholder="Tên role">
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="description">Mô tả slide</label>
-                                <textarea name="description" id="description" class=" form-control editor" >
-
-                                </textarea>
-
-                        </div>
-
-
                         <div class="d-flex justify-content-end p-4">
                             <button class="btn btn-primary col-2"  type="submit">Thêm mới</button>
 

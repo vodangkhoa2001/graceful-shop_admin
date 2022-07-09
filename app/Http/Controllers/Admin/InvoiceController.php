@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\Invoice;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
@@ -13,6 +14,9 @@ use App\Models\Product;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Jobs\SendEmail;
+use App\Models\Picture;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -36,8 +40,8 @@ class InvoiceController extends Controller
     public function updateStatus($id){
         $invoice = Invoice::find($id);
         $invoice->status = $invoice->status+1;
-        $success = $invoice->update();
-        return Redirect::route('list-invoice',compact('success'));
+        $invoice->update();
+        return Redirect::route('list-invoice')->with('msg','Đã duyệt đơn hàng '.$invoice->invoice_code);
     }
 
     /**
@@ -71,14 +75,22 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($id);
         $invoice_v = DB::select("SELECT vouchers.* FROM invoices LEFT JOIN vouchers on voucher_id = vouchers.id WHERE invoices.id = {$id}");
-        $invoice_detail = DB::table('invoice_details')
+        $invoice_details = DB::table('invoice_details')
         ->leftJoin('invoices','invoices.id','=','invoice_id')
         ->leftJoin('products','products.id','=','product_id')
         ->where('invoice_id','=',$id)
         ->select('invoice_details.*','products.*','invoices.quantity as invoice_quantity')
         ->get();
-        // dd($invoice_v[0]);
-        return view('component.invoice.detail-invoice',compact('invoice','invoice_detail','invoice_v'));
+        foreach ($invoice_details as $invoice_detail){
+            $pics[] = DB::select("SELECT picture_value FROM pictures,products WHERE products.id = pictures.product_id and product_id ={$invoice_detail->product_id}");
+        }
+        // for($i = 0;$i<count($pics);$i++){
+        //     for($j =0;$j<count($pics[$i]);$j++){
+        //         $a[]=$pics[$i][$j]->picture_value;
+        //     }
+        // }
+        // dd($a);
+        return view('component.invoice.detail-invoice',compact('invoice','invoice_details','invoice_v','pics'));
     }
 
     /**
@@ -116,24 +128,41 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,Request $request)
     {
-        $invoice_detail = DB::table('invoice_details')
-        ->leftJoin('invoices','invoices.id','=','invoice_id')
-        ->leftJoin('products','products.id','=','product_id')
-        ->where('invoices.id','=',$id)
-        ->select('invoices.id as invoice_id','products.product_name','products.stock','invoice_details.*')
-        ->get();
-        dd($invoice_detail[0]);
-        $invoice = Invoice::find($id);
-        $product = Product::find($invoice_detail->product_id);
-        $old_stock = $product->stock;
-        $product->stock += $invoice->quantity;
-        $invoice->status = 0;
-        dd($invoice->id);
-        if($product->update() && $invoice->update()){
-            $success = true;
+        $user = Auth::user();
+        $invoice = Invoice::where('invoices.id', '=', $id)
+        ->first();
+        if($invoice){
+            $invoice->update([
+                'status'=> 0,
+                'canceler_id'=> $user->id,
+                'reason'=> $request->reason,
+            ]);
+
+            $invoice_details = InvoiceDetail::join('invoices', 'invoices.id', '=', 'invoice_details.invoice_id')
+            ->where('invoices.id', '=', $invoice->id)
+            ->get();
+
+            foreach ($invoice_details as $invoice_detail){
+                $product = Product::where('id', $invoice_detail->product_id)->first();
+                Product::where('id', $invoice_detail->product_id)
+                ->update([
+                    'stock'=> $product->stock + $invoice_detail->quantity,
+                ]);
+            }
+
+            $user2 = User::where('id','=',$invoice->user_id)->first();
+            $message = [
+                'type' => 'Đơn hàng',
+                'hi' => $user2->full_name,
+                'content1' => 'Mã đơn hàng: ',
+                'num' => $invoice->invoice_code,
+                'content2' => ' đã huỷ thành công. Lý do: '.$request->reason,
+            ];
+            SendEmail::dispatch($message, $user2)->delay(now()->addMinute(1));
         }
-        return Redirect::route('list-invoice',compact('success'));
+        $code = $invoice->invoice_code;
+        return Redirect::route('list-invoice')->with('msg','Đã hủy thành công đơn hàng '.$code);
     }
 }

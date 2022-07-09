@@ -84,17 +84,25 @@ class UserController extends Controller
     }
     public function postCreateAccount(Request $request){
 
+        $image = $request->file('avatar');
+        $namewithextension = $image->getClientOriginalName();
+        $fileName = explode('.', $namewithextension)[0];
+        $extension = $image->getClientOriginalExtension();
+        $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+        $destinationPath = public_path('/assets/img/users/');
+        $image->move($destinationPath,$fileNew);
+
         $user = new User();
+        $user->avatar = $fileNew;
         $user->full_name = $request->full_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
-        $user->avatar = $request->file('avatar')->getClientOriginalName();
-        $request->avatar->storeAs('public/users/',$request->file('avatar')->getClientOriginalName());
         $user->role = $request->role;
         $user->status = $request->status;
         return view('component.account.create-account',['success'=>$user->save()]);
     }
+    //edit
     public function getEditUser($id){
         $roles = Role::all();
         $user = User::all()->find($id);
@@ -103,19 +111,70 @@ class UserController extends Controller
     public function postEditUser( Request $request,$id){
         $user = User::find($id);
         if($request->hasFile('avatar_reup')){
-            $newImg = $request->file('avatar_reup')->getClientOriginalName();
-            $request->avatar_reup->storeAs('public/users/', $newImg);
-            $user->avatar = $newImg;
+            $image = $request->file('avatar_reup');
+            $namewithextension = $image->getClientOriginalName();
+            $fileName = explode('.', $namewithextension)[0];
+            $extension = $image->getClientOriginalExtension();
+            $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+            $destinationPath = public_path('/assets/img/users/');
+            $image->move($destinationPath,$fileNew);
+
+            $user->avatar = $fileNew;
+            $user->full_name = $request->input('full_name');
+            $user->date_of_birth = $request->input('date_of_birth');
+            $user->sex = $request->input('gender');
+            $user->phone = $request->input('phone');
+            $user->role = $request->input('role');
+            $user->address = $request->input('address');
+            $user->status = $request->input('status');
+        }else{
+            $user->full_name = $request->input('full_name');
+            $user->date_of_birth = $request->input('date_of_birth');
+            $user->sex = $request->input('gender');
+            $user->phone = $request->input('phone');
+            $user->role = $request->input('role');
+            $user->address = $request->input('address');
+            $user->status = $request->input('status');
         }
-        $user->full_name = $request->input('full_name');
-        $user->date_of_birth = $request->input('date_of_birth');
-        $user->sex = $request->input('gender');
-        $user->phone = $request->input('phone');
-        $user->role = $request->input('role');
-        $user->address = $request->input('address');
-        $user->status = $request->input('status');
         $success = $user->update();
         return view('component.account.edit-account',compact('success'));
+    }
+    public  function getProfile(){
+        $user = Auth::user();
+        $roles = Role::all();
+        return view('component.account.profile',compact('user','roles'));
+    }
+    public function postProfile(Request $request){
+        $get_user = Auth::user();
+        $user_id = $get_user->id;
+        $user = User::find($user_id);
+        // dd($user_id);
+
+        if($request->hasFile('avatar_reup')){
+            $image = $request->file('avatar_reup');
+            $namewithextension = $image->getClientOriginalName();
+            $fileName = explode('.', $namewithextension)[0];
+            $extension = $image->getClientOriginalExtension();
+            $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+            $destinationPath = public_path('/assets/img/users/');
+            $image->move($destinationPath,$fileNew);
+
+            $user->avatar = $fileNew;
+            $user->full_name = $request->input('full_name');
+            $user->date_of_birth = $request->input('date_of_birth');
+            $user->sex = $request->input('gender');
+            $user->phone = $request->input('phone');
+            $user->address = $request->input('address');
+        }else{
+            $user->full_name = $request->input('full_name');
+            $user->date_of_birth = $request->input('date_of_birth');
+            $user->sex = $request->input('gender');
+            $user->phone = $request->input('phone');
+            $user->address = $request->input('address');
+        }
+        // dd($user);
+        $success = $user->update();
+        return view('component.account.profile',compact('user','success'));
     }
 
     public function destroy($id)

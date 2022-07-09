@@ -17,7 +17,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::orderBy('role_name', 'ASC')->get();
+        return view('component.role.list-role',compact('roles'));
     }
 
     /**

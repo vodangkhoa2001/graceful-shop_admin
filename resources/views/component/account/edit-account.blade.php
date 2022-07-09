@@ -24,7 +24,7 @@
                 <form action="{{ route('post-EditUser',$user->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-row d-flex justify-content-center" style="margin-bottom:40px; position: relative;">
-                        <img style="border-radius:50%;border: solid 1px #ccc;" src="{{ asset('storage/users') }}/{{ $user->avatar }}" width="200">
+                        <img style="border-radius:50%;border: solid 1px #ccc;" src="{{ asset('assets/img/users') }}/{{ $user->avatar }}" width="200">
                         <label for="avatar_reup"><i class="fa-solid fa-camera" style="font-size: 25px;background: blue;color: #fff;padding: 20px;border-radius: 50%;cursor: pointer;position: absolute;bottom: 0;right: 40%;"></i></label>
                         <input type="file" name="avatar_reup" accept="image/*" id="avatar_reup" style="display:none;">
 

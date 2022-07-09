@@ -34,7 +34,6 @@ class ProductController extends Controller
     {
         $title = 'Danh sách sản phẩm';
         $products = DB::select('SELECT * FROM products ORDER BY created_at DESC');
-        // $products = Product::paginate(5);
         return view('component.product.products',compact('title','products'));
     }
 
@@ -48,9 +47,9 @@ class ProductController extends Controller
     {
         $title = 'Thêm sản phẩm mới';
         $category = Category::all();
-        $product_type = ProductType::all();
+        $product_type =  DB::select('SELECT product_types.* FROM product_types,categories WHERE product_types.categorie_id = categories.id and categories.status=1 and product_types.status =1  ORDER BY product_types.categorie_id DESC');
         $product = Product::all()->count();
-        $brand = Brand::all();
+        $brand = Brand::where('status','=',1)->get();
         $count = $product++;
         $dt = Carbon::now();
         $dt->format('Y-MM-DD');
@@ -75,9 +74,15 @@ class ProductController extends Controller
             'discount_price'=>'required',
             'product_type_id'=>'required',
             'description'=>'required',
-        ]);
+        ],[
+            'required'=>':attribute không được bỏ trống'
+        ],[
 
-        dd($request->all());
+        ]
+
+    );
+
+        // dd($request->all());
 
         $product = Product::create([
             'product_barcode'=> $request->product_code,
@@ -91,13 +96,8 @@ class ProductController extends Controller
             'description'=>$request->description,
         ]);
 
-        $size = Size::create([
-            'size_name'=>$request->size_name,
-            'product_id'=>$product->id,
-            'status'=>1,
-        ]);
-
-        $success = $product->save();
+        // dd($request->image_colors[0]->getClientOriginalName());
+        $product->save();
         if($request->hasFile('images')){
             foreach ($request->file('images') as $image){
                 // dd('vào for');
@@ -114,9 +114,41 @@ class ProductController extends Controller
                 $pics->picture_value = $fileNew;
                 $pics->save();
             }
-        }
 
-        return view('component.product.add-product',compact('success'));
+        }
+        //nhap size
+        for($i = 0;$i<count($request->size_name);$i++){
+            $size = new Size();
+            $size->size_name = $request->size_name[$i];
+            $size->product_id = $product->id;
+            $size->status = 1;
+            $size->save();
+        }
+        //nhap ten mau va hinh sp cua mau
+        for($i = 0;$i<count($request->color_name);$i++){
+            //luu hinh
+            $color = new Color();
+            if($request->hasFile('image_colors')){
+                foreach ($request->file('image_colors') as $image){
+                    // dd('vào for');
+                    $namewithextension = $image->getClientOriginalName();
+                    $fileName = explode('.', $namewithextension)[0];
+                    $extension = $image->getClientOriginalExtension();
+                    $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                    $destinationPath = public_path('/assets/img/product_colors/');
+                    $image->move($destinationPath,$fileNew);
+
+                    $color->picture = $fileNew;
+                }
+
+            }
+            //luu ten mau
+            $color->color_name = $request->color_name[$i];
+            $color->product_id = $product->id;
+            $color->status = 1;
+            $color->save();
+        }
+        return redirect()->route('products')->with('msg','Tạo thành công sản phẩm '.$request->product_name);
     }
 
     /**
@@ -139,9 +171,9 @@ class ProductController extends Controller
     public function show($id)
     {
         $title = 'Chi tiết sản phẩm';
-        $product = new Product();
         $product = Product::with(['pictures'])->find($id);
         $pics = DB::select("SELECT picture_value FROM pictures,products WHERE products.id = pictures.product_id and product_id ={$id}");
+        // dd($pics);
         return view('component.product.product-detail',compact('title','product','pics'));
     }
 
@@ -187,55 +219,79 @@ class ProductController extends Controller
         ]
     );
         $product = Product::find($id);
-        $size = DB::table('sizes')->where("product_id = {$id}");
-        $colors = DB::table('colors')->where("product_id={$id}");
-        $product->product_name = $request->product_name;
-        $product->brand_id = $request->brand;
-        $product->product_type_id = $request->product_type;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
-        $product->import_price = $request->import_price;
-        $product->discount_price = $request->discount_price;
-        $product->status = $request->status;
-
-        dd($request->input('color_name'));
-        foreach($request->color_name as $key=>$color){
-            $colors->color_name = $request->color_name[$key];
+        dd($request->all());
+        for($i = 0;$i<count($request->size_name);$i++){
+            $size = DB::table('sizes')->where("product_id",'=',$id)->get();
+            $size->size_name = $request->size_name[$i];
+            $size->product_id = $product->id;
+            $size->status = 1;
+            $size->udpate();
         }
-        foreach($request->image_colors as $key=>$color){
-            $colors->picture = $request->image_colors[$key];
+        dd($size);
+        //nhap ten mau va hinh sp cua mau
+        for($i = 0;$i<count($request->color_name);$i++){
+            //luu hinh
+
+            $color = DB::table('colors')->where("product_id",'=',$id)->get();
+            if($request->hasFile('image_colors')){
+                foreach ($request->file('image_colors') as $image){
+                    // dd('vào for');
+                    $namewithextension = $image->getClientOriginalName();
+                    $fileName = explode('.', $namewithextension)[0];
+                    $extension = $image->getClientOriginalExtension();
+                    $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                    $destinationPath = public_path('/assets/img/product_colors/');
+                    $image->move($destinationPath,$fileNew);
+
+                    $color->picture = $fileNew;
+                }
+                $color->color_name = $request->color_name[$i];
+                $color->product_id = $product->id;
+            }
+            else{
+                $color->status = 0;
+
+            }
+            $color->update();
         }
-        // dd($size);
-        // if($request->hasFile('images') || $request->hasFile('image_colors')){
-        //     $product->product_name = $request->product_name;
-        //     $product->brand_id = $request->brand;
-        //     $product->product_type_id = $request->product_type;
-        //     $product->price = $request->price;
-        //     $product->stock = $request->stock;
-        //     $product->import_price = $request->import_price;
-        //     $product->discount_price = $request->discount_price;
-        //     $product->status = $request->status;
 
-        //     foreach($request->color_name as $key=>$color){
-        //         $colors->color_name = $request->color_name[$key];
-        //     }
-        //     foreach($request->image_colors as $key=>$color){
-        //         $colors->picture = $request->image_colors[$key];
-        //     }
-        //     dd($colors->color_name);
-        //     $size->size_name = $request->size_name;
-        // }else{
-        //     $product->product_name = $request->product_name;
-        //     $product->brand_id = $request->brand;
-        //     $product->product_type_id = $request->product_type;
-        //     $product->price = $request->price;
-        //     $product->stock = $request->stock;
-        //     $product->import_price = $request->import_price;
-        //     $product->discount_price = $request->discount_price;
-        //     $size->size_name = $request->size_name;
-        // }
+        if($request->hasFile('images')){
+            foreach ($request->file('images') as $image){
+                // dd('vào for');
+                $pics = Picture::where('product_id','=',$id)->get();
 
-        $success = $product->update();
+                $namewithextension = $image->getClientOriginalName();
+                $fileName = explode('.', $namewithextension)[0];
+                $extension = $image->getClientOriginalExtension();
+                $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                $destinationPath = public_path('/assets/img/products/');
+                $image->move($destinationPath,$fileNew);
+
+                $pics->product_id = $product->id;
+                $pics->picture_value = $fileNew;
+                $pics->update();
+            }
+            $product->product_name = $request->product_name;
+            $product->brand_id = $request->brand;
+            $product->product_type_id = $request->product_type;
+            $product->price = $request->price;
+            $product->stock = $request->stock;
+            $product->import_price = $request->import_price;
+            $product->discount_price = $request->discount_price;
+
+        }else{
+
+            $product->product_name = $request->product_name;
+            $product->brand_id = $request->brand;
+            $product->product_type_id = $request->product_type;
+            $product->price = $request->price;
+            $product->stock = $request->stock;
+            $product->import_price = $request->import_price;
+            $product->discount_price = $request->discount_price;
+            $product->status = $request->status;
+        }
+        $product->update();
+
         return view('component.product.edit-product',compact('success'));
 
     }
@@ -257,8 +313,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->status = 0;
+        $name = $product->product_name;
+        $product->update();
+        return redirect()->route('products')->with('msg','Đã xóa thành công sản phẩm '.$name);
     }
 }

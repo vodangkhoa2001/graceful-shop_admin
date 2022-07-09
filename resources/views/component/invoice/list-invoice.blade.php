@@ -7,6 +7,11 @@
 
 @endsection
 @section('content')
+    @if (session('msg'))
+        <div class="alert alert-success">
+            {{ session('msg') }}
+        </div>
+    @endif
     <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
 
     <!-- DataTales Example -->
@@ -17,9 +22,6 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                {{-- @if (!empty($success))
-                    <span class="alert alert-primary">Đã duyệt cho đơn hàng {{ $invoice->invoice_code }}</span>
-                @endif --}}
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -30,7 +32,7 @@
                             <th>Số lượng</th>
                             <th>Thành tiền</th>
                             <th width="10%">Trạng thái</th>
-                            <th>Duyệt</th>
+                            <th>Thao tác</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -99,10 +101,11 @@
                                             </div>
                                             <div class="modal-body">
                                                 <span>Bạn có chắc muốn hủy đơn hàng {{ $item->invoice_code }}?</span>
-                                            </div>
-                                            <div class="modal-footer">
                                                 <form action="{{ route('cancel-invoice',$item->id) }}" method="post">
                                                     @csrf
+                                                <input type="text" placeholder="Lý do hủy" name="reason" class="form-control" required>
+                                            </div>
+                                            <div class="modal-footer">
                                                     <button type="submit" class="btn btn-primary">OK</button>
                                                 </form>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

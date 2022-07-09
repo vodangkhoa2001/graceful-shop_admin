@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateSlideRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSlideDetailRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 class SlideController extends Controller
 {
@@ -34,8 +35,12 @@ class SlideController extends Controller
     {
         return view('component.slide.create-slide');
     }
-    public function postCreate(StoreSlideDetailRequest $request)
+
+    public function postCreate(Request $request)
     {
+        // Validator::make($request->all(),[
+
+        // ])
         $image = $request->file('picture');
         $namewithextension = $image->getClientOriginalName();
         $fileName = explode('.', $namewithextension)[0];
@@ -71,20 +76,37 @@ class SlideController extends Controller
      */
     public function show($id)
     {
-
         $slide = Slide::find($id);
-        return view('component.slide.detail-slide',compact('slide'));
+        return view('component.slide.slide-detail',compact('slide'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Slide  $slide
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Slide $slide)
+
+    public function getEdit($id)
     {
-        //
+        $slide = Slide::where('id','=',$id)->first();
+        return view('component.slide.edit-slide',compact('slide'));
+    }
+    public function postEdit($id,Request $request)
+    {
+        $slide = Slide::find($id);
+        if($request->hasFile('picture')){
+            $image = $request->file('picture');
+            $namewithextension = $image->getClientOriginalName();
+            $fileName = explode('.', $namewithextension)[0];
+            $extension = $image->getClientOriginalExtension();
+            $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+            $destinationPath = public_path('/assets/img/slideshows/');
+            $image->move($destinationPath,$fileNew);
+
+            $slide->picture = $fileNew;
+            $slide->description = $request->description;
+            $slide->status=$request->status;
+        }else{
+            $slide->description = $request->description;
+            $slide->status=$request->status;
+        }
+        $success = $slide->update();
+        return view('component.slide.edit-slide',compact('slide','success'));
     }
 
     /**
@@ -105,8 +127,11 @@ class SlideController extends Controller
      * @param  \App\Models\Slide  $slide
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Slide $slide)
+    public function destroy($id)
     {
-        //
+        $slide = Slide::find($id);
+        $slide->delete();
+        return redirect()->route('list-slide')->with('msg','Đã xóa thành công slide ');
+
     }
 }

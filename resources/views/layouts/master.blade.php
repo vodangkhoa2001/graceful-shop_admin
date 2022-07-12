@@ -128,13 +128,12 @@
                 @if (Auth::user()->role == 1)
                     {{-- brand --}}
                     <li class="nav-item">
-
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brand"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brand_m"
                             aria-expanded="true" aria-controls="brand">
                             <i class="fa-solid fa-building"></i>
                             <span>Thương hiệu</span>
                         </a>
-                        <div id="brand" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="brand_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('list-brand') }}">Danh sách thương hiệu</a>
@@ -144,12 +143,12 @@
                     </li>
                     {{-- San pham --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_m"
                             aria-expanded="true" aria-controls="product">
                             <i class="fa-solid fa-bag-shopping"></i>
                             <span>Sản phẩm</span>
                         </a>
-                        <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="product_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
@@ -159,12 +158,12 @@
                     </li>
                     {{-- user --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#user"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#user_m"
                             aria-expanded="true" aria-controls="user">
                             <i class="fa-solid fa-user"></i>
                             <span>Người dùng</span>
                         </a>
-                        <div id="user" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="user_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('list-user') }}">Danh sách người dùng</a>
@@ -174,12 +173,12 @@
                     </li>
                     {{-- danh muc --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#category"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#category_m"
                             aria-expanded="true" aria-controls="category">
                             <i class="fa-solid fa-list-check"></i>
                             <span>Danh mục</span>
                         </a>
-                        <div id="category" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="category_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('list-category') }}">Danh sách danh mục</a>
@@ -189,12 +188,12 @@
                     </li>
                     {{-- loai san pham --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_type"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_type_m"
                             aria-expanded="true" aria-controls="product_type">
                             <i class="fa-solid fa-cubes"></i>
                             <span>Loại sản phẩm</span>
                         </a>
-                        <div id="product_type" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="product_type_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('list-productType') }}">Danh sách loại</a>
@@ -204,12 +203,12 @@
                     </li>
                     {{-- Voucher --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#voucher"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#voucher_m"
                             aria-expanded="true" aria-controls="voucher">
                             <i class="fa-solid fa-tag"></i>
                             <span>Voucher</span>
                         </a>
-                        <div id="voucher" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="voucher_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('list-voucher') }}">Danh sách voucher</a>
@@ -219,12 +218,12 @@
                     </li>
                     {{-- slide --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#slide"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#slide_m"
                             aria-expanded="true" aria-controls="slide">
                             <i class="fa-solid fa-tag"></i>
                             <span>Slide</span>
                         </a>
-                        <div id="slide" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="slide_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('list-slide') }}">Danh sách slide</a>
@@ -263,12 +262,12 @@
                 @elseif (Auth::user()->role == 2)
                     {{-- San pham --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product_m"
                             aria-expanded="true" aria-controls="product">
                             <i class="fa-solid fa-bag-shopping"></i>
                             <span>Sản phẩm</span>
                         </a>
-                        <div id="product" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="product_m" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                                 <a class="collapse-item" href="{{ route('products') }}">Danh sách sản phẩm</a>
@@ -316,21 +315,21 @@
                         </button>
 
 
-                        <h2>Welcome, {{ Auth::User()->full_name }}</h2>
+                        <h2>Hi! {{ Auth::User()->full_name }}</h2>
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
 
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                            <li class="nav-item dropdown no-arrow d-sm-none">
+                            {{-- <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-search fa-fw"></i>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <!-- Nav Item - Alerts -->
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            {{-- <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell fa-fw"></i>
@@ -378,10 +377,10 @@
                                     </a>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                 </div>
-                            </li>
+                            </li> --}}
 
                             <!-- Nav Item - Messages -->
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            {{-- <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-envelope fa-fw"></i>
@@ -444,7 +443,7 @@
                                     </a>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                                 </div>
-                            </li>
+                            </li> --}}
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -534,7 +533,7 @@
 {{-- datepicker --}}
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
-<script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script>
+{{-- <script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script>
@@ -542,7 +541,7 @@
     $('#dataTable').DataTable();
 } );
 </script>
-<script>
+{{-- <script>
 ClassicEditor
     .create( document.querySelector( '.editor' ), {
 
@@ -564,7 +563,50 @@ ClassicEditor
         console.warn( 'Build id: p8v55eincfpa-2rypji8si6vw' );
         console.error( error );
     } );
-</script>
+</script> --}}
+<script src="{{ asset('assets/ckeditor5/ckeditor.js') }}"></script>
+<script>
+    const watchdog = new CKSource.EditorWatchdog();
 
+    window.watchdog = watchdog;
+
+    watchdog.setCreator((element, config) => {
+        return CKSource.Editor
+            .create(element, config)
+            .then(editor => {
+
+
+
+
+                return editor;
+            })
+    });
+
+    watchdog.setDestructor(editor => {
+
+
+
+        return editor.destroy();
+    });
+
+    watchdog.on('error', handleError);
+
+    watchdog
+        .create(document.querySelector('.editor'), {
+
+            licenseKey: '',
+
+
+
+        })
+        .catch(handleError);
+
+    function handleError(error) {
+        console.error('Oops, something went wrong!');
+        console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+        console.warn('Build id: htigd95egk9l-6d7xove9x7ie');
+        console.error(error);
+    }
+</script>
 
 @show

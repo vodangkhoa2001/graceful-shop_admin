@@ -41,6 +41,45 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($id);
         $invoice->status = $invoice->status+1;
         $invoice->update();
+
+        $user = User::select('users.*') 
+        ->join('invoices', 'invoices.user_id', '=', 'users.id')
+        ->where('invoices.id', '=', $id)
+        ->first();
+
+        if( $invoice->status == 2){
+            //Đã xác nhận
+            $message = [
+                'type' => 'Đơn hàng',
+                'hi' => $user->full_name,
+                'content1' => 'Đơn hàng của bạn đã được xác nhận. Mã đơn hàng của bạn là: ',
+                'num' => $invoice->invoice_code,
+                'content2' => ' và tổng giá trị đơn hàng: '.number_format( $invoice->until_price, 0, '', '.').' VND.',
+            ];
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
+
+        }else if( $invoice->status == 3){
+            //Đang giao
+            $message = [
+                'type' => 'Đơn hàng',
+                'hi' => $user->full_name,
+                'content1' => 'Đơn hàng của bạn đang được vận chuyển. Mã đơn hàng của bạn là: ',
+                'num' => $invoice->invoice_code,
+                'content2' => ' và tổng giá trị đơn hàng: '.number_format( $invoice->until_price, 0, '', '.').' VND',
+            ];
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
+        }else if( $invoice->status == 4){
+            //Đã giao
+            $message = [
+                'type' => 'Đơn hàng',
+                'hi' => $user->full_name,
+                'content1' => 'Đơn hàng của bạn đã được giao. Mã đơn hàng của bạn là: ',
+                'num' => $invoice->invoice_code,
+                'content2' => ' và tổng giá trị đơn hàng: '.number_format( $invoice->until_price, 0, '', '.').' VND',
+            ];
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
+
+        }
         return Redirect::route('list-invoice')->with('msg','Đã duyệt đơn hàng '.$invoice->invoice_code);
     }
 
@@ -152,13 +191,18 @@ class InvoiceController extends Controller
                 ]);
             }
 
-            $user2 = User::where('id','=',$invoice->user_id)->first();
+            
+            $user2 = User::select('users.*') 
+            ->join('invoices', 'invoices.user_id', '=', 'users.id')
+            ->where('invoices.id', '=', $id)
+            ->first();
+
             $message = [
                 'type' => 'Đơn hàng',
                 'hi' => $user2->full_name,
                 'content1' => 'Mã đơn hàng: ',
                 'num' => $invoice->invoice_code,
-                'content2' => ' đã huỷ thành công. Lý do: '.$request->reason,
+                'content2' => ' đã được huỷ. Lý do: '.$request->reason,
             ];
             SendEmail::dispatch($message, $user2)->delay(now()->addMinute(1));
         }

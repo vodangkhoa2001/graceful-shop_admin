@@ -39,7 +39,7 @@
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td><img width="100" src="{{ asset('assets/img/slideshows') }}/{{ $item->picture }}"></td>
-                            <td>{{ $item->description }}</td>
+                            <td>{!! Str::limit( $item->description, 150 ) !!}</td>
                             <td>{{ $item->created_at }}</td>
                             <td>
                                 <a href="{{ route('detail-slide',$item->id) }}" class="btn btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>

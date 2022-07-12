@@ -19,9 +19,9 @@
                     <a class="d-flex" href="{{ route('list-invoice') }}"><i class="fa-solid fa-chevron-left mr-2"></i><h6 class="mr-3">Trở lại</h6></a>
                     <h6 class="m-0 font-weight-bold text-primary">Chi tiết đơn hàng</h6>
                 </div>
-                <div class="float-right d-flex">
+                {{-- <div class="float-right d-flex">
                     <a class="d-flex" href="{{ route('get-EditBrand',$invoice->id) }}"><h6>Chỉnh sửa</h6> <i class="fa-solid fa-chevron-right ml-2"></i></a>
-                </div>
+                </div> --}}
             </div>
             <div class="card-body">
                 <ul style="list-style:none;line-height:2.0;">

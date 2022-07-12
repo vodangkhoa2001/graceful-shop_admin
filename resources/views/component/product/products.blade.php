@@ -32,6 +32,7 @@
                             <th>Giảm giá</th>
                             <th width="10%">Số lượng</th>
                             <th>Trạng thái</th>
+                            <th>Nổi bật</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -51,6 +52,13 @@
                                 @else
                                 <span class="text-success">Hoạt động</span>
                             @endif</td>
+                            <td>
+                                @if ($item->popular==0)
+                                    <a href="{{ route('popular',$item->id) }}" class="btn btn-sm btn-outline-secondary" title="Nổi bật"><i class="fa-regular fa-square"></i></a>
+                                @else
+                                    <a href="{{ route('popular',$item->id) }}" class="btn btn-sm btn-outline-danger" title="Nổi bật"><i class="fa-solid fa-square-check"></i></a>
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('get-product',$item->id) }}" class="btn btn-sm btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
                                 <a href="{{ route('edit-product',$item->id) }}"title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -78,6 +86,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </td>
                         </tr>
 
                         @endforeach

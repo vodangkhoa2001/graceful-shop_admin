@@ -18,7 +18,7 @@ class CreateFeedbackTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('description', 64);
             $table->timestamps();
-
+            $table->tinyInteger('check')->default(0);
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

@@ -39,14 +39,39 @@ class HomeController extends Controller
 
         // bieu do doanh thu thep tung thang cua nam hien tai
 
-        $data = DB::select("SELECT MONTH(created_at) as 'month',SUM(until_price) as 'sale' from invoices WHERE status = 4 and year(created_at) = '{$date}' GROUP BY month");
+        $data = DB::select("SELECT MONTH(created_at) as 'month',SUM(until_price) as 'sale' from invoices WHERE status = 4 and year(created_at) = '{$date}' GROUP BY month ORDER BY MONTH(created_at)");
         // dd($data);
         $months=[];
         $monthSum=[];
-        foreach ($data as $value){
-            $months[]="Tháng ".$value->month;
-            $monthSum[]=$value->sale;
+        if($data){
+            for ($i=0; $i < count($data); $i++) { 
+                if($i+1<$data[$i]->month){
+                    if($i==0){
+                        for ($j=$i+1; $j < $data[$i]->month - $i; $j++) { 
+                            $months[]="Tháng ".$j;
+                            $monthSum[]=0;
+                        }
+                    }else{
+                        for ($j=$data[$i-1]->month + 1 ; $j < $data[$i]->month; $j++) { 
+                            $months[]="Tháng ".$j;
+                            $monthSum[]=0;
+                        }
+                    }
+                }
+                $months[]="Tháng ".$data[$i]->month;
+                $monthSum[]=$data[$i]->sale;
+            }
+            if($data[count($data)-1]->month<12){
+                for ($j=$data[count($data)-1]->month + 1 ; $j < 13; $j++) { 
+                    $months[]="Tháng ".$j;
+                    $monthSum[]= 0;
+                }
+            }
         }
+        // foreach ($data as $value){
+        //     $months[]="Tháng ".$value->month;
+        //     $monthSum[]=$value->sale;
+        // }
 
         // dd($months,$saleNowYear);
         return view('home',['saleNowYear'=>$saleNowYear,'num_invocie'=>$num_invocie,'countUser'=>$countUser,'saleNowDay' => $saleNowDay,'saleNowMonth'=>$saleNowMonth,'months'=>$months,'monthSum'=>$monthSum]);

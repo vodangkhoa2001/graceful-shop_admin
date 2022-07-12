@@ -28,7 +28,7 @@
                             <th>Nội dung</th>
                             <th>Trạng thái</th>
                             <th>Ngày tạo</th>
-                            <th></th>
+                            {{-- <th></th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -46,9 +46,9 @@
                                 @endif
                             </td>
                             <td>{{ $item->created_at }}</td>
-                            <td>
+                            {{-- <td>
                                 <a href="#removeModal{{ $item->id }}" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Xóa"><i class="fa-solid fa-minus"></i></a>
-                                {{-- Modal --}}
+                             
                                 <div class="modal fade" id="removeModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </td>
+                            </td> --}}
                         </tr>
 
                         @endforeach

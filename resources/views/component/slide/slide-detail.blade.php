@@ -23,7 +23,7 @@
             <div class="card-body">
                 <ul style="list-style:none;line-height:2.0;">
                     <li><h4>Hình ảnh:</h4> <br> <img height="150" src="{{ asset('assets/img/slideshows') }}/{{ $slide->picture }}"></li>
-                    <li><h4>Mô tả:</h4> {{ $slide->description }}</li>
+                    <li><h4>Mô tả:</h4> {!! Str::limit( $slide->description, 20000) !!}</li>
                 </ul>
 
             </div>

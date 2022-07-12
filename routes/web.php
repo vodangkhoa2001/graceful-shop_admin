@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('edit-product');
         Route::post('/product/edit/{id}',[ProductController::class, 'postEdit'])->name('post-editProduct');
         Route::post('/{id}/delete',[ProductController::class,'destroy'])->name('cancel-product');
+        Route::get('/{id}',[ProductController::class,'popular'])->name('popular');
     });
 
     Route::prefix('category')->group(function () {
@@ -107,12 +108,13 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('feedbacks')->group(function () {
         Route::get('/',[FeedbackController::class,'index'])->name('list-feedback');
+        Route::post('/{id}',[FeedbackController::class,'rep'])->name('rep-feedback');
     });
 
     Route::prefix('slides')->group(function () {
         Route::get('/',[SlideController::class,'index'])->name('list-slide');
-        Route::get('/{id}',[SlideController::class,'show'])->name('detail-slide');
         Route::get('/create',[SlideController::class,'getCreate'])->name('get-CreateSlide');
+        Route::get('/{id}',[SlideController::class,'show'])->name('detail-slide');
         Route::post('/create',[SlideController::class,'postCreate'])->name('post-CreateSlide');
         Route::get('/edit/{id}',[SlideController::class,'getEdit'])->name('get-EditSlide');
         Route::post('/edit/{id}',[SlideController::class,'postEdit'])->name('post-EditSlide');

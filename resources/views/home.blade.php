@@ -1,6 +1,26 @@
 {{-- {{ dd(Date('Y')) }} --}}
 @extends('layouts.master')
 @section('head')
+<style>
+    .ui-datepicker-calendar {
+       display: none;
+    }
+    .ui-datepicker-month {
+       display: none;
+    }
+    .ui-datepicker-prev{
+       display: none;
+    }
+    .ui-datepicker-next{
+       display: none;
+    }
+
+    #myChart {
+        display: block;
+        width: 100%!important;
+        height: 1300px!important;
+    }
+</style>
     @parent
 @endsection
 @section('title','Trang chủ')
@@ -103,7 +123,8 @@
                         @csrf
                         <i class="fas fa-chart-bar me-1"></i>
                         <span class="ml-1 col-4">Doanh thu năm</span>
-                        
+                        <input name="startYear" id="startYear" class="date-picker-year" value="{{date('Y')}}"/>   
+                        {{-- <input type="number" id="choose-year" value="{{date('Y')}}"> --}}
                         <button type="submit" class="btn btn-primary ml-4">Chọn</button>
                     </form>
                     <span>Tổng doanh thu: {{ number_format($saleNowYear, 0, '', '.')." VNĐ"; }}</span>
@@ -114,11 +135,60 @@
 
     </div>
 
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-xl-between">
+                    <form action="{{ route('post-SaleOfYear') }}" method="post" class="col-6 d-flex align-items-center">
+                        @csrf
+                        <i class="fas fa-chart-bar me-1"></i>
+                        <span class="ml-1 col-4">Top 10 sản phẩm bán chạy</span>
+                    </form>
+                    <span>Tổng doanh thu: {{ number_format($saleNowYear, 0, '', '.')." VNĐ"; }}</span>
+                </div>
+                <div class="card-body"><canvas id="myChart" width="100" height="100"></canvas></div>
+            </div>
+        </div>
+
+    </div>
+
 @endsection
 
 @section('script')
-
+@parent
 {{-- bieu do --}}
+<script>
+    // var year = document.getElementById('choose-year');
+    // $(function() { 
+    //     $('#choose-year').datepicker( {
+    //             changeMonth: false,
+    //             changeYear: true,
+    //             showButtonPanel: false,
+    //             dateFormat: 'yy',
+    //             onClose: function(dateText, inst) { 
+    //                 $(this).datepicker('setDate', new Date('2017'));
+    //             }
+    //         }).focus(function () {
+    //                     $(".ui-datepicker-month").hide();
+    //                     $(".ui-datepicker-calendar").hide();
+    //                 });
+    // });
+    $(function() {
+        $('.date-picker-year').datepicker({
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function(dateText, inst) { 
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, 1));
+            }
+        });
+        $(".date-picker-year").focus(function () {
+                $(".ui-datepicker-month").hide();
+            });
+        });
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
@@ -183,7 +253,50 @@
     });
 </script>
 
-@parent
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 0.5
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    barPercentage: 0.5,
+                    barThickness: 2,
+                    maxBarThickness: 8,
+                    minBarLength: 2,
+                    gridLines: {
+                        offsetGridLines: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
 
 @endsection
 

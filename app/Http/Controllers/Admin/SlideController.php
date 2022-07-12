@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\Slide;
+use App\Models\SlideDetail;
 use App\Http\Requests\StoreSlideRequest;
 use App\Http\Requests\UpdateSlideRequest;
 use Illuminate\Http\Request;
@@ -25,36 +26,50 @@ class SlideController extends Controller
         // dd($slides);
         return view('component.slide.list-slide',compact('slides'));
     }
-
-    /**
+    
+     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function getCreate()
     {
-        return view('component.slide.create-slide');
+        $products = DB::select('SELECT products.id, products.product_name, products.price, products.stock, product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id  where products.status = 1 ORDER BY products.created_at DESC');
+        return view('component.slide.create-slide',compact('products'));
     }
 
     public function postCreate(Request $request)
     {
-        // Validator::make($request->all(),[
+        DB::beginTransaction();
+        try {
+            // dd($request->all());
+            $image = $request->file('picture');
+            $namewithextension = $image->getClientOriginalName();
+            $fileName = explode('.', $namewithextension)[0];
+            $extension = $image->getClientOriginalExtension();
+            $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+            $destinationPath = public_path('/assets/img/slideshows/');
+            $image->move($destinationPath,$fileNew);
 
-        // ])
-        $image = $request->file('picture');
-        $namewithextension = $image->getClientOriginalName();
-        $fileName = explode('.', $namewithextension)[0];
-        $extension = $image->getClientOriginalExtension();
-        $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-        $destinationPath = public_path('/assets/img/slideshows/');
-        $image->move($destinationPath,$fileNew);
-
-        $slide = new Slide();
-        $slide->picture = $fileNew;
-        $slide->description = $request->description;
-        $slide->status=1;
-        $success = $slide->save();
-        return view('component.slide.create-slide',compact('success'));
+            $slide = Slide::create([
+                'picture'=> $fileNew,
+                'description'=> $request->description,
+                'status'=> 1,
+            ]);
+            // dd($slide);
+            for($i = 0;$i<count($request->product_id);$i++){
+                $slide_detail = new SlideDetail();
+                $slide_detail->slide_id = $slide->id;
+                $slide_detail->product_id = $request->product_id[$i];
+                $success = $slide_detail->save();
+            }
+            DB::commit();
+            return view('component.slide.create-slide',compact('success'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withErrors('Thêm slide thất bại!');
+        }
+        
     }
 
     /**
@@ -84,29 +99,47 @@ class SlideController extends Controller
     public function getEdit($id)
     {
         $slide = Slide::where('id','=',$id)->first();
-        return view('component.slide.edit-slide',compact('slide'));
+
+        $products = DB::select('SELECT products.id, products.product_name, products.price, products.stock, product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id LEFT JOIN slide_details ON slide_details.product_id = products.id AND slide_details.slide_id = '.$id.' where products.status = 1 AND slide_details.id IS NULL ORDER BY products.created_at DESC');
+
+        $slide_products = DB::select('SELECT products.id, products.product_name, products.price, products.stock, product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id LEFT JOIN slide_details ON slide_details.product_id = products.id AND slide_details.slide_id = '.$id.' where products.status = 1 AND slide_details.id IS NOT NULL ORDER BY products.created_at DESC');
+
+        return view('component.slide.edit-slide',compact('slide', 'products', 'slide_products'));
     }
     public function postEdit($id,Request $request)
     {
-        $slide = Slide::find($id);
-        if($request->hasFile('picture')){
-            $image = $request->file('picture');
-            $namewithextension = $image->getClientOriginalName();
-            $fileName = explode('.', $namewithextension)[0];
-            $extension = $image->getClientOriginalExtension();
-            $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-            $destinationPath = public_path('/assets/img/slideshows/');
-            $image->move($destinationPath,$fileNew);
+        DB::beginTransaction();
+        try {
+            $slide = Slide::find($id);
+            if($request->hasFile('picture')){
+                unlink(public_path('/assets/img/slideshows/'.$slide->picture));
+                $image = $request->file('picture');
+                $namewithextension = $image->getClientOriginalName();
+                $fileName = explode('.', $namewithextension)[0];
+                $extension = $image->getClientOriginalExtension();
+                $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                $destinationPath = public_path('/assets/img/slideshows/');
+                $image->move($destinationPath,$fileNew);
+                $slide->picture = $fileNew;
+            }
+            $slide->description = $request->description;
+            $slide->status=$request->status;
 
-            $slide->picture = $fileNew;
-            $slide->description = $request->description;
-            $slide->status=$request->status;
-        }else{
-            $slide->description = $request->description;
-            $slide->status=$request->status;
+            SlideDetail::where('slide_id', '=', $slide->id)->delete();
+            for($i = 0;$i<count($request->product_id);$i++){
+                $slide_detail = new SlideDetail();
+                $slide_detail->slide_id = $slide->id;
+                $slide_detail->product_id = $request->product_id[$i];
+                $success = $slide_detail->save();
+            }
+
+            $success = $slide->update();
+            DB::commit();
+            return view('component.slide.edit-slide',compact('slide','success'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withErrors('Thêm slide thất bại!');
         }
-        $success = $slide->update();
-        return view('component.slide.edit-slide',compact('slide','success'));
     }
 
     /**
@@ -129,6 +162,7 @@ class SlideController extends Controller
      */
     public function destroy($id)
     {
+        SlideDetail::where('slide_id', '=', $id)->delete();
         $slide = Slide::find($id);
         $slide->delete();
         return redirect()->route('list-slide')->with('msg','Đã xóa thành công slide ');

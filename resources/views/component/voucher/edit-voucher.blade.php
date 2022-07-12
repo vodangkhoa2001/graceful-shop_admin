@@ -47,9 +47,11 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label for="description">Mô tả</label>
-                                <textarea name="description" id="description" class="editor" >{{ $voucher->description }}</textarea>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="description">Mô tả</label>
+                                    <input type="text" class="form-control" name="description" id="description"  value="{{$voucher->description}}" >
+                                </div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -68,9 +70,6 @@
                         <button class="btn btn-primary col-2"  type="submit">Chỉnh sửa</button>
 
                     </div>
-
-
-
                 </form>
                 @endif
             </div>

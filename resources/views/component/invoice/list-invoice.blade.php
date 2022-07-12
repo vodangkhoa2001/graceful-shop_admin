@@ -31,6 +31,7 @@
                             <th>Mã Voucher</th>
                             <th>Số lượng</th>
                             <th>Thành tiền</th>
+                            <th>Loại thanh toán</th>
                             <th width="10%">Trạng thái</th>
                             <th>Thao tác</th>
                             <th></th>
@@ -53,6 +54,7 @@
                             </td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ number_format( $item->until_price, 0, '', '.') }}</td>
+                            <td>{{ $item->type_pay }}</td>
                             <td>@if ($item->status==0)
                                 <span class="text-danger">Đã hủy</span>
                             @elseif($item->status==1)
@@ -87,7 +89,7 @@
                             <td class="d-flex justify-content-around">
                                 <a href="{{ route('detail-invoice',$item->id) }}" class="btn btn-sm btn-outline-primary" title="Chi tiết"><i class="fa-solid fa-file-lines"></i></a>
                                 @if ($item->status!=0 && $item->status!=4)
-                                <a href=""title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                {{-- <a href=""title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a> --}}
                                 <a href="#removeModal{{ $item->id }}" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Hủy"><i class="fa-solid fa-minus"></i></a>
                                 {{-- Modal --}}
                                 <div class="modal fade" id="removeModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -308,6 +308,16 @@ class UserController extends Controller
                 'user_id'=> $user->id,
                 'description'=> $request->description,
             ]); 
+            
+            $message = [
+                'type' => 'Phản hồi',
+                'hi' => $user->full_name,
+                'content1' => 'Chúng tôi đã tiếp nhận phản hồi của bạn',
+                'num' => '',
+                'content2' => '',
+            ];
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
+
             DB::commit();
             return response()->json(['status'=>0, 'data'=>'', 'message'=>'Gửi phản hồi thành công!']);
         

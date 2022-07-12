@@ -65,90 +65,104 @@ class ProductController extends Controller
     }
     public function postCreate( HttpRequest $request)
     {
-        $data = Validator::make($request->all(),[
-            'product_name'=> 'required',
-            'stock'=>'required',
-            'brand_id'=>'required',
-            'import_price'=>'required',
-            'price'=>'required',
-            'discount_price'=>'required',
-            'product_type_id'=>'required',
-            'description'=>'required',
-        ],[
-            'required'=>':attribute không được bỏ trống'
-        ],[
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(),[
+                'product_name'=> 'required',
+                'stock'=>'required',
+                'brand'=>'required',
+                'import_price'=>'required',
+                'price'=>'required',
+                'discount_price'=>'required',
+                'product_type'=>'required',
+                'description'=>'required',
+            ],[
+                'required'=>':attribute không được bỏ trống'
+            ],[
 
-        ]
+            ]);
 
-    );
-
-        // dd($request->all());
-
-        $product = Product::create([
-            'product_barcode'=> $request->product_code,
-            'product_name'=> $request->product_name,
-            'stock'=> $request->stock,
-            'brand_id'=> $request->brand,
-            'import_price'=> $request->import_price,
-            'price'=>$request->price,
-            'discount_price'=>$request->discount_price,
-            'product_type_id'=>$request->product_type,
-            'description'=>$request->description,
-        ]);
-
-        // dd($request->image_colors[0]->getClientOriginalName());
-        $product->save();
-        if($request->hasFile('images')){
-            foreach ($request->file('images') as $image){
-                // dd('vào for');
-                $pics = new Picture();
-
-                $namewithextension = $image->getClientOriginalName();
-                $fileName = explode('.', $namewithextension)[0];
-                $extension = $image->getClientOriginalExtension();
-                $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-                $destinationPath = public_path('/assets/img/products/');
-                $image->move($destinationPath,$fileNew);
-
-                $pics->product_id = $product->id;
-                $pics->picture_value = $fileNew;
-                $pics->save();
+            if ($validator->fails()) { 
+                return redirect()->back()->withErrors($validator);
             }
+        
 
-        }
-        //nhap size
-        for($i = 0;$i<count($request->size_name);$i++){
-            $size = new Size();
-            $size->size_name = $request->size_name[$i];
-            $size->product_id = $product->id;
-            $size->status = 1;
-            $size->save();
-        }
-        //nhap ten mau va hinh sp cua mau
-        for($i = 0;$i<count($request->color_name);$i++){
-            //luu hinh
-            $color = new Color();
-            if($request->hasFile('image_colors')){
-                foreach ($request->file('image_colors') as $image){
+            // dd($request->all());
+
+            $product = Product::create([
+                'product_barcode'=> $request->product_code,
+                'product_name'=> $request->product_name,
+                'stock'=> $request->stock,
+                'brand_id'=> $request->brand,
+                'import_price'=> $request->import_price,
+                'price'=>$request->price,
+                'discount_price'=>$request->discount_price,
+                'product_type_id'=>$request->product_type,
+                'description'=>$request->description,
+            ]);
+
+            // dd($request->image_colors[0]->getClientOriginalName());
+            $product->save();
+            if($request->hasFile('images')){
+                foreach ($request->file('images') as $image){
                     // dd('vào for');
+                    $pics = new Picture();
+
                     $namewithextension = $image->getClientOriginalName();
                     $fileName = explode('.', $namewithextension)[0];
                     $extension = $image->getClientOriginalExtension();
                     $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-                    $destinationPath = public_path('/assets/img/product_colors/');
+                    $destinationPath = public_path('/assets/img/products/');
                     $image->move($destinationPath,$fileNew);
 
-                    $color->picture = $fileNew;
+                    $pics->product_id = $product->id;
+                    $pics->picture_value = $fileNew;
+                    $pics->save();
                 }
 
             }
-            //luu ten mau
-            $color->color_name = $request->color_name[$i];
-            $color->product_id = $product->id;
-            $color->status = 1;
-            $color->save();
+          
+            //nhap size
+            for($i = 0;$i<count($request->size_name);$i++){
+                $size = new Size();
+                $size->size_name = $request->size_name[$i];
+                $size->product_id = $product->id;
+                $size->status = $request->size_status[$i];
+                $size->save();
+            }
+            //nhap ten mau va hinh sp cua mau
+            for($i = 0;$i<count($request->color_name);$i++){
+                //luu hinh
+                $color = new Color();
+                if($request->image_colors[$i]){
+                    // foreach ($request->file('image_colors') as $image){
+                        // dd('vào for');
+                        $image = $request->image_colors[$i];
+                        $namewithextension = $image->getClientOriginalName();
+                        $fileName = explode('.', $namewithextension)[0];
+                        $extension = $image->getClientOriginalExtension();
+                        $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                        $destinationPath = public_path('/assets/img/product_colors/');
+                        $image->move($destinationPath,$fileNew);
+
+                        $color->picture = $fileNew;
+                    // }
+
+                }
+                //luu ten mau
+                $color->color_name = $request->color_name[$i];
+                $color->product_id = $product->id;
+                $color->status = $request->color_status[$i];
+                $color->save();
+            }
+            DB::commit();
+            return redirect()->route('products')->with('msg','Tạo thành công sản phẩm '.$request->product_name);
+        
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            dd($e);
+            return redirect()->back()->withErrors('Thêm sản phẩm thất bại!');
         }
-        return redirect()->route('products')->with('msg','Tạo thành công sản phẩm '.$request->product_name);
     }
 
     /**
@@ -192,95 +206,135 @@ class ProductController extends Controller
         // }])
         // ->find($id);
         $product = DB::table('products')->find($id);
-        $size = DB::select("SELECT sizes.size_name FROM sizes WHERE product_id = {$id}");
+        $sizes = DB::select("SELECT sizes.size_name, sizes.status, sizes.id FROM sizes WHERE product_id = {$id}");
         // dd($size);
         $category = Category::all();
         $product_type = ProductType::all();
         $brand = Brand::all();
-        $colors = DB::select("SELECT colors.color_name,colors.picture from colors WHERE colors.product_id = {$id}");
+        $colors = DB::select("SELECT colors.color_name, colors.picture, colors.status, colors.id from colors WHERE colors.product_id = {$id}");
         $pics = DB::select("SELECT pictures.picture_value from pictures WHERE pictures.product_id ={$id}");
         // dd($pics);
 
-        return view('component.product.edit-product', compact('brand','category','product_type','product','size','colors','pics'));
+        return view('component.product.edit-product', compact('brand','category','product_type','product','sizes','colors','pics'));
     }
     public function postEdit($id,HttpRequest $request)
     {
-        $data = Validator::make($request->all(),[
-            'product_name'=> 'required','min:2',
-            'stock'=>'required',
-            'import_price'=>'required',
-            'price'=>'required',
-            'discount_price'=>'required',
-            'description'=>'required',
-        ],
-        [
-            'product_name.required'=>'Vui lòng nhập tên sản phẩm.',
-            'product_name.min'=>'Tên sản phẩm quá ngắn',
-        ]
-    );
-        $product = Product::find($id);
-        dd($request->all());
-        for($i = 0;$i<count($request->size_name);$i++){
-            $size = DB::table('sizes')->where("product_id",'=',$id)->get();
-            $size->size_name = $request->size_name[$i];
-            $size->product_id = $product->id;
-            $size->status = 1;
-            $size->udpate();
-        }
-        dd($size);
-        //nhap ten mau va hinh sp cua mau
-        for($i = 0;$i<count($request->color_name);$i++){
-            //luu hinh
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(),[
+                'product_name'=> 'required','min:2',
+                'stock'=>'required',
+                'import_price'=>'required',
+                'price'=>'required',
+                'discount_price'=>'required',
+                'description'=>'required',
+            ],
+            [
+                'product_name.required'=>'Vui lòng nhập tên sản phẩm.',
+                'product_name.min'=>'Tên sản phẩm quá ngắn',
+            ]);
+            if ($validator->fails()) { 
+                return redirect()->back()->withErrors($validator);
+            }
+            $product = Product::find($id);
 
-            $color = DB::table('colors')->where("product_id",'=',$id)->get();
-            if($request->hasFile('image_colors')){
-                foreach ($request->file('image_colors') as $image){
+            // ->update([
+            //     'product_barcode'=> $request->product_code,
+            //     'product_name'=> $request->product_name,
+            //     'stock'=> $request->stock,
+            //     'brand_id'=> $request->brand,
+            //     'import_price'=> $request->import_price,
+            //     'price'=>$request->price,
+            //     'discount_price'=>$request->discount_price,
+            //     'product_type_id'=>$request->product_type,
+            //     'description'=>$request->description,
+            //     'status'=>$request->status,
+            // ]);
+
+            // dd($request->all());
+            for($i = 0;$i<count($request->size_name);$i++){
+                $size = Size::find($request->size_id[$i]);
+                if ($size) {
+                    $size->size_name = $request->size_name[$i];
+                    $size->status = $request->size_status[$i];
+                    $size->update();
+                } else {
+                    $size = new Size();
+                    $size->size_name = $request->size_name[$i];
+                    $size->product_id = $product->id;
+                    $size->status = $request->size_status[$i];
+                    $size->save();
+                }             
+            }
+            // dd($size);
+            //nhap ten mau va hinh sp cua mau
+            for($i = 0;$i<count($request->color_name);$i++){
+                //luu hinh
+                $color = Color::find($request->color_id[$i]);
+                if ($color) {
+                    // dd($request->image_colors);
+                    // if($request->image_colors){
+                    //     if($request->image_colors[$i]){
+                    //         $image = $request->image_colors[$i];
+                    //         unlink(public_path('/assets/img/product_colors/'.$color->picture));
+                    //         $namewithextension = $image->getClientOriginalName();
+                    //         $fileName = explode('.', $namewithextension)[0];
+                    //         $extension = $image->getClientOriginalExtension();
+                    //         $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                    //         $destinationPath = public_path('/assets/img/product_colors/');
+                    //         $image->move($destinationPath,$fileNew);
+                    //         $color->picture = $fileNew;
+                    //     }                        
+                    // }
+                    $color->color_name = $request->color_name[$i];
+                    $color->status = $request->color_status[$i];
+                    $color->update();
+                }else{
+                    $color = new Color();
+                    if($request->hasFile('image_colors')){
+                        foreach ($request->file('image_colors') as $image){
+                            // dd('vào for');
+                            $namewithextension = $image->getClientOriginalName();
+                            $fileName = explode('.', $namewithextension)[0];
+                            $extension = $image->getClientOriginalExtension();
+                            $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                            $destinationPath = public_path('/assets/img/product_colors/');
+                            $image->move($destinationPath,$fileNew);
+
+                            $color->picture = $fileNew;
+                        }
+
+                    }
+                    //luu ten mau
+                    $color->color_name = $request->color_name[$i];
+                    $color->product_id = $product->id;
+                    $color->status = $request->color_status[$i];
+                    $color->save();
+                }
+            }
+
+            if($request->hasFile('images')){
+                $pictures = Picture::where('product_id','=',$id)->get();
+                foreach ($pictures as $picture){
+                    unlink(public_path('/assets/img/products/'.$picture->picture_value));
+                    $picture->delete();
+                }
+                foreach ($request->file('images') as $image){
                     // dd('vào for');
+                    $pics = new Picture();
+
                     $namewithextension = $image->getClientOriginalName();
                     $fileName = explode('.', $namewithextension)[0];
                     $extension = $image->getClientOriginalExtension();
                     $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-                    $destinationPath = public_path('/assets/img/product_colors/');
+                    $destinationPath = public_path('/assets/img/products/');
                     $image->move($destinationPath,$fileNew);
 
-                    $color->picture = $fileNew;
+                    $pics->product_id = $product->id;
+                    $pics->picture_value = $fileNew;
+                    $pics->save();
                 }
-                $color->color_name = $request->color_name[$i];
-                $color->product_id = $product->id;
             }
-            else{
-                $color->status = 0;
-
-            }
-            $color->update();
-        }
-
-        if($request->hasFile('images')){
-            foreach ($request->file('images') as $image){
-                // dd('vào for');
-                $pics = Picture::where('product_id','=',$id)->get();
-
-                $namewithextension = $image->getClientOriginalName();
-                $fileName = explode('.', $namewithextension)[0];
-                $extension = $image->getClientOriginalExtension();
-                $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-                $destinationPath = public_path('/assets/img/products/');
-                $image->move($destinationPath,$fileNew);
-
-                $pics->product_id = $product->id;
-                $pics->picture_value = $fileNew;
-                $pics->update();
-            }
-            $product->product_name = $request->product_name;
-            $product->brand_id = $request->brand;
-            $product->product_type_id = $request->product_type;
-            $product->price = $request->price;
-            $product->stock = $request->stock;
-            $product->import_price = $request->import_price;
-            $product->discount_price = $request->discount_price;
-
-        }else{
-
             $product->product_name = $request->product_name;
             $product->brand_id = $request->brand;
             $product->product_type_id = $request->product_type;
@@ -289,11 +343,16 @@ class ProductController extends Controller
             $product->import_price = $request->import_price;
             $product->discount_price = $request->discount_price;
             $product->status = $request->status;
+            $success = $product->update();
+            DB::commit();
+            return view('component.product.edit-product',compact('success'));
+            // return view('component.product.edit-product')->withErrors('Chỉnh sửa thành công');
         }
-        $product->update();
-
-        return view('component.product.edit-product',compact('success'));
-
+        catch (\Throwable $e) {
+            DB::rollBack();
+            // dd($e);
+            return redirect()->back()->withErrors('Sửa sản phẩm thất bại!');
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -320,5 +379,19 @@ class ProductController extends Controller
         $name = $product->product_name;
         $product->update();
         return redirect()->route('products')->with('msg','Đã xóa thành công sản phẩm '.$name);
+    }
+
+    public function popular($id)
+    {
+        $product = Product::find($id);
+        if($product->popular == 0)
+        {
+            $product->popular = 1;
+        }else {
+            $product->popular = 0;
+        }
+        $product->update();
+
+        return redirect()->route('products');
     }
 }

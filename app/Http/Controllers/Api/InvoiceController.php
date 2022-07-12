@@ -169,7 +169,7 @@ class InvoiceController extends Controller
                 'hi' => $user->full_name,
                 'content1' => 'Chúng tôi đã tiếp nhận đơn đặt hàng của bạn. Mã đơn hàng của bạn là: ',
                 'num' => $invoice->invoice_code,
-                'content2' => ' và tổng giá trị đơn hàng: '.$invoice->until_price.' VND. Chúng tôi sẽ phản hồi sớm nhất cho bạn, xin cảm ơn!',
+                'content2' => ' và tổng giá trị đơn hàng: '.number_format( $invoice->until_price, 0, '', '.').' VND. Chúng tôi sẽ phản hồi sớm nhất cho bạn, xin cảm ơn!',
             ];
             SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
 

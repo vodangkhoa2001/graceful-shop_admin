@@ -27,9 +27,6 @@
 <div class="row">
 
     <div class="col-lg">
-
-
-
         <!-- Basic Card Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -44,22 +41,49 @@
                         <a href="{{ route('products') }}">Danh sách sản phẩm</a>
                     </div>
                 @else
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <form action="{{route('post-AddProduct')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="product_code">Mã sản phẩm</label>
-                            <input type="text" class="form-control" name="product_code" id="product_code" value="{{ $productCode }}" placeholder="Mã sản phẩm" readonly >
+                            <input type="text" class="form-control" required = "Mã sản phẩm không được để trống" name="product_code" id="product_code" value="{{ $productCode }}" placeholder="Mã sản phẩm" readonly >
                         </div>
                         <div class="form-group col-md-6">
                             <label for="product_name">Tên sản phẩm</label>
-                            <input type="text" class="form-control" name="product_name" id="product_name" placeholder="Tên sản phẩm" value="{{ old('product_name') }}" >
+                            <input type="text" class="form-control" required = "Tên sản phẩm không được để trống" name="product_name" id="product_name" placeholder="Tên sản phẩm" value="{{ old('product_name') }}" >
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
+                            <label for="stock">Số lượng</label>
+                            <input type="number" class="form-control" id="stock" required = "Số lượng không được để trống" min="0" name="stock" placeholder="Số lượng" value="{{ old('stock') }}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="import_price">Giá nhập</label>
+                            <input type="text" class="form-control" id="import_price" required = "Giá nhập không được để trống" min="0" name="import_price" placeholder="Giá nhập" value="{{ old('import_price') }}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="price">Giá bán</label>
+                            <input type="text" class="form-control" id="price" required = "Giá bán không được để trống" min="0" name="price" placeholder="Giá bán" value="{{ old('price') }}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="discount_price">Giá giảm</label>
+                            <input class="form-control" type="text" placeholder="Giá giảm" id="discount_price" required = "Giá giảm không được để trống" min="0"  name="discount_price" value="{{ old('discount_price') }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
                             <label for="brand">Thương hiệu</label>
-                            <select name="brand" id="brand" class="form-control">
+                            <select name="brand" id="brand" class="form-control" required = "Thương hiệu không được để trống">
                                 <option value="">-- Chọn thương hiệu --</option>
                                 @foreach ($brand as $item)
                                     @if ($item->status ==1)
@@ -67,79 +91,71 @@
                                     @endif
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="stock">Số lượng</label>
-                            <input type="number" class="form-control" id="stock" name="stock" placeholder="Số lượng" value="{{ old('stock') }}">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="import_price">Giá nhập</label>
-                            <input type="text" class="form-control" id="import_price" name="import_price" placeholder="Giá nhập" value="{{ old('import_price') }}">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="price">Giá bán</label>
-                            <input type="text" class="form-control" id="price" name="price" placeholder="Giá bán" value="{{ old('price') }}">
-                        </div>
-                    </div>
-                    <div class="form-row pl-4 pr-4">
-                        <div class="form-group col-md-6">
-                            <label for="discount_price">Giá giảm</label>
-                            <input class="form-control" type="text" placeholder="Giá giảm" id="discount_price" name="discount_price" value="{{ old('discount_price') }}">
-                        </div>
-                        <div class="form-group col-md-6">
+                        </div>                        
+                        <div class="form-group col-md-5">
                             <label for="product_type">Loại sản phẩm</label>
-                            <select name="product_type" id="product_type" class="form-control">
+                            <select name="product_type" id="product_type" class="form-control" required = "Loại sản phẩm không được để trống">
                                 <option value="">-- Loại sản phẩm --</option>
                                 @foreach ($product_type as $item)
                                     <option value="{{ $item->id }}">{{ $item->product_type_name }}</option>
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group col-md-2 pt-2">
+                            <label for="images" class="mt-4 btn btn-primary">Chọn hình ảnh</label>
+                            <input type="file" id="images" accept="image/*" multiple required name="images[]" style="display:none">
+                        </div>
                     </div>
 
+                    
                     <div class="form-row pl-4">
-                        <div class="form-group col-md-7">
-                            <label for="">Kích thước:</label>
-                            <div class="sizes">
-                                <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="S" id="sizeS">
-                                    <label class="form-check-label" for="sizeS">S</label>
-                                </div>
-                                <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="M" id="sizeM">
-                                    <label class="form-check-label" for="sizeM">M</label>
-                                </div>
-                                <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="L" id="sizeL">
-                                    <label class="form-check-label" for="sizeL">L</label>
-                                </div>
-                                <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="XL" id="sizeXL">
-                                    <label class="form-check-label" for="sizeXL">XL</label>
-                                </div>
-                                <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="XXL" id="size2XL">
-                                    <label class="form-check-label" for="size2XL">XXL</label>
-                                </div>
-                                <div class="form-check ml-3">
-                                    <input class="form-check-input" type="checkbox" name="size_name[]" value="Free size" id="free_size">
-                                    <label class="form-check-label" for="free_size">Free size</label>
+                        <div class="form-group col-md-3">
+                            <div class="d-flex preview">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ml-1">
+                        <button onclick="add_append();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm màu</button>
+                    </div>                  
+                    <div class="row">    
+                        <div class="add_color_and_size" >
+                            <div class="form-group form-inline ml-md-4 img-color">
+                                <label for="color"> Tên màu :</label>
+                                <input type="text" name="color_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden> 
+                                <input type="text" id="color" name="color_name[]" placeholder="Tên màu" class="form-control col-md-3 mx-sm-3"> 
+                                <input type="file" accept="image/*" required="" name="image_colors[]" id='img' onchange="imgaa(this);">
+                                <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button>
+                                <div class="form-group ml-3" hidden>
+                                    <label for="status">Trạng thái </label> &ensp; 
+                                    <select name="color_status[]" class="form-control">
+                                        <option value="0" >Ngưng hoạt động</option>
+                                        <option value="1" selected>Đang hoạt động</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group col-md-5">
-                            <label for="images">Hình ảnh</label>
-                            <input type="file" id="images" accept="image/*" multiple required name="images[]">
-                        </div>
                     </div>
-                    <div class="form-group m-4 row">
-                        <button onclick="add_append();" type="button"  class="btn btn-info ml-4 btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm màu</button>
-                    </div>
-                    <div class="row">
-                        <div class="add_color_and_size" >
+                    <div class="row ml-1">
+                        <button onclick="add_size();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size</button>
+                    </div>                  
+                    <div class="row">    
+                        <div class="add_size" >
                             {{-- màu trong này phải qua cái js --}}
-                            <div class="form-group form-inline ml-md-4"><label for="color"> Tên màu :</label><input type="text" id="color" name="color_name[]" placeholder="Tên màu" class="form-control col-md-1 mx-sm-3"> <input type="file" accept="image/*" multiple="" required="" name="image_colors[]"><button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button></div>
+                            <div class="form-group form-inline ml-md-4 img-color">
+                                <label for="color"> Tên size :</label>
+                                <input type="text" name="size_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden> 
+                                <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3"> 
+                                <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button>
+                                <div class="form-group ml-2" hidden >
+                                    <label for="status">Trạng thái </label> &ensp; 
+                                    <select name="size_status[]" class="form-control">
+                                        <option value="0" >Ngưng hoạt động</option>
+                                        <option value="1" selected>Đang hoạt động</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
+                    </div>
                     </div>
                     <div class="form-group m-4">
                         <label for="editor">Nội dung</label>
@@ -165,8 +181,7 @@
 @section('script')
 <script src="{{ asset('assets/js/add-and-remove-list.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript">
-
+<script type="text/javascript">
 
    function chooseImage(fileInput){
        if(fileInput.files && fileInput.files[0]){
@@ -177,6 +192,79 @@
            reader.readAsDataURL(fileInput.files[0]);
        }
    }
+
+   
+    const ipnFileElement = document.querySelector('#images')
+    const resultElement = document.querySelector('.preview')
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+
+    ipnFileElement.addEventListener('change', function(e) {
+        const files = e.target.files
+        const file = files[0]
+        const fileType = file['type']
+
+        if (!validImageTypes.includes(fileType)) {
+            resultElement.insertAdjacentHTML(
+            'beforeend',
+            '<span class="preview-img">Chọn ảnh đi :3</span>'
+            )
+            return
+        }
+        document.querySelectorAll(".preview img").forEach(img => img.remove());
+        for (let index = 0; index < files.length; index++) {
+            const fileReader = new FileReader()
+            fileReader.readAsDataURL(files[index])
+
+            fileReader.onload = function() {
+                const url = fileReader.result
+                resultElement.insertAdjacentHTML(
+                'beforeend',
+                `<img class="mr-2" height="150" width="200" src="${url}" alt="${file.name}">`
+                )
+            }            
+        }        
+    })
+
+    function imgaa(btn) {
+        console.log(btn);
+        var row = img.parentNode.parentNode;
+        row = '<button onclick="remove_product(this);" type="button"  class="btn btn-danger"><i class="fa-solid fa-minus"></i>aaa</button>';
+        document.getElementById("dataTableSlide").append(row);
+
+        var row = img.parentNode;
+        const ipnFileElement = row.fileInput('#img');
+        const resultElement = document.querySelector('.img-color')
+        const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+
+        ipnFileElement.addEventListener('change', function(e) {
+            const files = e.target.files
+            const file = files[0]
+            const fileType = file['type']
+
+            if (!validImageTypes.includes(fileType)) {
+                row.insertAdjacentHTML(
+                'beforeend',
+                '<span class="">Chọn ảnh đi :3</span>'
+                )
+                return
+            }
+            // document.querySelectorAll(".img-color img").forEach(img => img.remove());
+
+            for (let index = 0; index < files.length; index++) {
+                const fileReader = new FileReader()
+                fileReader.readAsDataURL(files[index])
+
+                fileReader.onload = function() {
+                    const url = fileReader.result
+                    row.insertAdjacentHTML(
+                    'beforeend',
+                    `<img class="mr-2" height="50" width="50" src="${url}" alt="${file.name}">`
+                    )
+                }            
+            }        
+        })
+        row.remove(row);
+    }    
 </script>
 @parent
 @endsection

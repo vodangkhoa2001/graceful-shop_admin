@@ -35,7 +35,7 @@
                     <li>Giá bán: {{ $product->price }}</li>
                     <li>Lượt thích: {{ $product->num_like }}</li>
                     <li>Lượt đánh giá: {{ $product->num_rate }}</li>
-                    <li>Mô tả: {{ $product->description }}</li>
+                    <li>Mô tả: {!! Str::limit( $product->description, 20000) !!}</li>
                 </ul>
 
             </div>

@@ -20,7 +20,7 @@ class CategoryController extends Controller
     public function index()
     {
         $title = 'Danh sách danh mục';
-        $category = Category::where('status','=',1)->orderBy('id','DESC')->get();
+        $category = Category::orderBy('id','DESC')->get();
         return view('component.category.category',compact('title','category'));
     }
 

@@ -50,7 +50,7 @@
                                     <td>{{ $item->description }}</td>
                                     <td>
                                         @if ($item->status==0)
-                                            <span class="text-danger">Không hoạt động</span>
+                                            <span class="text-danger">Ngưng hoạt động</span>
                                         @else
                                             <span class="text-success">Hoạt động</span>
                                         @endif
@@ -65,13 +65,13 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Xóa voucher</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">Ngưng hoạt động voucher</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <span>Bạn có chắc muốn xóa voucher {{ $item->voucher_code }}?</span>
+                                                        <span>Bạn có chắc muốn ngưng hoạt động voucher {{ $item->voucher_code }}?</span>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <form action="{{ route('cancel-voucher',$item->id) }}" method="post">

@@ -17,7 +17,6 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Phản hồi từ người dùng</h6>
-            <a href="{{ route('get-AddProduct') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
         </div>
         <div class="card-body">
 

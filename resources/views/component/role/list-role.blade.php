@@ -25,10 +25,8 @@
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Nội dung</th>
+                            <th>Tên role</th>
                             <th>Trạng thái</th>
-                            <th>Ngày tạo</th>
-                            {{-- <th></th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -45,33 +43,7 @@
                                     <span class="text-success">Hoạt động</span>
                                 @endif
                             </td>
-                            <td>{{ $item->created_at }}</td>
-                            {{-- <td>
-                                <a href="#removeModal{{ $item->id }}" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Xóa"><i class="fa-solid fa-minus"></i></a>
-                             
-                                <div class="modal fade" id="removeModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Xóa role</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <span>Bạn có chắc muốn xóa {{ $item->role_name }}?</span>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <form action="{{ route('cancel-slide',$item->id) }}" method="post">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-primary">OK</button>
-                                                </form>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td> --}}
+
                         </tr>
 
                         @endforeach

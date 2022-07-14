@@ -28,7 +28,7 @@ class UserController extends Controller
     public function getUsers(){
         $title = 'Danh sách người dùng';
         $role = Role::all();
-        $users = DB::select('SELECT users.*,roles.role_name FROM users,roles WHERE users.role = roles.role_value and users.role != 1 and users.status = 1 ORDER BY created_at DESC');
+        $users = DB::select('SELECT users.*,roles.role_name FROM users,roles WHERE users.role = roles.role_value and users.role != 1 ORDER BY created_at DESC');
         return view('component.account.users',compact('title','users','role'));
     }
 
@@ -65,17 +65,6 @@ class UserController extends Controller
                     return redirect('login');
             }
     }
-    // public function register(Request $request){
-    //     $user = new User();
-    //     $user->phone = $request->phone;
-    //     $user->password = $request->password;
-    //     $user->avatar = 'avatar_default.png';
-    //     $user->full_name = $request->full_name;
-    //     $user->api_token = Str::random(60);
-    //     $user->role=0;
-    //     $user->status = 1;
-    //     $user->save();
-    // }
     public function getCreateAccount(){
 
         $roles = Role::all();
@@ -84,13 +73,8 @@ class UserController extends Controller
     }
     public function postCreateAccount(Request $request){
 
-        $image = $request->file('avatar');
-        $namewithextension = $image->getClientOriginalName();
-        $fileName = explode('.', $namewithextension)[0];
-        $extension = $image->getClientOriginalExtension();
-        $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
-        $destinationPath = public_path('/assets/img/users/');
-        $image->move($destinationPath,$fileNew);
+
+        $fileNew = "default_avatar.png";
 
         $user = new User();
         $user->avatar = $fileNew;
@@ -99,7 +83,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
-        $user->status = $request->status;
+        $user->status = 1;
         return view('component.account.create-account',['success'=>$user->save()]);
     }
     //edit

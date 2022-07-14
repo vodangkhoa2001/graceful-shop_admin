@@ -135,7 +135,7 @@
 
     </div>
 
-    <div class="row">
+    {{-- <div class="row">
         <!-- Area Chart -->
         <div class="col-xl-12">
             <div class="card shadow mb-4">
@@ -151,7 +151,7 @@
             </div>
         </div>
 
-    </div>
+    </div> --}}
 
 @endsection
 

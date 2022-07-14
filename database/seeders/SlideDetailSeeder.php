@@ -15,7 +15,7 @@ class SlideDetailSeeder extends Seeder
     public function run()
     {
         for ($i=1; $i < 3; $i++) { 
-            for ($j=1; $j < 11 ; $j++) { 
+            for ($j=1; $j < 10 ; $j++) { 
                 DB::table('slide_details')->insert([
                     array(
                         'slide_id'=>$i,

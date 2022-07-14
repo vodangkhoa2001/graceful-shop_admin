@@ -21,7 +21,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $voucher = Voucher::where('status','=',1)->orderBy('id','DESC')->get();
+        $voucher = Voucher::orderBy('id','DESC')->get();
         return view('component.voucher.list-voucher',compact('voucher'));
     }
 

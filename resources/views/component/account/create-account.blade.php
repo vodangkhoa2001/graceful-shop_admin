@@ -51,7 +51,9 @@
                                 <select name="role" id="role" class="form-control">
                                     <option value="">-- Loại tài khoản --</option>
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->role_value }}">{{ $role->role_name }}</option>
+                                        @if ($role->role_value > 0)
+                                            <option value="{{ $role->role_value }}">{{ $role->role_name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -71,19 +73,12 @@
                         </div>
                     </div>
 
-                    <div class="form-row pl-4">
+                    {{-- <div class="form-row pl-4">
                         <div class="form-group col-md-3">
                         <input type="file" name="avatar" value="{{ old('avatar') }}" accept="image/*" multiple required name="image">
 
                         </div>
-                    </div>
-                    <div class="form-group m-4">
-                        <label for="status">Trạng thái</label>
-                        <select name="status" class="form-control">
-                            <option value="1">Đang hoạt động</option>
-                            <option value="0">Ngưng hoạt động</option>
-                        </select>
-                    </div>
+                    </div> --}}
                     <div class="d-flex justify-content-end p-4">
                         <button class="btn btn-primary col-2"  type="submit">Thêm tài khoản</button>
 

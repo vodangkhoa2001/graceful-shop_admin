@@ -82,10 +82,10 @@ class ProductController extends Controller
 
             ]);
 
-            if ($validator->fails()) { 
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator);
             }
-        
+
 
             // dd($request->all());
 
@@ -121,7 +121,7 @@ class ProductController extends Controller
                 }
 
             }
-          
+
             //nhap size
             for($i = 0;$i<count($request->size_name);$i++){
                 $size = new Size();
@@ -157,7 +157,7 @@ class ProductController extends Controller
             }
             DB::commit();
             return redirect()->route('products')->with('msg','Tạo thành công sản phẩm '.$request->product_name);
-        
+
         } catch (\Throwable $e) {
             DB::rollBack();
             dd($e);
@@ -233,7 +233,7 @@ class ProductController extends Controller
                 'product_name.required'=>'Vui lòng nhập tên sản phẩm.',
                 'product_name.min'=>'Tên sản phẩm quá ngắn',
             ]);
-            if ($validator->fails()) { 
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator);
             }
             $product = Product::find($id);
@@ -264,7 +264,7 @@ class ProductController extends Controller
                     $size->product_id = $product->id;
                     $size->status = $request->size_status[$i];
                     $size->save();
-                }             
+                }
             }
             // dd($size);
             //nhap ten mau va hinh sp cua mau
@@ -284,7 +284,7 @@ class ProductController extends Controller
                     //         $destinationPath = public_path('/assets/img/product_colors/');
                     //         $image->move($destinationPath,$fileNew);
                     //         $color->picture = $fileNew;
-                    //     }                        
+                    //     }
                     // }
                     $color->color_name = $request->color_name[$i];
                     $color->status = $request->color_status[$i];
@@ -398,7 +398,7 @@ class ProductController extends Controller
         $product->status = 0;
         $name = $product->product_name;
         $product->update();
-        return redirect()->route('products')->with('msg','Đã xóa thành công sản phẩm '.$name);
+        return redirect()->route('products')->with('msg','Đã ngưng hoạt động thành công sản phẩm '.$name);
     }
 
     public function popular($id)

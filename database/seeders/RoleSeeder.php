@@ -28,12 +28,7 @@ class RoleSeeder extends Seeder
             ),
             array(
                 'role_value'=>2,
-                'role_name'=>'Quản lý kho',
-                'status'=>1
-            ),
-            array(
-                'role_value'=>3,
-                'role_name'=>'CSKH',
+                'role_name'=>'Nhân viên',
                 'status'=>1
             ),
         ]);

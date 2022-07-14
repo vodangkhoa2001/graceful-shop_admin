@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('full_name')->nullalbe();
             $table->dateTime('date_of_birth')->nullable();
             $table->tinyInteger('sex')->nullable(); //0 Nam, 1: Nữ
-            $table->string('email')->unique()->nullable();
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->nullable();
             $table->string('password')->nullable();

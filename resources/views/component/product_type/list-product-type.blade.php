@@ -8,10 +8,10 @@
 @endsection
 @section('content')
     @if (session('msg'))
-            <div class="alert alert-success">
-                {{ session('msg') }}
-            </div>
-        @endif
+        <div class="alert alert-success">
+            {{ session('msg') }}
+        </div>
+    @endif
     <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
 
     <!-- DataTales Example -->
@@ -79,7 +79,6 @@
                             <td colspan="5">Không có loại sản phẩm nào</td>
                         </tr>
                         @endif
-
                     </tbody>
                 </table>
             </div>

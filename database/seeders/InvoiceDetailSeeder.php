@@ -14,7 +14,7 @@ class InvoiceDetailSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('invoice_details')->insert(
+        DB::table('invoice_details')->insert([
             array('id' => '1','invoice_id' => '1','product_id' => '23','color_id' => '51','size_id' => '79','quantity' => '1','price' => '490000','total_price' => '490000','status' => '1','rated' => '0','created_at' => '2022-07-14 21:54:50','updated_at' => '2022-07-14 21:54:50'),
             array('id' => '2','invoice_id' => '1','product_id' => '24','color_id' => '52','size_id' => '82','quantity' => '1','price' => '460000','total_price' => '460000','status' => '1','rated' => '0','created_at' => '2022-07-14 21:54:50','updated_at' => '2022-07-14 21:54:50'),
             array('id' => '3','invoice_id' => '1','product_id' => '33','color_id' => '67','size_id' => '112','quantity' => '1','price' => '450000','total_price' => '450000','status' => '1','rated' => '0','created_at' => '2022-07-14 21:54:50','updated_at' => '2022-07-14 21:54:50'),
@@ -34,6 +34,6 @@ class InvoiceDetailSeeder extends Seeder
             array('id' => '17','invoice_id' => '10','product_id' => '30','color_id' => '64','size_id' => '103','quantity' => '2','price' => '699000','total_price' => '1398000','status' => '1','rated' => '0','created_at' => '2022-07-14 22:08:02','updated_at' => '2022-07-14 22:08:02'),
             array('id' => '18','invoice_id' => '10','product_id' => '32','color_id' => '66','size_id' => '110','quantity' => '3','price' => '479000','total_price' => '1437000','status' => '1','rated' => '0','created_at' => '2022-07-14 22:08:02','updated_at' => '2022-07-14 22:08:02'),
             array('id' => '19','invoice_id' => '10','product_id' => '33','color_id' => '67','size_id' => '114','quantity' => '2','price' => '450000','total_price' => '900000','status' => '1','rated' => '0','created_at' => '2022-07-14 22:08:02','updated_at' => '2022-07-14 22:08:02')
-        );
+        ]);
     }
 }

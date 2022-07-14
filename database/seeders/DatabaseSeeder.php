@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder
             RateSeeder::class,
             PictureRateSeeder::class,
             InfoShopSeeder::class,
+            InvoiceSeeder::class,
+            InvoiceDetailSeeder::class,
         ]);
     }
 }

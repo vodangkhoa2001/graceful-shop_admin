@@ -291,19 +291,39 @@ class ProductController extends Controller
                     $color->update();
                 }else{
                     $color = new Color();
-                    if($request->hasFile('image_colors')){
-                        foreach ($request->file('image_colors') as $image){
+                    // if($request->hasFile('image_colors')){
+                    //     foreach ($request->file('image_colors') as $image){
+                    //         // dd('vào for');
+                    //         $namewithextension = $image->getClientOriginalName();
+                    //         $fileName = explode('.', $namewithextension)[0];
+                    //         $extension = $image->getClientOriginalExtension();
+                    //         $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
+                    //         $destinationPath = public_path('/assets/img/product_colors/');
+                    //         $image->move($destinationPath,$fileNew);
+
+                    //         $color->picture = $fileNew;
+                    //     }
+
+                    // }
+                    // //luu ten mau
+                    // $color->color_name = $request->color_name[$i];
+                    // $color->product_id = $product->id;
+                    // $color->status = $request->color_status[$i];
+                    // $color->save();
+                    if($request->image_colors[$i]){
+                        // foreach ($request->file('image_colors') as $image){
                             // dd('vào for');
+                            $image = $request->image_colors[$i];
                             $namewithextension = $image->getClientOriginalName();
                             $fileName = explode('.', $namewithextension)[0];
                             $extension = $image->getClientOriginalExtension();
                             $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
                             $destinationPath = public_path('/assets/img/product_colors/');
                             $image->move($destinationPath,$fileNew);
-
+    
                             $color->picture = $fileNew;
-                        }
-
+                        // }
+    
                     }
                     //luu ten mau
                     $color->color_name = $request->color_name[$i];

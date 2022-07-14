@@ -32,8 +32,8 @@ class CategorySeeder extends Seeder
                 'status'=>1
             ),
             array(
-                'category_name'=>'Váy',
-                'icon'=>'big_skirt.svg',
+                'category_name'=>'Mũ',
+                'icon'=>'hat.svg',
                 'status'=>1
             ),
             array(

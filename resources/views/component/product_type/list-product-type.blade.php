@@ -46,8 +46,12 @@
                                     <span class="text-success">Hoạt động</span>
                                 @endif</td>
                                 <td class="d-flex justify-content-xl-around">
-                                    <a href="{{ route('get-EditProductType',$item->id) }}"title="Chỉnh sửa" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                    <a href="#removeModal{{ $item->id }}" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Xóa"><i class="fa-solid fa-minus"></i></a>
+                                    @if($item->status != 0)
+                                        <a href="{{ route('get-EditProductType',$item->id) }}"title="Chỉnh sửa" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        <a href="#removeModal{{ $item->id }}" class="btn btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Xóa"><i class="fa-solid fa-minus"></i></a>
+                                    @else
+                                        <a href="{{ route('get-EditProductType',$item->id) }}"title="Chỉnh sửa" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    @endif
                                     {{-- Modal --}}
                                     <div class="modal fade" id="removeModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">

@@ -78,12 +78,14 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('invoices')->group(function () {
+        Route::post('/',[InvoiceController::class, 'index'])->name('list-invoice');
         Route::get('/',[InvoiceController::class, 'index'])->name('list-invoice');
         Route::get('invoice/{id}',[InvoiceController::class, 'show'])->name('detail-invoice');
         Route::post('/{id}/update-status',[InvoiceController::class, 'updateStatus'])->name('update-invoiceStatus');
         Route::post('/{id}/cancel',[InvoiceController::class,'destroy'])->name('cancel-invoice');
         Route::get('/edit/{id}',[InvoiceController::class,'getEdit'])->name('get-EditInvoice');
         Route::post('/edit/{id}',[InvoiceController::class,'postEdit'])->name('post-EditInvoice');
+
     });
 
     Route::prefix('brands')->group(function () {

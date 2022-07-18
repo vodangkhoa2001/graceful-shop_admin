@@ -1,3 +1,5 @@
+{{-- {{ dd($invoice_status) }} --}}
+
 @extends('layouts.master')
 @section('title')
     {{ $title }}
@@ -18,7 +20,23 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
-
+            <div class="float-right col-4 mt-md-3 ">
+                <form action="{{route('list-invoice')}}" method="post">
+                    @csrf
+                    <div class="d-flex align-items-center">
+                        <span for="status_search" style="width:200px">Lọc trạng thái:</span>
+                        <select name="status_search" id="status_search" class=" form-control">
+                            <option value="-1"@if ($status_search == -1) selected @endif>Tất cả</option>
+                            <option value="1" @if ($status_search == 1) selected @endif>Chờ xác nhận</option>
+                            <option value="2" @if ($status_search == 2) selected @endif>Đã xác nhận</option>
+                            <option value="3" @if ($status_search == 3) selected @endif>Đang vận chuyển</option>
+                            <option value="4" @if ($status_search == 4) selected @endif>Đã giao</option>
+                            <option value="0" @if ($status_search == 0) selected @endif>Đã hủy</option>
+                        </select>
+                        <button type = "submit"  class="ml-2 btn btn-sm btn-primary">Lọc</button>
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -26,8 +44,9 @@
                     <thead>
                         <tr>
                             <th width="5%">STT</th>
-                            <th>Mã đơn hàng</th>
                             <th>Tên KH</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
                             <th>Mã Voucher</th>
                             <th>Số lượng</th>
                             <th>Thành tiền</th>
@@ -43,8 +62,9 @@
 
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ $item->invoice_code }}</td>
                             <td>{{ $item->full_name }}</td>
+                            <td>{{ $item->phone }}</td>
+                            <td>{{ $item->address }}</td>
                             <td>
                                 @if (empty($item->voucher_id))
                                     <span>Không áp dụng</span>
@@ -56,7 +76,7 @@
                             <td>{{ number_format( $item->until_price, 0, '', '.') }}</td>
                             <td>{{ $item->type_pay }}</td>
                             <td>@if ($item->status==0)
-                                <span class="text-danger">Đã hủy</span>
+                                <span class="text-danger">Đã hủy </span>
                             @elseif($item->status==1)
                                 <span class="text-warning">Chờ xác nhận</span>
                             @elseif($item->status==2)

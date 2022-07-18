@@ -63,25 +63,12 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="stock">Số lượng</label>
-                            <input type="number" class="form-control" id="stock" required = "Số lượng không được để trống" min="0" name="stock" placeholder="Số lượng" value="{{ old('stock') }}">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="import_price">Giá nhập</label>
-                            <input type="text" class="form-control" id="import_price" required = "Giá nhập không được để trống" min="0" name="import_price" placeholder="Giá nhập" value="{{ old('import_price') }}">
-                        </div>
-                        <div class="form-group col-md-3">
+
+                        <div class="form-group col-md-4">
                             <label for="price">Giá bán</label>
                             <input type="text" class="form-control" id="price" required = "Giá bán không được để trống" min="0" name="price" placeholder="Giá bán" value="{{ old('price') }}">
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="discount_price">Giá giảm</label>
-                            <input class="form-control" type="text" placeholder="Giá giảm" id="discount_price" required = "Giá giảm không được để trống" min="0"  name="discount_price" value="{{ old('discount_price') }}">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-4">
                             <label for="brand">Thương hiệu</label>
                             <select name="brand" id="brand" class="form-control" required = "Thương hiệu không được để trống">
                                 <option value="">-- Chọn thương hiệu --</option>
@@ -91,8 +78,8 @@
                                     @endif
                                 @endforeach
                             </select>
-                        </div>                        
-                        <div class="form-group col-md-5">
+                        </div>
+                        <div class="form-group col-md-4">
                             <label for="product_type">Loại sản phẩm</label>
                             <select name="product_type" id="product_type" class="form-control" required = "Loại sản phẩm không được để trống">
                                 <option value="">-- Loại sản phẩm --</option>
@@ -101,13 +88,17 @@
                                 @endforeach
                             </select>
                         </div>
+
+                    </div>
+                    <div class="form-row">
+
                         <div class="form-group col-md-2 pt-2">
                             <label for="images" class="mt-4 btn btn-primary">Chọn hình ảnh</label>
                             <input type="file" id="images" accept="image/*" multiple required name="images[]" style="display:none">
                         </div>
                     </div>
 
-                    
+
                     <div class="form-row pl-4">
                         <div class="form-group col-md-3">
                             <div class="d-flex preview">
@@ -116,17 +107,17 @@
                     </div>
                     <div class="row ml-1">
                         <button onclick="add_append();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm màu</button>
-                    </div>                  
-                    <div class="row">    
+                    </div>
+                    <div class="row">
                         <div class="add_color_and_size" >
                             <div class="form-group form-inline ml-md-4 img-color">
                                 <label for="color"> Tên màu :</label>
-                                <input type="text" name="color_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden> 
-                                <input type="text" id="color" name="color_name[]" placeholder="Tên màu" class="form-control col-md-3 mx-sm-3"> 
+                                <input type="text" name="color_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden>
+                                <input type="text" id="color" name="color_name[]" placeholder="Tên màu" class="form-control col-md-3 mx-sm-3">
                                 <input type="file" accept="image/*" required="" name="image_colors[]" id='img' onchange="imgaa(this);">
                                 <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button>
                                 <div class="form-group ml-3" hidden>
-                                    <label for="status">Trạng thái </label> &ensp; 
+                                    <label for="status">Trạng thái </label> &ensp;
                                     <select name="color_status[]" class="form-control">
                                         <option value="0" >Ngưng hoạt động</option>
                                         <option value="1" selected>Đang hoạt động</option>
@@ -135,19 +126,37 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <label for="type_size">Loại size: </label>
+                                <select name="type_size" id="type_size">
+                                    <option value="0">Chữ</option>
+                                    <option value="1">Số</option>
+                                </select>
+                    </div>
                     <div class="row ml-1">
-                        <button onclick="add_size();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size</button>
-                    </div>                  
-                    <div class="row">    
+                        <button onclick="add_size_text();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size chữ</button>
+                        <button onclick="add_size_num();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size số</button>
+                    </div>
+                    <div class="row">
+
                         <div class="add_size" >
+
                             {{-- màu trong này phải qua cái js --}}
+                            {{-- <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3"> --}}
                             <div class="form-group form-inline ml-md-4 img-color">
-                                <label for="color"> Tên size :</label>
-                                <input type="text" name="size_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden> 
-                                <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3"> 
+
+                                <label for="size"> Tên size: </label>
+                                <input type="text" name="size_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden>
+
+                                <select name="size_name[]" id="size" class="form-control">
+                                    @for ($i =25;$i<46;$i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+
+                                    @endfor
+                                </select>
                                 <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button>
                                 <div class="form-group ml-2" hidden >
-                                    <label for="status">Trạng thái </label> &ensp; 
+                                    <label for="status">Trạng thái </label> &ensp;
                                     <select name="size_status[]" class="form-control">
                                         <option value="0" >Ngưng hoạt động</option>
                                         <option value="1" selected>Đang hoạt động</option>
@@ -193,7 +202,7 @@
        }
    }
 
-   
+
     const ipnFileElement = document.querySelector('#images')
     const resultElement = document.querySelector('.preview')
     const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
@@ -221,8 +230,8 @@
                 'beforeend',
                 `<img class="mr-2" height="150" width="200" src="${url}" alt="${file.name}">`
                 )
-            }            
-        }        
+            }
+        }
     })
 
     function imgaa(btn) {
@@ -260,11 +269,11 @@
                     'beforeend',
                     `<img class="mr-2" height="50" width="50" src="${url}" alt="${file.name}">`
                     )
-                }            
-            }        
+                }
+            }
         })
         row.remove(row);
-    }    
+    }
 </script>
 @parent
 @endsection

@@ -20,6 +20,7 @@ class Invoice extends Model
         'phone',
         'address',
         'status',
+        'destroy_status',
         'canceler_id',
         'reason',
         'type_pay',

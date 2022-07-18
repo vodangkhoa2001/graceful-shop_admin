@@ -42,11 +42,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="birth_date">Ngày sinh</label>
-                            <input type="text" name="birth_date" id="birth_date" class="form-control" value="@if($user->date_of_birth != null){{ $user->date_of_birth }} @else Chưa cập nhật @endif">
+                            <input type="text" name="birth_date"  id="birth_date" class="form-control" value="@if($user->date_of_birth != null){{ $user->date_of_birth }} @else Chưa cập nhật @endif">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="phone">Số điện thoại</label>
-                            <input type="text" name="phone" id="phone" class="form-control" value="{{ Auth::User()->phone }}">
+                            <input type="text" name="phone" id="phone" disabled class="form-control" value="{{ Auth::User()->phone }}">
                         </div>
                         <div class="form-group col-md-4 ">
                             <label for="gender">Giới tính</label>

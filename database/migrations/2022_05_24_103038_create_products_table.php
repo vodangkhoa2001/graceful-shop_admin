@@ -16,11 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('product_name');
-            $table->integer('stock');
-            $table->integer('import_price');
             $table->integer('price');
-            $table->double('vat')->default(0);
-            $table->integer('discount_price');
             $table->unsignedBigInteger('product_type_id');
             $table->string('product_barcode');
             $table->unsignedBigInteger('brand_id');
@@ -31,9 +27,6 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
-
-            // $table->foreign('brand_id')->references('id')->on('brands');
-            // $table->foreign('productType_id')->references('id')->on('product_types');
         });
     }
 

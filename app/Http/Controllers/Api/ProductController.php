@@ -60,7 +60,7 @@ class ProductController extends Controller
     //Chi tiết sản phẩm
     public function getProductDetailById($id)
     {
-        $color = Color::select(['*', DB::raw('CONCAT("assets/img/products/",picture) AS picture')])
+        $color = Color::select(['*', DB::raw('CONCAT("assets/img/products_colors/",picture) AS picture')])
         ->where('status', '=', 1)->where('product_id', '=', $id)->get();
 
         $size = Size::where('status', '=', 1)->where('product_id', '=', $id)->get();

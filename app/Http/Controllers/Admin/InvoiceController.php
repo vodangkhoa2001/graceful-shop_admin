@@ -25,24 +25,85 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // dd($request->status_search);
         $title = 'Danh sách đơn hàng';
-        $invoices = DB::table('invoices')
-        ->join('users','users.id','=','invoices.user_id')
-        ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
-        ->select('invoices.*','users.full_name','vouchers.voucher_code')
-        ->get();
+        $status_search=$request->status_search;
+        if($request->status_search!=null){
+            if($status_search!=-1){
+                $invoices = DB::table('invoices')
+                ->join('users','users.id','=','invoices.user_id')
+                ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
+                ->orderBy('invoices.created_at','DESC')
+                ->where('invoices.status','=',$status_search)
+                ->select('invoices.*','users.full_name','vouchers.voucher_code')
+                ->get();
+            }else{
+                $invoices = DB::table('invoices')
+                ->join('users','users.id','=','invoices.user_id')
+                ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
+                ->orderBy('invoices.created_at','DESC')
+                ->select('invoices.*','users.full_name','vouchers.voucher_code')
+                ->get();
+            }
+        }
+        else{
+            $invoices = DB::table('invoices')
+            ->join('users','users.id','=','invoices.user_id')
+            ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
+            ->orderBy('invoices.created_at','DESC')
+            ->select('invoices.*','users.full_name','vouchers.voucher_code')
+            ->get();
+            $status_search = -1;
+        }
         // dd($invoices);
-        return view('component.invoice.list-invoice',compact('invoices','title'));
+        return view('component.invoice.list-invoice',compact('invoices','title','status_search'));
     }
+
+    // public function index2(Request $request)
+    // {
+    //     dd('s');
+    //     $title = 'Danh sách đơn hàng';
+    //     $status_search=$request->status_search;
+    //     if($status_search){
+    //         if($status_search!=-1){
+    //             $invoices = DB::table('invoices')
+    //             ->join('users','users.id','=','invoices.user_id')
+    //             ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
+    //             ->orderBy('invoices.created_at','DESC')
+    //             ->where('invoices.status','=',$status_search)
+    //             ->select('invoices.*','users.full_name','vouchers.voucher_code')
+    //             ->get();
+    //         }else{
+    //             $invoices = DB::table('invoices')
+    //         ->join('users','users.id','=','invoices.user_id')
+    //         ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
+    //         ->orderBy('invoices.created_at','DESC')
+    //         ->select('invoices.*','users.full_name','vouchers.voucher_code')
+    //         ->get();
+    //         }
+    //     }
+    //     else{
+    //         $invoices = DB::table('invoices')
+    //         ->join('users','users.id','=','invoices.user_id')
+    //         ->leftJoin('vouchers','vouchers.id','=','invoices.voucher_id')
+    //         ->orderBy('invoices.created_at','DESC')
+    //         ->select('invoices.*','users.full_name','vouchers.voucher_code')
+    //         ->get();
+    //         $status_search =-1;
+    //     }
+    //     // dd($invoices);
+    //     return view('component.invoice.list-invoice',compact('invoices','title','status_search'));
+    // }
+
 
     public function updateStatus($id){
         $invoice = Invoice::find($id);
         $invoice->status = $invoice->status+1;
         $invoice->update();
 
-        $user = User::select('users.*') 
+        $user = User::select('users.*')
         ->join('invoices', 'invoices.user_id', '=', 'users.id')
         ->where('invoices.id', '=', $id)
         ->first();
@@ -56,7 +117,7 @@ class InvoiceController extends Controller
                 'num' => $invoice->invoice_code,
                 'content2' => ' và tổng giá trị đơn hàng: '.number_format( $invoice->until_price, 0, '', '.').' VND.',
             ];
-            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
 
         }else if( $invoice->status == 3){
             //Đang giao
@@ -67,7 +128,7 @@ class InvoiceController extends Controller
                 'num' => $invoice->invoice_code,
                 'content2' => ' và tổng giá trị đơn hàng: '.number_format( $invoice->until_price, 0, '', '.').' VND',
             ];
-            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
         }else if( $invoice->status == 4){
             //Đã giao
             $message = [
@@ -77,7 +138,7 @@ class InvoiceController extends Controller
                 'num' => $invoice->invoice_code,
                 'content2' => ' và tổng giá trị đơn hàng: '.number_format( $invoice->until_price, 0, '', '.').' VND',
             ];
-            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1)); 
+            SendEmail::dispatch($message, $user)->delay(now()->addMinute(1));
 
         }
         return Redirect::route('list-invoice')->with('msg','Đã duyệt đơn hàng '.$invoice->invoice_code);
@@ -117,19 +178,27 @@ class InvoiceController extends Controller
         $invoice_details = DB::table('invoice_details')
         ->leftJoin('invoices','invoices.id','=','invoice_id')
         ->leftJoin('products','products.id','=','product_id')
+        ->leftJoin('colors','colors.id','=','color_id')
+        ->leftJoin('sizes','sizes.id','=','size_id')
         ->where('invoice_id','=',$id)
-        ->select('invoice_details.*','products.*','invoices.quantity as invoice_quantity')
+        ->select('invoice_details.*','products.*','invoices.quantity as invoice_quantity','sizes.*','colors.*')
         ->get();
-        foreach ($invoice_details as $invoice_detail){
-            $pics[] = DB::select("SELECT picture_value FROM pictures,products WHERE products.id = pictures.product_id and product_id ={$invoice_detail->product_id}");
-        }
-        // for($i = 0;$i<count($pics);$i++){
-        //     for($j =0;$j<count($pics[$i]);$j++){
-        //         $a[]=$pics[$i][$j]->picture_value;
-        //     }
-        // }
-        // dd($a);
-        return view('component.invoice.detail-invoice',compact('invoice','invoice_details','invoice_v','pics'));
+        //  lay tong tien san pham
+        $sum_price = DB::table('invoice_details')->where('invoice_id','=',$id)->sum('total_price');
+
+        //lay thong tin nguoi huy
+        $user_cancel = DB::table('invoices')
+        ->leftJoin('users','users.id','=','invoices.canceler_id')
+        ->where('invoices.id','=',$id)
+        ->select('users.*')->get();
+        // dd($user_cancel);
+        return view('component.invoice.detail-invoice',compact('user_cancel','sum_price','invoice','invoice_details','invoice_v'));
+    }
+    public function searchStatus(Request $request){
+        $invoice = DB::table('invoices')->where('status','=',$request->status_search)->get();
+        $status_search = $request->searchStatus;
+        // dd($invoice);
+        return redirect::route('list-invoice',compact('invoice','status_search'));
     }
 
     /**
@@ -138,17 +207,6 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function getEdit($id)
-    {
-        $invoice = Invoice::find($id);
-        return view('component.invoice.edit-invoice',compact('invoice'));
-    }
-
-    public function postEdit($id,Invoice $invoice)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -160,7 +218,6 @@ class InvoiceController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -174,6 +231,7 @@ class InvoiceController extends Controller
         ->first();
         if($invoice){
             $invoice->update([
+                'destroy_status'=> $invoice->status,
                 'status'=> 0,
                 'canceler_id'=> $user->id,
                 'reason'=> $request->reason,
@@ -183,16 +241,16 @@ class InvoiceController extends Controller
             ->where('invoices.id', '=', $invoice->id)
             ->get();
 
-            foreach ($invoice_details as $invoice_detail){
-                $product = Product::where('id', $invoice_detail->product_id)->first();
-                Product::where('id', $invoice_detail->product_id)
-                ->update([
-                    'stock'=> $product->stock + $invoice_detail->quantity,
-                ]);
-            }
+            // foreach ($invoice_details as $invoice_detail){
+            //     $product = Product::where('id', $invoice_detail->product_id)->first();
+            //     Product::where('id', $invoice_detail->product_id)
+            //     ->update([
+            //         'stock'=> $product->stock + $invoice_detail->quantity,
+            //     ]);
+            // }
 
-            
-            $user2 = User::select('users.*') 
+
+            $user2 = User::select('users.*')
             ->join('invoices', 'invoices.user_id', '=', 'users.id')
             ->where('invoices.id', '=', $id)
             ->first();

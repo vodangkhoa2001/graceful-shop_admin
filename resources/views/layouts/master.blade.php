@@ -185,7 +185,7 @@
                                 <a class="collapse-item" href="{{ route('get-AddProduct') }}">Thêm sản phẩm mới</a>
                             </div>
                         </div>
-                    </li>   
+                    </li>
                     {{-- slide --}}
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#slide_m"
@@ -200,14 +200,14 @@
                                 <a class="collapse-item" href="{{ route('get-CreateSlide') }}">Thêm slide</a>
                             </div>
                         </div>
-                    </li>   
+                    </li>
                     {{-- don hang --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('list-invoice') }}">
                             <i class="fa-solid fa-box"></i>
                             <span>Danh sách đơn hàng</span>
                         </a>
-                    </li>            
+                    </li>
                     {{-- Voucher --}}
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#voucher_m"
@@ -222,7 +222,7 @@
                                 <a class="collapse-item" href="{{ route('get-CreateVoucher') }}">Thêm voucher</a>
                             </div>
                         </div>
-                    </li>  
+                    </li>
                     {{-- feedback --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('list-feedback') }}">
@@ -289,13 +289,12 @@
                             <span>Feedbacks</span>
                         </a>
                     </li>
-                @elseif (Auth::user()->role == 3)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('info-store') }}">
-                        <i class="fa-solid fa-store"></i>
-                        <span>Thông tin cửa hàng</span>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('info-store') }}">
+                            <i class="fa-solid fa-store"></i>
+                            <span>Thông tin cửa hàng</span>
+                        </a>
+                    </li>
                 @endif
 
                 <!-- Divider -->

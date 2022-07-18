@@ -69,11 +69,8 @@ class ProductController extends Controller
         try {
             $validator = Validator::make($request->all(),[
                 'product_name'=> 'required',
-                'stock'=>'required',
                 'brand'=>'required',
-                'import_price'=>'required',
                 'price'=>'required',
-                'discount_price'=>'required',
                 'product_type'=>'required',
                 'description'=>'required',
             ],[
@@ -92,11 +89,8 @@ class ProductController extends Controller
             $product = Product::create([
                 'product_barcode'=> $request->product_code,
                 'product_name'=> $request->product_name,
-                'stock'=> $request->stock,
                 'brand_id'=> $request->brand,
-                'import_price'=> $request->import_price,
                 'price'=>$request->price,
-                'discount_price'=>$request->discount_price,
                 'product_type_id'=>$request->product_type,
                 'description'=>$request->description,
             ]);
@@ -200,11 +194,6 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-
-        // $product = Product::with(['pictures','sizes'=>function($query){
-        //     $query->select(['*',DB::raw("size_name")]);
-        // }])
-        // ->find($id);
         $product = DB::table('products')->find($id);
         $sizes = DB::select("SELECT sizes.size_name, sizes.status, sizes.id FROM sizes WHERE product_id = {$id}");
         // dd($size);
@@ -223,10 +212,7 @@ class ProductController extends Controller
         try {
             $validator = Validator::make($request->all(),[
                 'product_name'=> 'required','min:2',
-                'stock'=>'required',
-                'import_price'=>'required',
                 'price'=>'required',
-                'discount_price'=>'required',
                 'description'=>'required',
             ],
             [
@@ -320,10 +306,10 @@ class ProductController extends Controller
                             $fileNew = $fileName. '-' . Str::random(10) . '.' . $extension;
                             $destinationPath = public_path('/assets/img/product_colors/');
                             $image->move($destinationPath,$fileNew);
-    
+
                             $color->picture = $fileNew;
                         // }
-    
+
                     }
                     //luu ten mau
                     $color->color_name = $request->color_name[$i];
@@ -359,9 +345,6 @@ class ProductController extends Controller
             $product->brand_id = $request->brand;
             $product->product_type_id = $request->product_type;
             $product->price = $request->price;
-            $product->stock = $request->stock;
-            $product->import_price = $request->import_price;
-            $product->discount_price = $request->discount_price;
             $product->status = $request->status;
             $success = $product->update();
             DB::commit();

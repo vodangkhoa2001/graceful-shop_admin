@@ -30,8 +30,6 @@
                     @endforeach </li>
                     <li>Mã sản phẩm: {{ $product->product_barcode }}</li>
                     <li>Tên sản phẩm: {{ $product->product_name }}</li>
-                    <li>Số lượng đang bán: {{ $product->stock }}</li>
-                    <li>Giá nhập: {{ $product->import_price }}</li>
                     <li>Giá bán: {{ $product->price }}</li>
                     <li>Lượt thích: {{ $product->num_like }}</li>
                     <li>Lượt đánh giá: {{ $product->num_rate }}</li>

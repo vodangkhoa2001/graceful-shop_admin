@@ -67,13 +67,13 @@
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Xóa thương hiệu sản phẩm</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Ngưng hoạt động thương hiệu sản phẩm</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <span>Bạn có chắc muốn xóa {{ $item->brand_name }}?</span>
+                                                                    <span>Bạn có chắc muốn ngưng hoạt động {{ $item->brand_name }}?</span>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <form action="{{ route('cancel-brand',$item->id) }}" method="post">

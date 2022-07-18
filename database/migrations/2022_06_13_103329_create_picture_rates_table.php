@@ -18,6 +18,8 @@ class CreatePictureRatesTable extends Migration
             $table->unsignedBigInteger('rate_id');
             $table->text('picture_value');
             $table->timestamps();
+
+            $table->foreign('rate_id')->references('id')->on('rates');
         });
     }
 

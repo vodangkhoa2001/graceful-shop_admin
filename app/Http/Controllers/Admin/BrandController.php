@@ -20,7 +20,7 @@ class BrandController extends Controller
     public function index()
     {
         $title = 'Danh sách thương hiệu';
-        $brand = Brand::where('status','=',1)->orderBy('id','DESC')->get();
+        $brand = Brand::orderBy('id','DESC')->get();
         return view('component.brand.list-brand',compact('title','brand'));
     }
 

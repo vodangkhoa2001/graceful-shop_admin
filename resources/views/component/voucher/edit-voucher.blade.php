@@ -67,7 +67,7 @@
                             </select>
                         </div>
                     <div class="d-flex justify-content-end p-4">
-                        <button class="btn btn-primary col-2"  type="submit">Chỉnh sửa</button>
+                        <button class="btn btn-primary col-2"  type="submit">Cập nhật</button>
 
                     </div>
                 </form>

@@ -55,21 +55,8 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label for="stock">Số lượng</label>
-                                <input type="number" class="form-control" id="stock" required = "Số lượng không được để trống" min="0" name="stock" placeholder="Số lượng" value="{{ $product->stock }}">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="import_price">Giá nhập</label>
-                                <input type="text" class="form-control" id="import_price" required = "Giá nhập không được để trống" min="0"  name="import_price" placeholder="Giá nhập" value="{{ $product->import_price }}">
-                            </div>
-                            <div class="form-group col-md-3">
                                 <label for="price">Giá bán</label>
                                 <input type="text" class="form-control" id="price" required = "Giá bán không được để trống" min="0" name="price" placeholder="Giá bán" value="{{ $product->price }}">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="discount_price">Giá giảm</label>
-                                <input class="form-control" type="text" id="discount_price" required = "Giá giảm không được để trống" min="0" name="discount_price" placeholder="Giá giảm" value="{{ $product->discount_price }}">
-                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5">
@@ -105,7 +92,7 @@
                                 {{-- <input type="file" id="images" accept="image/*" multiple required name="images[]"> --}}
                                 <input type="file" accept="image/*" multiple name="images[]" class="images" id="img_product"  style="display:none">
                             </div>
-                          
+
                             {{-- <div class="form-group col-md-5">
                                 <label for="">Kích thước:</label>
                                 <div class="sizes">
@@ -146,28 +133,28 @@
                                     @endfor
                                 </div>
                                 @endif
-                                
+
                             </div>
                         </div>
 
                         <div class="row ml-1">
                             <button onclick="add_append();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm màu</button>
-                        </div>      
+                        </div>
                         <div class="add_color_and_size" >
                             @if (!empty($colors))
                                 @for ($i =0;$i<count($colors);$i++)
                                 <div class="form-group form-inline ml-md-4">
                                     <label for="color"> Tên màu :</label>
-                                    <input type="text" name="color_id[]" placeholder="" value="{{ $colors[$i]->id }}" class="form-control col-md-3 mx-sm-3" hidden> 
+                                    <input type="text" name="color_id[]" placeholder="" value="{{ $colors[$i]->id }}" class="form-control col-md-3 mx-sm-3" hidden>
                                     <input type="text" id="color" name="color_name[]" value="{{ $colors[$i]->color_name }}" placeholder="Tên màu" class="form-control col-md-1 mx-sm-3">
-                                    <img src="{{ asset('assets/img/product_colors') }}/{{$colors[$i]->picture }}" width="60">&ensp; 
+                                    <img src="{{ asset('assets/img/product_colors') }}/{{$colors[$i]->picture }}" width="60">&ensp;
                                     {{-- <label for="image_colors" class="btn btn-info ml-4">Sửa ảnh </label> --}}
                                     {{-- <input type="file" accept="image/*" name="image_colors[]" id='img' onchange="img(this);"> --}}
                                     <input type="text" name="image_colors[{{$i}}]" id="temp" hidden value="-1">
                                     {{-- <input type="file" accept="image/*" name="image_colors[{{$i}}]" id="image_colors"  style="display:none"> --}}
                                     <button type="button" class="ml-4 btn-xoa btn btn-outline-danger" onclick="deleteRow(this);" hidden><i class="fa-solid fa-minus"></i></button>
                                     <div class="form-group ml-3">
-                                        <label for="status">Trạng thái </label> &ensp; 
+                                        <label for="status">Trạng thái </label> &ensp;
                                         <select name="color_status[]" class="form-control">
                                             @if ($colors[$i]->status==0)
                                                 <option value="0" selected>Ngưng hoạt động</option>
@@ -185,17 +172,17 @@
 
                         <div class="row ml-1">
                             <button onclick="add_size();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size</button>
-                        </div>   
+                        </div>
                         <div class="add_size" >
                             @if (!empty($sizes))
                                 @for ($i =0;$i<count($sizes);$i++)
-                                <div class="form-group form-inline ml-md-4">                       
+                                <div class="form-group form-inline ml-md-4">
                                     <label for="color"> Tên size :</label>
-                                    <input type="text" name="size_id[]" placeholder="" value="{{ $sizes[$i]->id }}" class="form-control col-md-3 mx-sm-3" hidden> 
-                                    <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3" value="{{ $sizes[$i]->size_name }}"> 
+                                    <input type="text" name="size_id[]" placeholder="" value="{{ $sizes[$i]->id }}" class="form-control col-md-3 mx-sm-3" hidden>
+                                    <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3" value="{{ $sizes[$i]->size_name }}">
                                     <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);" hidden><i class="fa-solid fa-minus"></i></button>
                                     <div class="form-group ml-2">
-                                        <label for="status">Trạng thái </label> &ensp; 
+                                        <label for="status">Trạng thái </label> &ensp;
                                         <select name="size_status[]" class="form-control">
                                             @if ($sizes[$i]->status==0)
                                                 <option value="0" selected>Ngưng hoạt động</option>
@@ -285,8 +272,8 @@
                 'beforeend',
                 `<img class="mr-2" height="150" width="200" src="${url}" alt="${file.name}">`
                 )
-            }            
-        }        
+            }
+        }
     })
 
 </script>

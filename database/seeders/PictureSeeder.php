@@ -71,7 +71,7 @@ class PictureSeeder extends Seeder
             ]);
         }
         //8
-        for ($i=24; $i <= 26; $i++) {
+        for ($i=24; $i <= 29; $i++) {
             DB::table('pictures')->insert([
                 'product_id'=>8,
                 'picture_value'=>$i.'.jpg',
@@ -79,7 +79,7 @@ class PictureSeeder extends Seeder
             ]);
         }
         //9
-        for ($i=27; $i <= 29; $i++) {
+        for ($i=30; $i <= 32; $i++) {
             DB::table('pictures')->insert([
                 'product_id'=>9,
                 'picture_value'=>$i.'.jpg',
@@ -87,7 +87,7 @@ class PictureSeeder extends Seeder
             ]);
         }
         //10
-        for ($i=30; $i <= 32; $i++) {
+        for ($i=34; $i <= 36; $i++) {
             DB::table('pictures')->insert([
                 'product_id'=>10,
                 'picture_value'=>$i.'.jpg',
@@ -95,7 +95,7 @@ class PictureSeeder extends Seeder
             ]);
         }
         //11
-        for ($i=34; $i <= 38; $i++) {
+        for ($i=37; $i <= 38; $i++) {
             DB::table('pictures')->insert([
                 'product_id'=>11,
                 'picture_value'=>$i.'.jpg',

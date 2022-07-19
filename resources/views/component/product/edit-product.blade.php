@@ -53,13 +53,13 @@
                                 <input type="text" class="form-control" required = "Tên sản phẩm không được để trống" name="product_name" id="product_name" placeholder="Tên sản phẩm" value="{{ $product->product_name }}" >
                             </div>
                         </div>
+
                         <div class="form-row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="price">Giá bán</label>
                                 <input type="text" class="form-control" id="price" required = "Giá bán không được để trống" min="0" name="price" placeholder="Giá bán" value="{{ $product->price }}">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-5">
+                            </div>
+                            <div class="form-group col-md-3">
                                 <label for="brand">Thương hiệu</label>
                                 <select name="brand" id="brand" class="form-control" required = "Thương hiệu không được để trống">
                                     @foreach ($brand as $item)
@@ -73,7 +73,7 @@
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-3">
                                 <label for="product_type">Loại sản phẩm</label>
                                 <select name="product_type" id="product_type" class="form-control" required = "Loại sản phẩm không được để trống">
                                     <option value="">-- Loại sản phẩm --</option>
@@ -87,41 +87,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-2 pt-2">
+                            <div class="form-group pt-2 col-4">
                                 <label for="img_product" class="mt-4 btn btn-primary">Cập nhật ảnh</label>
                                 {{-- <input type="file" id="images" accept="image/*" multiple required name="images[]"> --}}
                                 <input type="file" accept="image/*" multiple name="images[]" class="images" id="img_product"  style="display:none">
                             </div>
 
-                            {{-- <div class="form-group col-md-5">
-                                <label for="">Kích thước:</label>
-                                <div class="sizes">
-                                    <div class="form-check ml-3">
-                                        <input class="form-check-input" type="checkbox" name="size_name[]" value="S" id="sizeS" @for($i = 0;$i<count($size);$i++) @if ($size[$i]->size_name == "S") checked @endif  @endfor >
-                                        <label class="form-check-label" for="sizeS">S</label>
-                                    </div>
-                                    <div class="form-check ml-3">
-                                        <input class="form-check-input" type="checkbox" name="size_name[]" value="M" id="sizeM" @for($i = 0;$i<count($size);$i++) @if ($size[$i]->size_name == "M") checked @endif  @endfor>
-                                        <label class="form-check-label" for="sizeM">M</label>
-                                    </div>
-                                    <div class="form-check ml-3">
-                                        <input class="form-check-input" type="checkbox" name="size_name[]" value="L" id="sizeL" @for($i = 0;$i<count($size);$i++) @if ($size[$i]->size_name == "L") checked @endif  @endfor>
-                                        <label class="form-check-label" for="sizeL">L</label>
-                                    </div>
-                                    <div class="form-check ml-3">
-                                        <input class="form-check-input" type="checkbox" name="size_name[]" value="XL" id="sizeXL" @for($i = 0;$i<count($size);$i++) @if ($size[$i]->size_name == "XL") checked @endif  @endfor>
-                                        <label class="form-check-label" for="sizeXL">XL</label>
-                                    </div>
-                                    <div class="form-check ml-3">
-                                        <input class="form-check-input" type="checkbox" name="size_name[]" value="XXL" id="size2XL" @for($i = 0;$i<count($size);$i++) @if ($size[$i]->size_name == "XXL") checked @endif  @endfor>
-                                        <label class="form-check-label" for="size2XL">XXL</label>
-                                    </div>
-                                    <div class="form-check ml-3">
-                                        <input class="form-check-input" type="checkbox" name="size_name[]" value="Free size" id="free_size" @for($i = 0;$i<count($size);$i++) @if ($size[$i]->size_name == "Free size") checked @endif  @endfor>
-                                        <label class="form-check-label" for="free_size">Free size</label>
-                                    </div>
-                                </div>
-                            </div> --}}
+
                         </div>
 
                         <div class="form-row pl-4">

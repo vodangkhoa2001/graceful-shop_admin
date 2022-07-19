@@ -23,34 +23,34 @@
                 @else
                 <form action="{{ route('post-CreateSlide') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                        <div class="form-row">
-                            <div class="form-group col-md-5 picture">
+                        <div class="row">
+                            <div class="form-group col-md-9 picture">
                                 <label class="" for="">Ảnh slide</label>
                                 <label for="picture" class="mt-0 ml-2 btn btn-primary">Chọn hình ảnh</label>
                                 <input type="file" accept="image/*" name="picture" id="picture" placeholder="Icon" required value="{{ old('picture') }}" style="display:none">
                             </div>
-                            <div class="col-md-5">
-                                <div class="preview"></div>
-                            </div>   
-                            <div class="form-group col-md-2">
 
-                            {{-- <div class="d-flex justify-content-end p-4 col-md-2"> --}}
-                                <button class="btn btn-primary"  type="submit">Thêm mới</button>    
+                            <div class="form-group col-md-2">
+                                <button class="btn btn-primary float-right"  type="submit">Thêm mới</button>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="preview"></div>
+
                         </div>
                         <div class="form-row">
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="description">Mô tả slide</label>
                                     <textarea required name="description" id="description" class=" form-control editor" >
-    
+
                                     </textarea>
-                                </div>  
+                                </div>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex justify-content-start py-4 pr-4">
-                            <a href="#removeModal" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal" title="Chọn sản phẩm">Chọn sản phẩm</i></a>    
+                            <a href="#removeModal" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal" title="Chọn sản phẩm">Chọn sản phẩm</i></a>
                         </div>
                         <div class="table">
                             <table class="table table-bordered" id="dataTableSlide" width="100%" cellspacing="0">
@@ -59,7 +59,6 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Loại sản phẩm</th>
                                         <th>Giá bán</th>
-                                        <th width="10%">Số lượng</th>
                                         <th></th>
                                         <th hidden></th>
                                     </tr>
@@ -69,7 +68,7 @@
                             </table>
                         </div>
                 </form>
-                
+
                 @endif
             </div>
         </div>
@@ -83,7 +82,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
-                    
+
                     <div class="modal-body">
                         <div class="card-body col-12">
 
@@ -94,26 +93,24 @@
                                             <th>Tên sản phẩm</th>
                                             <th>Loại sản phẩm</th>
                                             <th>Giá bán</th>
-                                            <th width="10%">Số lượng</th>
                                             <th></th>
                                             <th hidden></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if (!empty($products))
-                
+
                                         @foreach ($products as $key=>$item)
                                         <tr>
                                             <td>{{ $item->product_name}}</td>
                                             <td>{{ $item->product_type_name}}</td>
                                             <td>{{ number_format( $item->price, 0, '', '.') }}</td>
-                                            <td>{{ $item->stock }}</td>
                                             <td>
                                                 <button onclick="add_product(this);" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus"></i></button>
-                                            </td>   
-                                            <td hidden><input type="text" value="{{ $item->id }}" name="product_id[]" hidden></td>                                             
+                                            </td>
+                                            <td hidden><input type="text" value="{{ $item->id }}" name="product_id[]" hidden></td>
                                         </tr>
-                
+
                                         @endforeach
                                         @else
                                         <tr>
@@ -123,7 +120,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>  
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
@@ -163,10 +160,10 @@
                 const url = fileReader.result
                 resultElement.insertAdjacentHTML(
                 'beforeend',
-                `<img class="mr-2" height="200" width="300" src="${url}" alt="${file.name}">`
+                `<img class="mrl-3" height="200" src="${url}" alt="${file.name}">`
                 )
-            }            
-        }        
+            }
+        }
     })
 </script>
     @parent

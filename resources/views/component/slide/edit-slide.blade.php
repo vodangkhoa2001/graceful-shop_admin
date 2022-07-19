@@ -25,30 +25,21 @@
 
                     @if ($errors->any())
                     @endif
-                        <div class="form-row">
-                            <div class="form-group col-md-5 picture">
+                        <div class="row">
+                            <div class="form-group col-md-10 picture">
                                 <label class="" for="">Ảnh slide</label>
                                 <label for="picture" class="mt-0 ml-2 btn btn-primary">Thay đổi</label>
-                                <input type="file" accept="image/*" name="picture" id="picture" placeholder="Icon" value="{{ old('picture') }}" style="display:none">
-                            </div>
-                            <div class="col-md-5">
-                                <div class="preview">
-                                    <img class="mr-2" height="200" width="300" src="{{ asset('assets/img/slideshows') }}/{{ $slide->picture }}" alt="{{ $slide->picture }}">
-                                </div>
-                            </div>   
-                            <div class="form-group col-md-2">
-                                <button class="btn btn-primary" type="submit">Cập nhật</button>    
+                                <input type="file" accept="image/*" name="picture" id="picture" style="display:none">
                             </div>
 
-                            {{-- <div class="form-group col-md-4">
-                                <label for="picture">Ảnh slide</label>
-                                <img width="180px" height="150px" src="{{ asset('assets/img/slideshows') }}/{{ $slide->picture }}" >
-                                <label for="picture" class="btn btn-primary mt-4">Thay đổi</label>
-                                <input type="file" accept="image/*" name="picture" id="picture" placeholder="Icon" style="display:none" >
-                                @error('picture')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div> --}}
+                            <div class="form-group col-md-2">
+                                <button class="btn btn-primary float-right" type="submit">Cập nhật</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="preview">
+                                <img class="ml-3" height="200" src="{{ asset('assets/img/slideshows') }}/{{ $slide->picture }}" alt="{{ $slide->picture }}">
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="col-12">
@@ -63,11 +54,11 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="d-flex justify-content-start py-4 pr-4 mt-3">
-                                <a href="#removeModal" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal" title="Chọn sản phẩm">Chọn sản phẩm</i></a>    
+                                <a href="#removeModal" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal" title="Chọn sản phẩm">Chọn sản phẩm</i></a>
                             </div>
                             <div class="col-3">
                                 <label for="status">Trạng thái</label>
@@ -81,9 +72,9 @@
                                     @endif
                                 </select>
                             </div>
-                           
+
                         </div>
-                       
+
                         <div class="table">
                             <table class="table table-bordered" id="dataTableSlide" width="100%" cellspacing="0">
                                 <thead>
@@ -91,31 +82,26 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Loại sản phẩm</th>
                                         <th>Giá bán</th>
-                                        <th width="10%">Số lượng</th>
                                         <th></th>
                                         <th hidden></th>
                                     </tr>
                                 </thead>
-                                <tbody>                
+                                <tbody>
                                     @foreach ($slide_products as $key=>$item)
                                     <tr>
                                         <td>{{ $item->product_name}}</td>
                                         <td>{{ $item->product_type_name}}</td>
                                         <td>{{ number_format( $item->price, 0, '', '.') }}</td>
-                                        <td>{{ $item->stock }}</td>
                                         <td>
                                             <button onclick="remove_product(this);" type="button"  class="btn btn-danger"><i class="fa-solid fa-minus"></i></button>
-                                        </td>   
-                                        <td hidden><input type="text" value="{{ $item->id }}" name="product_id[]" hidden></td>                                             
+                                        </td>
+                                        <td hidden><input type="text" value="{{ $item->id }}" name="product_id[]" hidden></td>
                                     </tr>
-            
+
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-                    {{-- <div class="d-flex justify-content-end p-4">
-                        <button class="btn btn-primary col-2"  type="submit">Cập nhật</button>
-                    </div> --}}
                 </form>
                 @endif
             </div>
@@ -130,7 +116,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
-                    
+
                     <div class="modal-body">
                         <div class="card-body col-12">
 
@@ -141,26 +127,24 @@
                                             <th>Tên sản phẩm</th>
                                             <th>Loại sản phẩm</th>
                                             <th>Giá bán</th>
-                                            <th width="10%">Số lượng</th>
                                             <th></th>
                                             <th hidden></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if (!empty($products))
-                
+
                                         @foreach ($products as $key=>$item)
                                         <tr>
                                             <td>{{ $item->product_name}}</td>
                                             <td>{{ $item->product_type_name}}</td>
                                             <td>{{ number_format( $item->price, 0, '', '.') }}</td>
-                                            <td>{{ $item->stock }}</td>
                                             <td>
                                                 <button onclick="add_product(this);" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus"></i></button>
-                                            </td>   
-                                            <td hidden><input type="text" value="{{ $item->id }}" name="product_id[]" hidden></td>                                             
+                                            </td>
+                                            <td hidden><input type="text" value="{{ $item->id }}" name="product_id[]" hidden></td>
                                         </tr>
-                
+
                                         @endforeach
                                         @else
                                         <tr>
@@ -170,7 +154,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>  
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
@@ -212,8 +196,8 @@
                 'beforeend',
                 `<img class="mr-2" height="200" width="300" src="${url}" alt="${file.name}">`
                 )
-            }            
-        }        
+            }
+        }
     })
 </script>
     @parent

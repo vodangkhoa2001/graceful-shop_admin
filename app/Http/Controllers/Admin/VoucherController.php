@@ -22,6 +22,19 @@ class VoucherController extends Controller
     public function index()
     {
         $voucher = Voucher::orderBy('id','DESC')->get();
+
+        foreach($voucher as $key=>$val){
+            if($val->end_date<Carbon::now()->format('Y-m-d')){
+                $val->status = 0;
+                $val->update();
+            }
+            if($val->start_date==Carbon::now()->format('Y-m-d')){
+                $val->status = 1;
+                $val->update();
+            }
+        }
+
+        // dd($voucher[0]->start_date==Carbon::now()->format('Y-m-d'));
         return view('component.voucher.list-voucher',compact('voucher'));
     }
 
@@ -36,7 +49,7 @@ class VoucherController extends Controller
     }
     public function postCreate(Request $request)
     {
-        $today = Date('Y-m-d');
+        $today = Carbon::now();
         // dd($today,$request->start_date,($today==$request->start_date)?true:false);
         // dd($request->start_date);
         $voucher = new Voucher();
@@ -46,8 +59,7 @@ class VoucherController extends Controller
         $voucher->start_date = $request->start_date;
         $voucher->end_date = $request->end_date;
         $voucher->description = $request->description;
-        // dd(($today==$request->start_date)?1:0);
-        $voucher->status = ($today==$request->start_date)?1:0;
+        $voucher->status = ($today==$request->start_date)?1:-1;
         $success = $voucher->save();
         return view('component.voucher.create-voucher',compact('voucher','success'));
     }
@@ -93,6 +105,8 @@ class VoucherController extends Controller
 
     public function postEdit($id,Request $request)
     {
+        $today = Carbon::now()->format('Y-m-d');
+        // dd($today==$request->start_date);
         $voucher = Voucher::find($id);
         $voucher->voucher_code = strtoupper($request->voucher_code);
         $voucher->min_total_price = $request->min_total_price;
@@ -100,7 +114,7 @@ class VoucherController extends Controller
         $voucher->start_date = $request->start_date;
         $voucher->end_date = $request->end_date;
         $voucher->description = $request->description;
-        $voucher->status = $request->status;
+        $voucher->status = ($today==$request->start_date)?1:-1;
         $success = $voucher->update();
         return view('component.voucher.edit-voucher',compact('success'));
     }
@@ -129,7 +143,7 @@ class VoucherController extends Controller
         $voucher->status = 0;
         $name=$voucher->voucher_code;
         $voucher->update();
-        return redirect()->route('list-voucher')->with('msg','Đã xóa thành công voucher '.$name);
+        return redirect()->route('list-voucher')->with('msg','Đã ngưng hoạt động thành công voucher '.$name);
 
     }
 }

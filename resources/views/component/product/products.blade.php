@@ -18,6 +18,26 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
             <a href="{{ route('get-AddProduct') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
+
+            {{-- Lọc sản phẩm --}}
+            <div class="float-right col-4 mt-md-3 ">
+                <form action="{{route('filter-products')}}" method="post">
+                    @csrf
+                    <div class="d-flex align-items-center">
+                        <span for="filters" style="width:200px">Lọc theo:</span>
+                        <select name="filters" id="filters" class="form-control">
+                            <option value="-1" @if ($filter == -1) selected @endif>Tất cả</option>
+                            <option value="1"  @if ($filter == 1) selected @endif>Đang hoạt động</option>
+                            <option value="2"  @if ($filter == 2) selected @endif>Ngưng hoạt động</option>
+                            <option value="3"  @if ($filter == 3) selected @endif>Còn hàng</option>
+                            <option value="4"  @if ($filter == 4) selected @endif>Hết hàng</option>
+                            <option value="5"  @if ($filter == 5) selected @endif>Nổi bật</option>
+                            <option value="6"  @if ($filter == 6) selected @endif>Không nổi bật</option>
+                        </select>
+                        <button type = "submit"  class="ml-2 btn btn-sm btn-primary">Lọc</button>
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="card-body">
 
@@ -30,6 +50,7 @@
                             <th>Giá bán</th>
                             <th>Trạng thái</th>
                             <th>Nổi bật</th>
+                            <th>Hết hàng</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -51,6 +72,13 @@
                                     <a href="{{ route('popular',$item->id) }}" class="btn btn-sm btn-outline-secondary" title="Nổi bật"><i class="fa-regular fa-square"></i></a>
                                 @else
                                     <a href="{{ route('popular',$item->id) }}" class="btn btn-sm btn-outline-danger" title="Nổi bật"><i class="fa-solid fa-square-check"></i></a>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($item->quantity_status==1)
+                                    <a href="{{ route('quantity-status',$item->id) }}" class="btn btn-sm btn-outline-secondary" title="Nổi bật"><i class="fa-regular fa-square"></i></a>
+                                @else
+                                    <a href="{{ route('quantity-status',$item->id) }}" class="btn btn-sm btn-outline-danger" title="Nổi bật"><i class="fa-solid fa-square-check"></i></a>
                                 @endif
                             </td>
                             <td>

@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('product_barcode');
             $table->unsignedBigInteger('brand_id');
             $table->integer('popular')->default(0);
+            $table->integer('quantity_status')->default(1);
             $table->integer('num_like')->default(0);
             $table->double('num_rate')->default(0);
             $table->text('description', 64);

@@ -26,7 +26,7 @@ class SlideController extends Controller
         // dd($slides);
         return view('component.slide.list-slide',compact('slides'));
     }
-    
+
      /**
      * Show the form for creating a new resource.
      *
@@ -34,7 +34,16 @@ class SlideController extends Controller
      */
     public function getCreate()
     {
-        $products = DB::select('SELECT products.id, products.product_name, products.price, products.stock, product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id  where products.status = 1 ORDER BY products.created_at DESC');
+        $products = DB::table('products')
+        ->leftJoin('product_types','product_types.id','=','products.product_type_id')
+        ->where([
+            ['products.status','=',1],
+            ['products.quantity_status','=',1],
+            ['product_types.status','=','1']
+        ])
+        ->orderBy('product_types.product_type_name')
+        ->select('products.id','products.product_name','products.price','product_types.product_type_name')
+        ->get();
         return view('component.slide.create-slide',compact('products'));
     }
 
@@ -69,7 +78,7 @@ class SlideController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors('Thêm slide thất bại!');
         }
-        
+
     }
 
     /**
@@ -100,9 +109,9 @@ class SlideController extends Controller
     {
         $slide = Slide::where('id','=',$id)->first();
 
-        $products = DB::select('SELECT products.id, products.product_name, products.price, products.stock, product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id LEFT JOIN slide_details ON slide_details.product_id = products.id AND slide_details.slide_id = '.$id.' where products.status = 1 AND slide_details.id IS NULL ORDER BY products.created_at DESC');
+        $products = DB::select('SELECT products.id, products.product_name, products.price,  product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id LEFT JOIN slide_details ON slide_details.product_id = products.id  AND slide_details.slide_id = '.$id.' where products.status = 1 AND product_types.status = 1 AND products.quantity_status = 1 AND slide_details.id IS NULL ORDER BY products.created_at DESC');
 
-        $slide_products = DB::select('SELECT products.id, products.product_name, products.price, products.stock, product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id LEFT JOIN slide_details ON slide_details.product_id = products.id AND slide_details.slide_id = '.$id.' where products.status = 1 AND slide_details.id IS NOT NULL ORDER BY products.created_at DESC');
+        $slide_products = DB::select('SELECT products.id, products.product_name, products.price, product_types.product_type_name  FROM products LEFT JOIN product_types ON product_types.id = products.product_type_id LEFT JOIN slide_details ON slide_details.product_id = products.id AND slide_details.slide_id = '.$id.' where products.status = 1 AND slide_details.id IS NOT NULL ORDER BY products.created_at DESC');
 
         return view('component.slide.edit-slide',compact('slide', 'products', 'slide_products'));
     }

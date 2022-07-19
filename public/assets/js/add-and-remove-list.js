@@ -24,22 +24,21 @@ function add_size_num() {
 }
 
 function add_product(btn) {
-    // document.getElementById("dataTable").deleteRow(btn.parentNode.index);
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
 
-    row.deleteCell(4);
-    var cell = row.insertCell(4);
+    row.deleteCell(3);
+    var cell = row.insertCell(3);
     cell.innerHTML = '<button onclick="remove_product(this);" type="button"  class="btn btn-danger"><i class="fa-solid fa-minus"></i></button>';
     document.getElementById("dataTableSlide").append(row);
 }
 
-function remove_product(btn) {
+function remove_product(btn) {  
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
 
-    row.deleteCell(4);
-    var cell = row.insertCell(4);
+    row.deleteCell(3);
+    var cell = row.insertCell(3);
     cell.innerHTML = '<button onclick="add_product(this);" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus"></i></button>';
     document.getElementById("dataTable").append(row);
 

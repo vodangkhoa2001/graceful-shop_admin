@@ -13,6 +13,7 @@
         <!-- Basic Card Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
+                <a href="{{ route('list-voucher') }}">Trở lại</a>
                 <h6 class="m-0 font-weight-bold text-primary">Tạo voucher</h6>
             </div>
             <div class="card-body">
@@ -25,7 +26,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="voucher_code">Code</label>
-                                <input type="text" class="form-control" required name="voucher_code" id="voucher_code" placeholder="Voucher code" value="{{ old('voucher_code') }}" >
+                                <input type="text" class="form-control text-uppercase" readonly name="voucher_code" id="voucher_code" value="{{ Str::random(13) }}" >
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="min_total_price">Giá yêu cầu</label>
@@ -39,21 +40,21 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="start_date">Ngày bắt đầu</label>
-                                <input type="text" class="form-control" required name="start_date" id="start_date"  value="{{ old('start_date') }}" >
+                                <input type="text" class="form-control" required name="start_date" id="start_date" placeholder="Ngày bắt đầu" value="{{ old('start_date') }}" >
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="end_date">Ngày kết thúc</label>
-                                <input type="text" class="form-control" required name="end_date" id="end_date"  value="{{ old('end_date') }}" >
+                                <input type="text" class="form-control" required name="end_date" id="end_date" placeholder="Ngày kết thúc" value="{{ old('end_date') }}" >
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="description">Mô tả</label>
-                                    <input type="text" class="form-control" required name="description" id="description"  value="{{ old('description') }}" >
+                                    <input type="text" class="form-control" required name="description" id="description" placeholder="Mô tả" value="{{ old('description') }}" >
                                 </div>
                             </div>
-                            
+
                         </div>
                     <div class="d-flex justify-content-end p-4">
                         <button class="btn btn-primary col-2"  type="submit">Thêm Voucher</button>

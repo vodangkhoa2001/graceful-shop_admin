@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/home',[HomeController::class,'saleOfYear'])->name('post-SaleOfYear');
     Route::prefix('user')->group(function(){
         Route::get('/', 'App\Http\Controllers\Admin\UserController@getUsers')->name('list-user');
+        Route::post('/', 'App\Http\Controllers\Admin\UserController@getUsers')->name('filter-users');
         Route::get('/create-account', [UserController::class,'getCreateAccount'])->name('get-CreateAccount');
         Route::post('/create-account', [UserController::class,'postCreateAccount'])->name('post-CreateAccount');
         Route::get('/edit-account/{id}', [UserController::class,'getEditUser'])->name('get-EditUser');
@@ -48,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('products')->group(function(){
         Route::get('/',[ProductController::class, 'index'])->name('products');
+        Route::post('/',[ProductController::class, 'index'])->name('filter-products');
         Route::get('/create-product',[ProductController::class, 'getCreate'])->name('get-AddProduct');
         Route::post('/create-product',[ProductController::class, 'postCreate'])->name('post-AddProduct');
         Route::get('/product/{id}',[ProductController::class, 'show'])->name('get-product');
@@ -55,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/product/edit/{id}',[ProductController::class, 'postEdit'])->name('post-editProduct');
         Route::post('/{id}/delete',[ProductController::class,'destroy'])->name('cancel-product');
         Route::get('/{id}',[ProductController::class,'popular'])->name('popular');
+        Route::get('/{id}/set-status',[ProductController::class,'quantityStatus'])->name('quantity-status');
     });
 
     Route::prefix('category')->group(function () {

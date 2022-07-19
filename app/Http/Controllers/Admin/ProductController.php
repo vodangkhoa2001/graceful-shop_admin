@@ -16,7 +16,6 @@ use App\Models\ProductDetail;
 use App\Models\ProductType;
 use App\Models\Size;
 use Carbon\Carbon;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -30,11 +29,42 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(HttpRequest $request)
     {
         $title = 'Danh sách sản phẩm';
-        $products = DB::select('SELECT * FROM products ORDER BY created_at DESC');
-        return view('component.product.products',compact('title','products'));
+        // $products = DB::select('SELECT * FROM products ORDER BY created_at DESC');
+
+        // Lọc sản phẩm
+        $filter = $request->filters;
+        if($request->filters != null){
+            if($filter == 1){
+                // Các sp đang hoạt động
+                $products = DB::table('products')->where('status','=',1)->get();
+            }else if($filter == 2){
+                // Các sp ngung hoạt động
+                $products = DB::table('products')->where('status','=',0)->get();
+            }else if($filter == 3){
+                // sp con hang
+                $products = DB::table('products')->where('quantity_status','=',1)->get();
+            }else if($filter == 4){
+                // sp het hang
+                $products = DB::table('products')->where('quantity_status','=',0)->get();
+            }else if($filter == 5){
+                // sp noi bat
+                $products = DB::table('products')->where('popular','=',1)->get();
+            }else if($filter == 6){
+                // sp noi bat
+                $products = DB::table('products')->where('popular','=',0)->get();
+            }else{
+                $products = DB::table('products')->orderBy('created_at','desc')->get();
+            }
+        }
+        else{
+            $products = DB::table('products')->orderBy('created_at','desc')->get();
+            $filter = -1;
+        }
+        // dd($products);
+        return view('component.product.products',compact('title','products','filter'));
     }
 
     /**
@@ -392,6 +422,19 @@ class ProductController extends Controller
             $product->popular = 1;
         }else {
             $product->popular = 0;
+        }
+        $product->update();
+
+        return redirect()->route('products');
+    }
+    public function quantityStatus($id)
+    {
+        $product = Product::find($id);
+        if($product->quantity_status == 0)
+        {
+            $product->quantity_status = 1;
+        }else {
+            $product->quantity_status = 0;
         }
         $product->update();
 

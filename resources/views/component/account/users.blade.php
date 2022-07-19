@@ -19,6 +19,23 @@
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
                 <a href="{{ route('get-CreateAccount') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
+                {{-- Lọc sản phẩm --}}
+            <div class="float-right col-4 mt-md-3 ">
+                <form action="{{route('filter-users')}}" method="post">
+                    @csrf
+                    <div class="d-flex align-items-center">
+                        <span for="filter_users" style="width:200px">Lọc theo:</span>
+                        <select name="filter_users" id="filter_users" class="form-control">
+                            <option value="-1" @if ($filter == -1) selected @endif>Tất cả</option>
+                            <option value="1"  @if ($filter == 1) selected @endif>Đang hoạt động</option>
+                            <option value="2"  @if ($filter == 2) selected @endif>Ngưng hoạt động</option>
+                            <option value="3"  @if ($filter == 3) selected @endif>Nhân viên</option>
+                            <option value="4"  @if ($filter == 4) selected @endif>Người dùng</option>
+                        </select>
+                        <button type = "submit"  class="ml-2 btn btn-sm btn-primary">Lọc</button>
+                    </div>
+                </form>
+            </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

@@ -25,7 +25,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                             <label for="category_id">Danh mục</label>
-                            <select name="category_id" id="category_id" class="form-control">
+                            <select required name="category_id" id="category_id" class="form-control">
                                 <option value="">-- Chọn danh mục --</option>
                                 @foreach ($categories as $item)
                                     <option value="{{ $item->id }}">{{ $item->category_name }}</option>
@@ -35,7 +35,7 @@
 
                             <div class="form-group col-md-4">
                                 <label for="product_type_name">Tên loại</label>
-                                <input type="text" name="product_type_name" id="product_type_name" placeholder="Tên loại" class="form-control">
+                                <input required type="text" name="product_type_name" id="product_type_name" placeholder="Tên loại" class="form-control">
                             </div>
 
                         </div>

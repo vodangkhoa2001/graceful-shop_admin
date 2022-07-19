@@ -13,6 +13,7 @@
         <!-- Basic Card Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
+                <a href="{{ route('list-voucher') }}">Trở lại</a>
                 <h6 class="m-0 font-weight-bold text-primary">Chỉnh sửa voucher</h6>
             </div>
             <div class="card-body">
@@ -57,13 +58,15 @@
                         <div class="form-row">
                             <label for="status">Trạng thái</label>
                             <select name="status" id="status" class="form-control">
-                                @if ($voucher->status == 0)
-                                    <option value="0" selected>Không hoạt động</option>
-                                    <option value="1">Hoạt động</option>
+                                <option value="1" @if ($voucher->status == 1) selected @endif>Hoạt động</option>
+                                <option value="-1"@if ($voucher->status == -1) selected @endif>Chưa hoạt động</option>
+                                <option value="0" @if ($voucher->status == 0) selected @endif>Ngưng hoạt động</option>
+                                {{-- @if ($voucher->status == 0)
                                 @else
                                     <option value="1" selected>Hoạt động</option>
                                     <option value="0">Không hoạt động</option>
-                                @endif
+                                    <option value="-1">Chưa hoạt động</option>
+                                @endif --}}
                             </select>
                         </div>
                     <div class="d-flex justify-content-end p-4">

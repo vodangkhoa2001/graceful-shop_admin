@@ -51,6 +51,8 @@
                                     <td>
                                         @if ($item->status==0)
                                             <span class="text-danger">Ngưng hoạt động</span>
+                                        @elseif ($item->status == -1)
+                                            <span class="text-warning">Chưa hoạt động</span>
                                         @else
                                             <span class="text-success">Hoạt động</span>
                                         @endif

@@ -25,21 +25,21 @@
                         <div class="form-row">
                             {{-- <div class="form-group col-md-6">
                             <label for="product_code">Mã người dùng</label>
-                            <input type="text" class="form-control" name="product_code" id="product_code" value="{{ $productCode }}" placeholder="Mã sản phẩm" readonly >
+                            <input required type="text" class="form-control" name="product_code" id="product_code" value="{{ $productCode }}" placeholder="Mã sản phẩm" readonly >
                             </div> --}}
                             <div class="form-group col-md-6">
                             <label for="full_name">Họ và tên</label>
-                            <input type="text" class="form-control" name="full_name" id="full_name" placeholder="Họ và tên" value="{{ old('full_name') }}" >
+                            <input required type="text" class="form-control" name="full_name" id="full_name" placeholder="Họ và tên" value="{{ old('full_name') }}" >
                             </div>
                             <div class="form-group col-md-4 ">
                                 <label for="gender">Giới tính</label>
                                 <div class="form-row d-flex justify-content-center">
                                     <div class="form-group col-md-4">
-                                        <input type="radio" name="gender" id="male" value="0" checked>
+                                        <input required type="radio" name="gender" id="male" value="0" checked>
                                         <label for="male">Nam</label>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <input type="radio" name="gender" id="female" value="1" >
+                                        <input required type="radio" name="gender" id="female" value="1" >
                                         <label for="female">Nữ</label>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                       <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="role">Loại tài khoản</label>
-                                <select name="role" id="role" class="form-control">
+                                <select required name="role" id="role" class="form-control">
                                     <option value="">-- Loại tài khoản --</option>
                                     @foreach ($roles as $role)
                                         @if ($role->role_value > 0)
@@ -59,15 +59,15 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email') }}">
+                                <input required type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email') }}">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="phone">Số điện thoại</label>
-                                <input type="number" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" value="{{ old('phone') }}">
+                                <input required type="number" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" value="{{ old('phone') }}">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="password">Mật khẩu</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" value="{{ old('password') }}">
+                                <input required type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" value="{{ old('password') }}">
                             </div>
 
                         </div>
@@ -75,7 +75,7 @@
 
                     {{-- <div class="form-row pl-4">
                         <div class="form-group col-md-3">
-                        <input type="file" name="avatar" value="{{ old('avatar') }}" accept="image/*" multiple required name="image">
+                        <input required type="file" name="avatar" value="{{ old('avatar') }}" accept="image/*" multiple required name="image">
 
                         </div>
                     </div> --}}

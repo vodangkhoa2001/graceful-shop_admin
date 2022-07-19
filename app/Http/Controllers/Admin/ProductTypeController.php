@@ -21,7 +21,7 @@ class ProductTypeController extends Controller
     public function index()
     {
         $title = 'Danh sách loại sản phẩm';
-        $product_type = DB::select('SELECT product_types.*,categories.category_name FROM product_types,categories WHERE product_types.categorie_id = categories.id and categories.status=1  ORDER BY product_types.categorie_id DESC');
+        $product_type = DB::select('SELECT product_types.*,categories.category_name FROM product_types,categories WHERE product_types.categorie_id = categories.id and categories.status=1  ORDER BY categories.category_name ASC');
         return view('component.product_type.list-product-type',compact('title','product_type'));
     }
 

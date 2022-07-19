@@ -20,25 +20,18 @@
                     <h3>Thêm danh mục thành công.</h3>
                     <a href="{{ route('list-category') }}">Danh mục</a>
                 @else
-                <form action="{{ route('post-CreateCategory') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('post-CreateCategory') }}" method="post" enctype="multipart/form-data" autocomplete="off">
                     @csrf
-
-                    @if ($errors->any())
-                    @endif
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="icon_category">Icon</label>
-                                <input type="file" accept="image/*" name="icon_category" id="icon_category" placeholder="Icon" value="{{ old('icon_category') }}" >
-                                @error('icon_category')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <input required type="file" accept="image/*" name="icon_category" id="icon_category" placeholder="Icon" value="{{ old('icon_category') }}" >
+
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="category_name">Tên danh mục</label>
-                                <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên danh mục" value="{{ old('category_name') }}" >
-                                @error('category_name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <input required type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên danh mục" value="{{ old('category_name') }}" >
+
                             </div>
                         </div>
 

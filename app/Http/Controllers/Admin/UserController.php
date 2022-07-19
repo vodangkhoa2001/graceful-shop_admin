@@ -25,11 +25,55 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function getUsers(){
+    public function getUsers(Request $request){
         $title = 'Danh sách người dùng';
         $role = Role::all();
         $users = DB::select('SELECT users.*,roles.role_name FROM users,roles WHERE users.role = roles.role_value and users.role != 1 ORDER BY created_at DESC');
-        return view('component.account.users',compact('title','users','role'));
+
+        $filter = $request->filter_users;
+        if($filter != null){
+            if($filter == 1){
+                // user đang hoạt động
+                $users = DB::table('users')
+                ->leftJoin('roles','roles.role_value','=','users.role')
+                ->where([['users.role','!=',1],['users.status','=',1]])
+                ->select('users.*','roles.role_name')->get();
+            }else if($filter == 2){
+                // user ngung hoạt động
+                $users = DB::table('users')
+                ->leftJoin('roles','roles.role_value','=','users.role')
+                ->where([['users.role','!=',1],['users.status','=',0]])
+                ->select('users.*','roles.role_name')->get();
+            }else if($filter == 3){
+                // user nhan vien
+                $users = DB::table('users')
+                ->leftJoin('roles','roles.role_value','=','users.role')
+                ->where('users.role','=',2)
+                ->select('users.*','roles.role_name')->get();
+            }else if($filter == 4){
+                // user nguoi dung
+                $users = DB::table('users')
+                ->leftJoin('roles','roles.role_value','=','users.role')
+                ->where('users.role','=',0)
+                ->select('users.*','roles.role_name')->get();
+            }else{
+                $users = DB::table('users')
+                ->leftJoin('roles','roles.role_value','=','users.role')
+                ->where('users.role','!=',1)
+                ->select('users.*','roles.role_name')
+                ->orderBy('id','desc')->get();
+            }
+        }
+        else{
+            $users = DB::table('users')
+            ->leftJoin('roles','roles.role_value','=','users.role')
+            ->where('users.role','!=',1)
+            ->select('users.*','roles.role_name')
+            ->orderBy('id','desc')->get();
+            $filter = -1;
+        }
+
+        return view('component.account.users',compact('title','users','role','filter'));
     }
 
 

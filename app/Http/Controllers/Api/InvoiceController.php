@@ -133,10 +133,10 @@ class InvoiceController extends Controller
                         'quantity'=> $invoice->quantity + $invoice_detail->quantity,
                         'until_price'=> $invoice->until_price + $invoice_detail->total_price,
                     ]); 
-                    Product::where('id', $cart->product_id)
-                    ->update([
-                        'stock'=> $product->stock - $cart->quantity,
-                    ]);   
+                    // Product::where('id', $cart->product_id)
+                    // ->update([
+                    //     'stock'=> $product->stock - $cart->quantity,
+                    // ]);   
                     $cart->delete();
                 }else{
                     DB::rollBack();
@@ -213,13 +213,86 @@ class InvoiceController extends Controller
                 ->where('invoices.id', '=', $invoice->id)
                 ->get();    
 
-                foreach ($invoice_details as $invoice_detail){
-                    $product = Product::where('id', $invoice_detail->product_id)->first();
-                    Product::where('id', $invoice_detail->product_id)
-                    ->update([
-                        'stock'=> $product->stock + $invoice_detail->quantity,
-                    ]); 
-                }
+                // foreach ($invoice_details as $invoice_detail){
+                //     $product = Product::where('id', $invoice_detail->product_id)->first();
+                //     Product::where('id', $invoice_detail->product_id)
+                //     ->update([
+                //         'stock'=> $product->stock + $invoice_detail->quantity,
+                //     ]); 
+                // }
+
+                if($invoice->type_pay == 'ZaloPay'){
+
+                    //Truy vấn trạng thái thanh toán của đơn hàng
+                    $config = [
+                        "app_id" => 2554,
+                        "key1" => "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn",
+                        "key2" => "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf",
+                        "refund_url" => "https://sb-openapi.zalopay.vn/v2/query"
+                    ];
+                    
+                    $app_trans_id = $invoice->invoice_code;  // Input your app_trans_id
+                    $data = $config["app_id"]."|".$app_trans_id."|".$config["key1"]; // app_id|app_trans_id|key1
+                    $params = [
+                    "app_id" => $config["app_id"],
+                    "app_trans_id" => $app_trans_id,
+                    "mac" => hash_hmac("sha256", $data, $config["key1"])
+                    ];
+                    
+                    $context = stream_context_create([
+                        "http" => [
+                            "header" => "Content-type: application/x-www-form-urlencoded\r\n",
+                            "method" => "POST",
+                            "content" => http_build_query($params)
+                        ]
+                    ]);
+                    
+                    $resp = file_get_contents($config["refund_url"], false, $context);
+                    $result = json_decode($resp, true);
+                    $zp_trans_id = $result["zp_trans_id"];
+    
+                    //Hoàn tiền giao dịch
+                    $config = [
+                        "app_id" => 2554,
+                        "key1" => "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn",
+                        "key2" => "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf",
+                        "refund_url" => "https://sb-openapi.zalopay.vn/v2/refund"
+                    ];
+    
+                    $timestamp = round(microtime(true) * 1000); // miliseconds
+                    $uid = "$timestamp".rand(111,999); // unique id 
+    
+                    $params = [
+                        "app_id" => $config["app_id"],
+                        "m_refund_id" => date("ymd")."_".$config["app_id"]."_".$uid,
+                        "timestamp" => $timestamp,
+                        "zp_trans_id" => $zp_trans_id,
+                        "amount" => $invoice->until_price,
+                        "description" => "ZaloPay Intergration Demo"
+                    ];
+    
+                    // app_id|zp_trans_id|amount|description|timestamp
+                    $data = $params["app_id"]."|".$params["zp_trans_id"]."|".$params["amount"]
+                    ."|".$params["description"]."|".$params["timestamp"];
+                    $params["mac"] = hash_hmac("sha256", $data, $config["key1"]);
+    
+                    $context = stream_context_create([
+                    "http" => [
+                        "header" => "Content-type: application/x-www-form-urlencoded\r\n",
+                        "method" => "POST",
+                        "content" => http_build_query($params)
+                    ]
+                    ]);
+    
+                    $resp = file_get_contents($config["refund_url"], false, $context);
+                    $result = json_decode($resp, true);
+    
+                    // foreach ($result as $key => $value) {
+                    //     echo "$key: $value<br>";
+                    // }
+    
+                    // dd($result);
+                }    
 
                 $message = [
                     'type' => 'Đơn hàng',

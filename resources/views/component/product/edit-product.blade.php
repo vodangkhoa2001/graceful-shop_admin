@@ -142,31 +142,81 @@
                             @endif
                         </div>
 
-                        <div class="row ml-1">
-                            <button onclick="add_size();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size</button>
+                        <div class="form-row mb-2 ml-2">
+                            <input type="button" class="btn btn-secondary" id="num-size" value="Size số"/>
+                            <input type="button" class="btn btn-secondary ml-2" id="text-size" value="Size chữ"/>
                         </div>
+
+                        <div class="row ml-1">
+                            <button id="btn-add-num" onclick="add_size_num();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size số</button>
+                            <button id="btn-add-text" onclick="add_size_text();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size chữ</button>
+                        </div>
+                        {{-- {{ dd(is_string($sizes[0]->size_name)) }} --}}
                         <div class="add_size" >
                             @if (!empty($sizes))
-                                @for ($i =0;$i<count($sizes);$i++)
-                                <div class="form-group form-inline ml-md-4">
-                                    <label for="color"> Tên size :</label>
-                                    <input type="text" name="size_id[]" placeholder="" value="{{ $sizes[$i]->id }}" class="form-control col-md-3 mx-sm-3" hidden>
-                                    <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3" value="{{ $sizes[$i]->size_name }}">
-                                    <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);" hidden><i class="fa-solid fa-minus"></i></button>
-                                    <div class="form-group ml-2">
-                                        <label for="status">Trạng thái </label> &ensp;
-                                        <select name="size_status[]" class="form-control">
-                                            @if ($sizes[$i]->status==0)
-                                                <option value="0" selected>Ngưng hoạt động</option>
-                                                <option value="1">Đang hoạt động</option>
-                                            @else
-                                                <option value="0" >Ngưng hoạt động</option>
-                                                <option value="1" selected>Đang hoạt động</option>
-                                            @endif
+                                @if($sizes[0]->size_name=="S"||$sizes[0]->size_name=="M"||$sizes[0]->size_name=="L"||$sizes[0]->size_name=="XL"||$sizes[0]->size_name=="XXL"||$sizes[0]->size_name=="One size")
+                                    @for ($i =0;$i<count($sizes);$i++)
+                                        <div class="form-group form-inline ml-md-4">
+                                            <label for="color"> Tên size :</label>
+                                            <input type="text" name="size_id[]" placeholder="" value="{{ $sizes[$i]->id }}" class="form-control col-md-3 mx-sm-3" hidden>
+                                            <select name="size_name[]" id="size-text" class="form-control">
+                                                <option @if($sizes[$i]->size_name == "S") selected @endif value="S">S</option>
+                                                <option @if($sizes[$i]->size_name == "M") selected @endif value="M">M</option>
+                                                <option @if($sizes[$i]->size_name == "L") selected @endif value="L">L</option>
+                                                <option @if($sizes[$i]->size_name == "XL") selected @endif value="XL">XL</option>
+                                                <option @if($sizes[$i]->size_name == "XXL") selected @endif value="XXL">XXL</option>
+                                                <option @if($sizes[$i]->size_name == "One size") selected @endif value="One size">One size</option>
+                                            </select>
+                                            {{-- <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3" value="{{ $sizes[$i]->size_name }}"> --}}
+                                            <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);" hidden><i class="fa-solid fa-minus"></i></button>
+                                            <div class="form-group ml-2">
+                                                <label for="status">Trạng thái </label> &ensp;
+                                                <select name="size_status[]" class="form-control">
+                                                    @if ($sizes[$i]->status==0)
+                                                        <option value="0" selected>Ngưng hoạt động</option>
+                                                        <option value="1">Đang hoạt động</option>
+                                                    @else
+                                                        <option value="0" >Ngưng hoạt động</option>
+                                                        <option value="1" selected>Đang hoạt động</option>
+                                                    @endif
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endfor
+                                @else
+                                    @for ($i =0;$i<count($sizes);$i++)
+                                    <div class="form-group form-inline ml-md-4">
+                                        <label for="color"> Tên size :</label>
+                                        <input type="text" name="size_id[]" placeholder="" value="{{ $sizes[$i]->id }}" class="form-control col-md-3 mx-sm-3" hidden>
+                                        <select name="size_name[]" id="size-num" class="form-control">
+                                            <option @if($sizes[$i]->size_name == 36) selected @endif value="36">36</option>
+                                            <option @if($sizes[$i]->size_name == 37) selected @endif value="37">37</option>
+                                            <option @if($sizes[$i]->size_name == 38) selected @endif value="38">38</option>
+                                            <option @if($sizes[$i]->size_name == 39) selected @endif value="39">39</option>
+                                            <option @if($sizes[$i]->size_name == 40) selected @endif value="40">40</option>
+                                            <option @if($sizes[$i]->size_name == 41) selected @endif value="41">41</option>
+                                            <option @if($sizes[$i]->size_name == 42) selected @endif value="42">42</option>
+                                            <option @if($sizes[$i]->size_name == 43) selected @endif value="43">43</option>
+                                            <option @if($sizes[$i]->size_name == 44) selected @endif value="44">44</option>
+
                                         </select>
+                                        {{-- <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3" value="{{ $sizes[$i]->size_name }}"> --}}
+                                        <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);" hidden><i class="fa-solid fa-minus"></i></button>
+                                        <div class="form-group ml-2">
+                                            <label for="status">Trạng thái </label> &ensp;
+                                            <select name="size_status[]" class="form-control">
+                                                @if ($sizes[$i]->status==0)
+                                                    <option value="0" selected>Ngưng hoạt động</option>
+                                                    <option value="1">Đang hoạt động</option>
+                                                @else
+                                                    <option value="0" >Ngưng hoạt động</option>
+                                                    <option value="1" selected>Đang hoạt động</option>
+                                                @endif
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                @endfor
+                                    @endfor
+                                @endif
                             @endif
                         </div>
 
@@ -205,7 +255,17 @@
 @section('script')
 <script src="{{ asset('assets/js/add-and-remove-list.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript">
+document.getElementById("btn-add-num").style.display = 'none';
+    document.getElementById("num-size").onclick = function () {
+        document.getElementById("btn-add-num").style.display = 'block';
+        document.getElementById("btn-add-text").style.display = 'none';
+    };
+
+    document.getElementById("text-size").onclick = function () {
+        document.getElementById("btn-add-num").style.display = 'none';
+        document.getElementById("btn-add-text").style.display = 'block';
+    };
 
    function chooseImage(fileInput){
        if(fileInput.files && fileInput.files[0]){

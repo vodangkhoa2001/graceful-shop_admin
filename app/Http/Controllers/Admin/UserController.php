@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\LoginRequest;
 use App\Models\Role;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -211,8 +212,39 @@ class UserController extends Controller
         $user->status = 0;
         $name=$user->full_name;
         $user->update();
-        return redirect()->route('list-user')->with('msg','Đã xóa thành công người dùng '.$name);
+        return redirect()->route('list-user')->with('msg','Đã ngưng hoạt động thành công người dùng '.$name);
 
     }
+
+// doi mat khau
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'currentPassword' => 'required|min:6',
+            'newPassword' => 'required|min:6',
+            're-Password' => 'required|min:6|same:newPassword'
+        ],
+        [
+            'required' => ':attribute không được bỏ trống.',
+            'min' => ':attribute yêu cầu độ dài từ :min ký tự',
+            'same' => ':attribute phải trùng với Mật khẩu mới'
+        ],
+        [
+            'currentPassword' => 'Mật khẩu hiện tại',
+            'newPassword' => 'Mật khẩu mới',
+            're-Password' => 'Xác nhận mật khẩu'
+        ]
+    );
+    $user = Auth::user();
+    if(Hash::check($request->currentPassword, $user->password)){
+        $user->password = Hash::make($request->newPassword);
+        $user->update();
+        // dd($user->password);
+        return Redirect::route('login')->with('msg','Thay đổi mật khẩu thành công!');
+    }else{
+        return Redirect::back()->withErrors($validator);
+    }
+    }
+
 }
 

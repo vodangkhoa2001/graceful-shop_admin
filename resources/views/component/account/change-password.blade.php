@@ -10,7 +10,7 @@
         <meta name="author" content="">
 
 
-        <title>Graceful - Login</title>
+        <title>Graceful - Đổi mật khẩu</title>
 
         <!-- Custom fonts for this template-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -25,11 +25,7 @@
     </head>
 
 <body class="bg-gradient-primary">
-    @if (session('msg'))
-    <div class="alert alert-success">
-        {{ session('msg') }}
-    </div>
-    @endif
+    
     <div class="container">
 
         <!-- Outer Row -->
@@ -42,44 +38,45 @@
                         <!-- Nested Row within Card Body -->
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Đổi mật khẩu</h1>
                             </div>
 
-                            <form class="user" action="{{ route('postLogin') }}" method="post">
+                            @if($errors->any())
+                            @endif
+                            <form class="user" action="{{ route('post-ChangePassword') }}" method="post">
                                 @csrf
+                                {{-- mk hien tai --}}
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp" name="phone" value="{{ old('phone') }}"
-                                        placeholder="Enter Phone number..." required>
+                                    <input type="password" class="form-control form-control-user" name="currentPassword" value="{{ old('currentPassword') }}"
+                                        id="currentPassword" placeholder="Mật khẩu cũ">
+                                    @error('currentPassword')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                {{-- mk moi --}}
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-user" name="newPassword" value="{{ old('newPassword') }}"
+                                        id="newPassword" placeholder="Mật khẩu mới">
+                                    @error('newPassword')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                {{-- xac nhan mk --}}
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-user" name="re-Password" value="{{ old('re-Password') }}"
+                                        id="re-Password" placeholder="Xác nhận mật khẩu">
+                                    @error('re-Password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control form-control-user" name="password"
-                                        id="exampleInputPassword" placeholder="Password" required>
-                                </div>
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox small">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                                        <label class="custom-control-label" for="customCheck">Remember
-                                            Me</label>
-                                    </div>
-                                </div>
-                                @if (session('error'))
-                                            <div class="alert alert-danger" role="alert">
-                                                    {{ session('error') }}
-                                            </div>
-
-                                        @endif
-                                <button class="btn btn-primary btn-user btn-block">
-                                    Login
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    Đổi mật khẩu
                                 </button>
 
 
                             </form>
                             <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
                         </div>
                     </div>
                 </div>

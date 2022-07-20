@@ -47,13 +47,16 @@
                                 <span class="text-primary">Đã giao</span>
                             @endif
                     </li>
-                    <li>Người hủy: @if ($user_cancel[0]->role == 1)
-                        Admin
-                    @elseif ($user_cancel[0]->role == 2)
-                        Nhân viên
-                    @else
-                        Khách hàng
-                    @endif - {{ $user_cancel[0]->full_name }}</li>
+                    @if ($invoice->status==0)
+                        <li>Người hủy: @if ($user_cancel[0]->role == 1)
+                            Admin
+                        @elseif ($user_cancel[0]->role == 2)
+                            Nhân viên
+                        @else
+                            Khách hàng
+                        @endif - {{ $user_cancel[0]->full_name }}</li>
+                        
+                    @endif
                     <li><hr></li>
                     @foreach ($invoice_details as $key=>$item)
                         <li class="mt-5">Sản phẩm {{ $key+1 }}: {{ $item->product_name }} </li>

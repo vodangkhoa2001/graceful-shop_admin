@@ -5,6 +5,23 @@ function deleteRow(btn) {
     index -= 1;
     row.remove(row);
 }
+function deleteRows(btn) {
+    var row = btn.parentNode.parentNode;
+    index -= 1;
+    row.remove(row);
+}
+
+    // chọn size
+    document.getElementById("btn-add-num").style.display = 'none';
+    document.getElementById("num-size").onclick = function () {
+        document.getElementById("btn-add-num").style.display = 'block';
+        document.getElementById("btn-add-text").style.display = 'none';
+    };
+
+    document.getElementById("text-size").onclick = function () {
+        document.getElementById("btn-add-num").style.display = 'none';
+        document.getElementById("btn-add-text").style.display = 'block';
+    };
 
 function add_append() {
     index = index + 1;
@@ -18,8 +35,9 @@ function add_size_text() {
     $('.add_size').append(addSizeRow);
 }
 function add_size_num() {
+
     index = index + 1;
-    let addSizeRow = '<div class="form-group form-inline ml-md-4 img-color"><label for="size"> Tên size: </label><input type="text" name="size_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden><select name="size_name[]" id="size" class="form-control">@for ($i =25;$i<46;$i++)<option value="{{ $i }}">{{ $i }}</option>@endfor</select><button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button><div class="form-group ml-2" hidden ><label for="status">Trạng thái </label> &ensp;<select name="size_status[]" class="form-control"><option value="0" >Ngưng hoạt động</option><option value="1" selected>Đang hoạt động</option></select></div></div>';
+    let addSizeRow = '<div class="form-group form-inline ml-md-4 img-color"><label for="size"> Tên size: </label><input type="text" name="size_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden><select name="size_name[]" id="size" class="form-control"><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option></select><button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button><div class="form-group ml-2" hidden ><label for="status">Trạng thái </label> &ensp;<select name="size_status[]" class="form-control"><option value="0" >Ngưng hoạt động</option><option value="1" selected>Đang hoạt động</option></select></div></div>';
     $('.add_size').append(addSizeRow);
 }
 
@@ -33,7 +51,7 @@ function add_product(btn) {
     document.getElementById("dataTableSlide").append(row);
 }
 
-function remove_product(btn) {  
+function remove_product(btn) {
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
 

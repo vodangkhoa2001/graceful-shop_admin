@@ -194,7 +194,7 @@
                 const url = fileReader.result
                 resultElement.insertAdjacentHTML(
                 'beforeend',
-                `<img class="mr-2" height="200" width="300" src="${url}" alt="${file.name}">`
+                `<img class="mr-2" height="200" src="${url}" alt="${file.name}">`
                 )
             }
         }

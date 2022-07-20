@@ -123,72 +123,32 @@
                         @csrf
                         <i class="fas fa-chart-bar me-1"></i>
                         <span class="ml-1 col-4">Doanh thu năm</span>
-                        <input name="startYear" id="startYear" class="date-picker-year" value="{{date('Y')}}"/>   
-                        {{-- <input type="number" id="choose-year" value="{{date('Y')}}"> --}}
+                        <select name="startYear" id="startYear" class="form-control col-2">
+                            @for ($y = date('Y');$y>2019;$y--)
+                                <option @if($year == $y) selected @endif value="{{ $y }}">{{ $y }}</option>
+                            @endfor
+                        </select>
                         <button type="submit" class="btn btn-primary ml-4">Chọn</button>
                     </form>
                     <span>Tổng doanh thu: {{ number_format($saleNowYear, 0, '', '.')." VNĐ"; }}</span>
                 </div>
-                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                <div class="card-body text-center">
+                    @if (!empty($months))
+                        <canvas id="myBarChart" width="100%" height="40"></canvas>
+                    @else
+                        <h4>Không có dữ liệu cho năm {{ $year }}</h4>
+                    @endif
+                </div>
             </div>
         </div>
 
     </div>
-
-    {{-- <div class="row">
-        <!-- Area Chart -->
-        <div class="col-xl-12">
-            <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-xl-between">
-                    <form action="{{ route('post-SaleOfYear') }}" method="post" class="col-6 d-flex align-items-center">
-                        @csrf
-                        <i class="fas fa-chart-bar me-1"></i>
-                        <span class="ml-1 col-4">Top 10 sản phẩm bán chạy</span>
-                    </form>
-                    <span>Tổng doanh thu: {{ number_format($saleNowYear, 0, '', '.')." VNĐ"; }}</span>
-                </div>
-                <div class="card-body"><canvas id="myChart" width="100" height="100"></canvas></div>
-            </div>
-        </div>
-
-    </div> --}}
 
 @endsection
 
 @section('script')
 @parent
 {{-- bieu do --}}
-<script>
-    // var year = document.getElementById('choose-year');
-    // $(function() { 
-    //     $('#choose-year').datepicker( {
-    //             changeMonth: false,
-    //             changeYear: true,
-    //             showButtonPanel: false,
-    //             dateFormat: 'yy',
-    //             onClose: function(dateText, inst) { 
-    //                 $(this).datepicker('setDate', new Date('2017'));
-    //             }
-    //         }).focus(function () {
-    //                     $(".ui-datepicker-month").hide();
-    //                     $(".ui-datepicker-calendar").hide();
-    //                 });
-    // });
-    $(function() {
-        $('.date-picker-year').datepicker({
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy',
-            onClose: function(dateText, inst) { 
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, 1));
-            }
-        });
-        $(".date-picker-year").focus(function () {
-                $(".ui-datepicker-month").hide();
-            });
-        });
-</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
@@ -206,7 +166,7 @@
     data: {
         labels: _ydata,
         datasets: [{
-        label: "Số lượng",
+        label: "Doanh thu",
         backgroundColor: "rgba(2,117,216,1)",
         borderColor: "rgba(2,117,216,1)",
         data: _xdata,

@@ -33,7 +33,7 @@ Route::post('/login',[UserController::class,'postLogin'])->name('postLogin');
 
 Route::middleware('auth')->group(function () {
     Route::get('/home',[HomeController::class,'statistic'])->name('home');
-    Route::post('/home',[HomeController::class,'saleOfYear'])->name('post-SaleOfYear');
+    Route::post('/home',[HomeController::class,'statistic'])->name('post-SaleOfYear');
     Route::prefix('user')->group(function(){
         Route::get('/', 'App\Http\Controllers\Admin\UserController@getUsers')->name('list-user');
         Route::post('/', 'App\Http\Controllers\Admin\UserController@getUsers')->name('filter-users');
@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/my-profile', [UserController::class,'postProfile'])->name('post-Profile');
 
     });
+    Route::get('/change-password', function(){ return view('component.account.change-password');})->name('get-ChangePassword');
+    Route::post('/change-password', [UserController::class,'changePassword'])->name('post-ChangePassword');
 
     Route::prefix('products')->group(function(){
         Route::get('/',[ProductController::class, 'index'])->name('products');

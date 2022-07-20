@@ -126,56 +126,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <label for="type_size">Loại size: </label>
-                                <select name="type_size" id="type_size">
-                                    <option value="0">Chữ</option>
-                                    <option value="1">Số</option>
-                                </select>
+                    <div class="form-row mb-2 ml-2">
+                        <input type="button"  class="btn btn-secondary" id="num-size" value="Size số"/>
+                        <input type="button"  class="btn btn-secondary ml-2" id="text-size" value="Size chữ"/>
                     </div>
                     <div class="row ml-1">
-                        <button onclick="add_size_text();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size chữ</button>
-                        <button onclick="add_size_num();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size số</button>
+                        <button id="btn-add-text" onclick="add_size_text();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size chữ</button>
+                        <button id="btn-add-num" onclick="add_size_num();" type="button"  class="btn btn-info btn-color"><i class="fa-solid fa-circle-plus mr-2"></i>Thêm size số</button>
                     </div>
-                    <div class="row">
-
-                        <div class="add_size" >
-
-                            {{-- màu trong này phải qua cái js --}}
-                            {{-- <input type="text" id="size" name="size_name[]" placeholder="Tên size" class="form-control col-md-3 mx-sm-3"> --}}
-                            <div class="form-group form-inline ml-md-4 img-color">
-
-                                <label for="size"> Tên size: </label>
-                                <input type="text" name="size_id[]" placeholder="" value="-1" class="form-control col-md-3 mx-sm-3" hidden>
-
-                                <select name="size_name[]" id="size" class="form-control">
-                                    @for ($i =25;$i<46;$i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-
-                                    @endfor
-                                </select>
-                                <button type="button" class="btn-xoa btn btn-outline-danger" onclick="deleteRow(this);"><i class="fa-solid fa-minus"></i></button>
-                                <div class="form-group ml-2" hidden >
-                                    <label for="status">Trạng thái </label> &ensp;
-                                    <select name="size_status[]" class="form-control">
-                                        <option value="0" >Ngưng hoạt động</option>
-                                        <option value="1" selected>Đang hoạt động</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+                    <div class="add_size"></div>
                     <div class="form-group m-4">
                         <label for="editor">Nội dung</label>
                         <textarea class="editor" name="description" class="form-control ckeditor" value="{{ old('description') }}">
                         </textarea>
                     </div>
-
-
                     <div class="d-flex justify-content-end p-4">
                         <button class="btn btn-primary col-2"  type="submit">Thêm sản phẩm</button>
-
                     </div>
                     </div>
 
@@ -191,6 +157,8 @@
 <script src="{{ asset('assets/js/add-and-remove-list.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
+
+
 
    function chooseImage(fileInput){
        if(fileInput.files && fileInput.files[0]){

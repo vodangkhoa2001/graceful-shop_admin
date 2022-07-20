@@ -18,7 +18,11 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
-                <a href="{{ route('get-CreateAccount') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
+                @if (Auth::user()->role == 1)
+                    <a href="{{ route('get-CreateAccount') }}" rel="noopener noreferrer" style="float:right">Thêm mới</a>
+                @else
+
+                @endif
                 {{-- Lọc sản phẩm --}}
             <div class="float-right col-4 mt-md-3 ">
                 <form action="{{route('filter-users')}}" method="post">
@@ -75,12 +79,15 @@
                                     <td>
                                         <div class="d-flex justify-content-xl-between">
                                             @if ($item->status != 0)
-                                            <a href="{{ route('get-EditUser',$item->id) }}"title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                @if(Auth::user()->role == 1)
+                                                    <a href="{{ route('get-EditUser',$item->id) }}"title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                @endif
                                             <a href="#removeModal{{ $item->id }}" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#removeModal{{ $item->id }}" title="Xóa"><i class="fa-solid fa-minus"></i></a>
 
                                             @else
-                                            <a href="{{ route('get-EditUser',$item->id) }}"title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-
+                                                @if(Auth::user()->role == 1)
+                                                    <a href="{{ route('get-EditUser',$item->id) }}"title="Chỉnh sửa" class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                @endif
                                             @endif
 
                                         </div>

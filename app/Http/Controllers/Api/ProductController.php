@@ -58,6 +58,28 @@ class ProductController extends Controller
         return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
     }
 
+    //DS sản phẩm bán chạy
+    public function getAllSellingProduct(HttpRequest $request)
+    {
+        $num = (int) $request->num;
+
+        $products = Product::with(['pictures'  => function($query) {
+            $query->select(['*', DB::raw('CONCAT("assets/img/products/",picture_value) AS picture_value')]);
+        }])
+        ->with(['likes'])
+        ->rightJoin('invoice_details', 'invoice_details.product_id', '=', 'products.id') 
+        ->rightJoin('invoices' , 'invoice_details.invoice_id', '=', 'invoices.id') 
+        ->where('invoices.status', '<>', 0)
+        ->where('products.status', '=', 1)
+        ->select(DB::raw('products.*, count(*) as COUNT'))
+        // ->distinct()
+        ->groupBy('id', 'product_name', 'price', 'product_type_id', 'product_barcode', 'brand_id', 'popular', 'quantity_status', 'num_like', 'num_rate', 'description', 'status', 'created_at', 'updated_at', 'deleted_at')
+        ->orderBy('COUNT', 'DESC')
+        ->paginate($num);
+
+        return response()->json(['status'=>0, 'data'=>$products, 'message'=>'']);
+    }
+
     //Chi tiết sản phẩm
     public function getProductDetailById($id)
     {

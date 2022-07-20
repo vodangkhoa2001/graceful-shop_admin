@@ -31,6 +31,7 @@ use \App\Http\Controllers\Api\InfoShopController;
 //Product
 Route::post('product-new-view', [ProductController::class, 'getAllNewProduct']);
 Route::post('product-popular-view', [ProductController::class, 'getAllPopularProduct']);
+Route::post('product-selling-view', [ProductController::class, 'getAllSellingProduct']);
 Route::get('product-byid/{id}', [ProductController::class, 'getProductDetailById']);
 Route::post('product-category-byid/{id}', [ProductController::class, 'getProductByProductCategory']);
 Route::post('product-type-byid/{id}', [ProductController::class, 'getProductByProductType']);
